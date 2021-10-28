@@ -19,4 +19,7 @@ export class UserListComponent implements OnInit {
     this.dataSource = this.users;
   }
 
+  onEdit(row: unknown): void {
+
+  }
 }

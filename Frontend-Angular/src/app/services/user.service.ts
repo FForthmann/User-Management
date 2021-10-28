@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from "../model/user";
 import { HttpClient } from "@angular/common/http";
 import {Observable, of} from "rxjs";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 // Dummy Data - needs to be deleted
 const users: User[] = [
@@ -57,6 +58,22 @@ const users: User[] = [
 export class UserService {
 
   constructor(private http: HttpClient) { }
+
+  form: FormGroup = new FormGroup({
+    firstName: new FormControl('', Validators.required),
+    lastName: new FormControl('', Validators.required),
+    accountDetails: new FormControl('', Validators.required),
+    street: new FormControl('', Validators.required),
+    houseNumber: new FormControl('', Validators.required),
+    postalCode: new FormControl('', Validators.required),
+    city: new FormControl('', Validators.required),
+    birthday: new FormControl('', Validators.required),
+    entryDate: new FormControl('', Validators.required),
+    cancellationDate: new FormControl(''),
+    leavingDate: new FormControl(''),
+    memberType: new FormControl('1', Validators.required),
+    familyId: new FormControl(''),
+  });
 
   /**
    * Function to receive all Users/Members from the API
