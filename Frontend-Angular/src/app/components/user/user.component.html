@@ -1,0 +1,30 @@
+<mat-list>
+  <div mat-subheader>Kontakt</div>
+  <mat-list-item>
+    <mat-icon mat-list-icon>perm_identity</mat-icon>
+    <div mat-line>Vorname: {{user.name.firstName}}</div>
+    <div mat-line>Nachname: {{user.name.lastName}} </div>
+    <div mat-line>Geburtstag: {{user.birthday}}</div>
+    <div mat-line>Kontoverbindung: {{user.accountDetails}}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <div mat-subheader>Adresse</div>
+  <mat-list-item>
+    <mat-icon mat-list-icon>place</mat-icon>
+    <div mat-line>Straße: {{user.address.street}}</div>
+    <div mat-line>Hausnummer: {{user.address.houseNumber}} </div>
+    <div mat-line>Postleitzahl: {{user.address.postalCode}}</div>
+    <div mat-line>Stadt: {{user.address.city}}</div>
+  </mat-list-item>
+  <mat-divider></mat-divider>
+  <div mat-subheader>Mitgliedsdaten</div>
+  <mat-list-item>
+    <mat-icon mat-list-icon>info</mat-icon>
+    <div mat-line>Mitgliedsnummer: {{user.userId}} </div>
+    <div mat-line>Mitgliedsart: {{user.memberType}}</div>
+    <div mat-line>Eintrittsdatum: {{user.entryDate}}</div>
+    <div *ng-if=user.cancellationDate mat-line>Kündigungsdatum: {{user.cancellationDate}}</div>
+    <div *ng-if=user.leavingDate mat-line>Austrittsdatum: {{user.leavingDate}}</div>
+    <div *ng-if=user.familyId mat-line>Familie: {{user.familyId}}</div>
+  </mat-list-item>
+</mat-list>
