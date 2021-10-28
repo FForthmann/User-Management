@@ -5,4 +5,5 @@
     <span class="fill-remaining-space"></span>
   </mat-toolbar>
   <app-user-list [users]="users"></app-user-list>
+  <app-user-form (save)="saveUser($event)"></app-user-form>
 </div>

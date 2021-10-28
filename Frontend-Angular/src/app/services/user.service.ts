@@ -1,52 +1,52 @@
 import { Injectable } from '@angular/core';
-import { User } from "../model/user";
-import { HttpClient } from "@angular/common/http";
-import {Observable, of} from "rxjs";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import { User } from '../model/user';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 // Dummy Data - needs to be deleted
 const users: User[] = [
   {
     userId: 1,
     name: {
-      firstName: "Jan",
-      lastName: "Ramm"
+      firstName: 'Jan',
+      lastName: 'Ramm',
     },
     address: {
-      street: "Dorfstrasse",
+      street: 'Dorfstrasse',
       houseNumber: 1,
       postalCode: 25524,
-      city: "Itzehoe"
+      city: 'Itzehoe',
     },
-    birthday : new Date("2021-10-20"),
-    entryDate : new Date("2021-10-28"),
-    memberType : "Vollmember",
-    accountDetails : 255255255255
+    birthday: new Date('2021-10-20'),
+    entryDate: new Date('2021-10-28'),
+    memberType: 'Vollmember',
+    accountDetails: 255255255255,
   },
   {
     userId: 200,
     name: {
-      firstName: "Luca",
-      lastName: "Ulrich"
+      firstName: 'Luca',
+      lastName: 'Ulrich',
     },
     address: {
-      street: "Postweg",
+      street: 'Postweg',
       houseNumber: 5,
       postalCode: 25524,
-      city: "Itzehoe"
+      city: 'Itzehoe',
     },
-    birthday : new Date("2000-01-01"),
-    entryDate : new Date("2020-08-01"),
-    cancellationDate: new Date("2020-10-10"),
-    leavingDate: new Date("2021-12-31"),
-    memberType : "Halbmember",
-    accountDetails : 231123445,
-    familyId: 1
-  }
+    birthday: new Date('2000-01-01'),
+    entryDate: new Date('2020-08-01'),
+    cancellationDate: new Date('2020-10-10'),
+    leavingDate: new Date('2021-12-31'),
+    memberType: 'Halbmember',
+    accountDetails: 231123445,
+    familyId: 1,
+  },
 ];
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 
 /**
@@ -56,8 +56,7 @@ const users: User[] = [
  * @Version: 1.0
  */
 export class UserService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   form: FormGroup = new FormGroup({
     firstName: new FormControl('', Validators.required),
@@ -72,17 +71,30 @@ export class UserService {
     cancellationDate: new FormControl(''),
     leavingDate: new FormControl(''),
     memberType: new FormControl('1', Validators.required),
-    familyId: new FormControl(''),
+    familyId: new FormControl('')
   });
 
   /**
    * Function to receive all Users/Members from the API
    *
    * @Author: Luca Ulrich
-   * @Returns: Observable with an Array of Users
+   * @returns: Observable with an Array of Users
    */
   getUsers(): Observable<User[]> {
-    return of(users);
+    return of([...users]);
     // return this.http.get<User[]>('/endpoint');
+  }
+
+  /**
+   * Function to send a saved User to API
+   *
+   * @Author: Luca Ulrich
+   * @param: savedUser - a User to be saved
+   * @returns: Observable with an Array of Users
+   */
+  saveUser(savedUser: User): Observable<User[]> {
+    users.push(savedUser);
+    return of(users);
+    // return this.http.put('/endpoint', savedUser);
   }
 }
