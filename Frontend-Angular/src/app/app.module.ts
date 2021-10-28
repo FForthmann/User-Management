@@ -11,12 +11,15 @@ import { MatIconModule } from "@angular/material/icon";
 import { UserListComponent } from './components/user-list/user-list.component';
 import { MatTableModule } from "@angular/material/table";
 import { MatButtonModule } from "@angular/material/button";
+import { UsersComponent } from './components/users.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 @NgModule({
   declarations: [
     AppComponent,
     UserComponent,
-    UserListComponent
+    UserListComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +28,8 @@ import { MatButtonModule } from "@angular/material/button";
     MatListModule,
     MatIconModule,
     MatTableModule,
-    MatButtonModule
+    MatButtonModule,
+    MatToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
