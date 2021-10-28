@@ -8,18 +8,24 @@ import { UserComponent } from './components/user/user.component';
 
 import { MatListModule } from "@angular/material/list";
 import { MatIconModule } from "@angular/material/icon";
+import { UserListComponent } from './components/user-list/user-list.component';
+import { MatTableModule } from "@angular/material/table";
+import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
   declarations: [
     AppComponent,
-    UserComponent
+    UserComponent,
+    UserListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    MatTableModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
