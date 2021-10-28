@@ -2,7 +2,7 @@
  * Grundstrukturierung des Datenbankmodells der H2-Datenbank
  *
  * @author Luca Ulrich - 9596
- * @version 1.0
+ * @version 1.1
  */
   
   CREATE TABLE `Mitglieder` (
@@ -16,7 +16,7 @@
 	`Eintritt` DATE NOT NULL,
 	`Kuendigung` DATE,
 	`Austritt` DATE,
-	`Mitgliedsart` VARCHAR(11) NOT NULL,
+	`Mitgliedsart` VARCHAR(255) NOT NULL,
 	`Kontoverbindung` INT(255) NOT NULL,
 	`FamilienmitgliedID` INT(11),
 	PRIMARY KEY (`MitgliedID`)
@@ -31,23 +31,18 @@ CREATE TABLE `Postleitzahlen` (
 
 CREATE TABLE `Mitgliedsarten` (
 	`Bezeichnung` VARCHAR(255) NOT NULL,
-	`Beitrag` DECIMAL(19,4) unsigned NOT NULL,
+	`Beitrag` DECIMAL(19,4) NOT NULL,
 	PRIMARY KEY (`Bezeichnung`)
 );
 
 CREATE TABLE `Positionen` (
 	`Rechnungsnummer` INT(11) NOT NULL AUTO_INCREMENT,
-	`Zahlstatus` BOOLEAN NOT NULL DEFAULT 0,
+	`MitgliedID` INT(11) NOT NULL,
+	`Zahlstatus` BOOLEAN NOT NULL DEFAULT false,
 	`Betrag` DECIMAL(19,4) NOT NULL,
 	`Jahr` DATE NOT NULL,
 	PRIMARY KEY (`Rechnungsnummer`)
 );
-
-CREATE TABLE `MitgliederPositionen` (
-	`MitgliedID` INT(11) NOT NULL,
-	`Rechnungsnummer` INT(11) NOT NULL
-);
-
 
 ALTER TABLE Mitglieder
 ADD FOREIGN KEY (Postleitzahl) REFERENCES Postleitzahlen(Postleitzahl);
@@ -55,8 +50,5 @@ ADD FOREIGN KEY (Postleitzahl) REFERENCES Postleitzahlen(Postleitzahl);
 ALTER TABLE Mitglieder
 ADD FOREIGN KEY (Mitgliedsart) REFERENCES Mitgliedsarten(Bezeichnung);
 
-ALTER TABLE MitgliederPositionen
+ALTER TABLE Positionen
 ADD FOREIGN KEY (MitgliedID) REFERENCES Mitglieder(MitgliedID);
-
-ALTER TABLE MitgliederPositionen
-ADD FOREIGN KEY (Rechnungsnummer) REFERENCES Positionen(Rechnungsnummer);

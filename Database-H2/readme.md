@@ -5,7 +5,7 @@ Informationen zur Datenbank und die jeweils aktuelle Version gibt es auf der Hom
 http://www.h2database.com <br>
 
 ## Installation
-Auf der Homepage des Anbieters kann eine Installationsdatei für eine H2-Datenbank heruntergeladen werden. Nach der Instalaltion befindet sich im Startmenü eine Möglichkeit die Webbasierte Konsole zu öffnen. Dieser Zugang ist limitiert auf einen Prozess!
+Auf der Homepage des Anbieters kann eine Installationsdatei für eine H2-Datenbank heruntergeladen werden. Nach der Instalaltion befindet sich im Startmenü eine Möglichkeit die Webbasierte Konsole zu öffnen. Dieser Zugang ist limitiert auf einen Prozess! Alternativ kann IntelliJ die nötigen Treiber direkt herunterladen.
 
 
 ## Zugang
@@ -22,7 +22,3 @@ Der Kennungsdaten des Nutzers lauten:
 Benutzername: admin
 Passwort: admin
 ```
-
-
-## Zurücksetzen der Datenbank
-Um die Datenbank auf ihren Ursprung zurück zu setzen, müssen die Tabellen gelöscht werden und mithilfe der `database.sql` Datei neu Initialisiert werden.
