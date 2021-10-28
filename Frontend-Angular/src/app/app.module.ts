@@ -13,6 +13,7 @@ import { MatTableModule } from "@angular/material/table";
 import { MatButtonModule } from "@angular/material/button";
 import { UsersComponent } from './components/users.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import {MatToolbarModule} from "@angular/material/toolbar";
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatListModule,
     MatIconModule,
     MatTableModule,
