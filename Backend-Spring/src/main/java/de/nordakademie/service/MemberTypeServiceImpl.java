@@ -1,19 +1,25 @@
 package de.nordakademie.service;
 
 import de.nordakademie.model.MemberType;
+import de.nordakademie.repository.MemberTypeRepository;
+import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MemberTypeServiceImpl implements MemberTypeService{
+    private MemberTypeRepository repository;
+
     @Override
-    public MemberType createPostcode(MemberType memberType) {
-        return null;
+    public MemberType createMemberType(MemberType memberType) {
+        return repository.save(memberType);
     }
 
     @Override
     public void deleteMemberTypeById(String memberTypeId) {
-
+repository.deleteById(memberTypeId);
     }
 
     @Override
@@ -23,11 +29,16 @@ public class MemberTypeServiceImpl implements MemberTypeService{
 
     @Override
     public List<MemberType> findAllMemberTypes() {
-        return null;
+        return (List<MemberType>) repository.findAll();
     }
 
     @Override
     public Optional<MemberType> findMemberTypeById(String memberTypeId) {
-        return Optional.empty();
+        return repository.findById(memberTypeId);
+    }
+
+    @Inject
+    public void setRepository(MemberTypeRepository repository) {
+        this.repository = repository;
     }
 }

@@ -6,13 +6,19 @@ import de.nordakademie.service.PostcodeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import javax.inject.Inject;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/postcode")
+@RequestMapping(path = "/rest/postcode")
 public class PostcodeController {
     private PostcodeService service;
+
+    @Inject
+    public void setService(PostcodeService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public List<Postcode> findAllPostcodes(){

@@ -12,7 +12,7 @@ public interface AccountService {
 
     Account createAccount(Account account);
 
-    void deleteMAccountById(Long acoountId);
+    void deleteAccountById(Long accountId);
 
     void updateAccount(Account account);
 

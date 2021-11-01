@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface MemberTypeService {
 
-    MemberType createPostcode(MemberType memberType);
+    MemberType createMemberType(MemberType memberType);
 
     void deleteMemberTypeById(String memberTypeId);
 

@@ -1,15 +1,24 @@
 package de.nordakademie.service;
 
 import de.nordakademie.model.User;
+import de.nordakademie.repository.UserRepository;
+import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UserServiceImpl implements UserService{
+    private UserRepository repository;
+
+
+
 
     @Override
     public User createUser(User user) {
-        return null;
+
+        return repository.save(user);
     }
 
     @Override
@@ -19,16 +28,22 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void deleteUserById(long userId) {
-
+repository.deleteById(userId);
     }
 
     @Override
     public List<User> findAllUser() {
-        return null;
+
+        return (List<User>) repository.findAll();
     }
 
     @Override
     public Optional<User> findeUserById(Long userId) {
-        return Optional.empty();
+        return repository.findById(userId);
+    }
+
+    @Inject
+    public void setRepository(UserRepository repository) {
+        this.repository = repository;
     }
 }
