@@ -32,6 +32,14 @@ export class UsersComponent implements OnInit {
     });
   }
 
+  editUser(user: User): void {
+    this.userService.editUser(user).subscribe(() => {
+      this.reloadList();
+    });
+  }
+
+
+  //@TODO: Needs to be refactored
   /**
    * Function that gets called by Child-Modal.
    * It initializes the Form and sets up the child-Modal. Also awaits the closing Dialog to do something with
@@ -49,13 +57,39 @@ export class UsersComponent implements OnInit {
 
     const dialogRef = this.dialog.open(UserFormComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
-      this.saveUser(result);
+      if( result.event === 'submit') {
+        // Only saves Userdata if result.event is submit
+        this.saveUser(result.data);
+      }
     })
+  }
 
+  //@TODO: Needs to be refactored
+  /**
+   * Function to edit a User
+   *
+   * @Author: Luca Ulrich
+   * @param user
+   * @returns: void
+   */
+  onEditUser(user: User): void {
+    this.userService.populateForm(user);
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "60%";
+
+    const dialogRef = this.dialog.open(UserFormComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      if( result.event === 'submit') {
+        this.editUser(result.data);
+      }
+    })
   }
 
   /**
-   * Function to reload UserData
+   * Helper-Function to reload UserData
    *
    * @Author: Luca Ulrich
    * @private
@@ -66,6 +100,7 @@ export class UsersComponent implements OnInit {
       this.users = users;
     });
   }
+
 
 
 }

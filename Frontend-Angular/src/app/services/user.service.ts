@@ -74,7 +74,7 @@ export class UserService {
     familyId: new FormControl('')
   });
 
-  initializeFormGroup() {
+  initializeFormGroup(user?: User) {
     this.form.setValue({
       firstName: '',
       lastName: '',
@@ -89,6 +89,24 @@ export class UserService {
       leavingDate: '',
       memberType: '',
       familyId: ''
+    });
+  }
+
+  populateForm(user: User) {
+    this.form.setValue({
+      firstName: user.name.firstName,
+      lastName: user.name.lastName,
+      accountDetails: user.accountDetails,
+      houseNumber: user.address.houseNumber,
+      postalCode: user.address.postalCode,
+      street: user.address.street,
+      city: user.address.city,
+      birthday: user.birthday,
+      entryDate: user.entryDate,
+      cancellationDate: user.cancellationDate?user.cancellationDate:'',
+      leavingDate: user.leavingDate? user.leavingDate:'',
+      memberType: user.memberType,
+      familyId: user.familyId? user.familyId:''
     });
   }
 
@@ -107,12 +125,18 @@ export class UserService {
    * Function to send a saved User to API
    *
    * @Author: Luca Ulrich
-   * @param: savedUser - a User to be saved
+   * @param savedUser - a User to be saved
    * @returns: Observable with an Array of Users
    */
   saveUser(savedUser: User): Observable<User[]> {
     users.push(savedUser);
     return of(users);
-    // return this.http.put('/endpoint', savedUser);
+    // return this.http.post('/endpoint', savedUser);
+  }
+
+
+  editUser(editUser: User): Observable<User[]> {
+    return of(users)
+    //return this.http.put(`/update-user/${id}`, editUser);
   }
 }
