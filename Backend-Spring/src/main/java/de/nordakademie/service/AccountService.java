@@ -14,7 +14,7 @@ public interface AccountService {
 
     void deleteAccountById(Long accountId);
 
-    void updateAccount(Account account);
+    void updateAccount(Long id, Account account);
 
     List<Account> findAllAccounts();
 

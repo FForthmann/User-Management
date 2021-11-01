@@ -11,7 +11,7 @@ public interface MemberTypeService {
 
     void deleteMemberTypeById(String memberTypeId);
 
-    void updateMemberType(MemberType memberType);
+    void updateMemberType(String memberTypeId, MemberType memberType);
 
     List<MemberType> findAllMemberTypes();
 

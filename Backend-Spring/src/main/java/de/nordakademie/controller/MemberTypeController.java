@@ -43,9 +43,9 @@ public class MemberTypeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createMemberType(memberType));
     }
 
-    @PutMapping
-    public ResponseEntity<MemberType> updateMemberType(@RequestBody MemberType memberType){
-        service.updateMemberType(memberType);
+    @PutMapping("/{id}")
+    public ResponseEntity<MemberType> updateMemberType(@PathVariable("id") String id, @RequestBody MemberType memberType){
+        service.updateMemberType(id, memberType);
         return ResponseEntity.ok().build();
     }
 

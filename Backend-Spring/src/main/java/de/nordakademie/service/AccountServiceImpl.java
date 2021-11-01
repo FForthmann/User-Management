@@ -1,14 +1,17 @@
 package de.nordakademie.service;
 
 import de.nordakademie.model.Account;
+import de.nordakademie.model.MemberType;
 import de.nordakademie.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class AccountServiceImpl implements AccountService{
     private AccountRepository repository;
 
@@ -19,12 +22,16 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public void deleteAccountById(Long accountId) {
-repository.deleteById(accountId);
+        repository.deleteById(accountId);
     }
 
     @Override
-    public void updateAccount(Account account) {
-
+    public void updateAccount(Long id,Account account) {
+        Optional<Account> accountPersistent = repository.findById(id);
+        accountPersistent.get().setAmount(account.getAmount());
+        accountPersistent.get().setCountStatus(account.getCountStatus());
+        accountPersistent.get().setYear(account.getYear());
+        accountPersistent.get().setUserId(account.getUserId());
     }
 
     @Override
@@ -36,7 +43,8 @@ repository.deleteById(accountId);
     public Optional<Account> findAccountById(Long accountId) {
         return repository.findById(accountId);
     }
-@Inject
+
+    @Inject
     public void setRepository(AccountRepository repository) {
         this.repository = repository;
     }

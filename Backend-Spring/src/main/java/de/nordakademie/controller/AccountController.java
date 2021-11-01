@@ -44,9 +44,9 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createAccount(account));
     }
 
-    @PutMapping
-    public ResponseEntity<Account> updateAccount(@RequestBody Account account){
-        service.updateAccount(account);
+    @PutMapping("/{id}")
+    public ResponseEntity<Account> updateAccount(@PathVariable("id") Long id, @RequestBody Account account){
+        service.updateAccount(id, account);
         return ResponseEntity.ok().build();
     }
 

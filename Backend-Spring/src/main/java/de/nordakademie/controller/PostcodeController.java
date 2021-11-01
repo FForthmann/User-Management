@@ -43,9 +43,9 @@ public class PostcodeController {
         return service.findPostcodeById(id);
     }
 
-    @PutMapping
-    public ResponseEntity<Postcode> updatePostcode(@RequestBody Postcode postcode){
-        service.updatePostcode(postcode);
+    @PutMapping("/{id}")
+    public ResponseEntity<Postcode> updatePostcode(@PathVariable("id") Long id, @RequestBody Postcode postcode){
+        service.updatePostcode(id,postcode);
         return ResponseEntity.ok().build();
     }
 

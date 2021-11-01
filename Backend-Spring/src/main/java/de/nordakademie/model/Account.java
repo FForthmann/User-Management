@@ -33,10 +33,11 @@ public class Account {
     private Double amount;
 
     @Column(nullable = false)
-    private Date year;
+    private Integer year;
 
-    public Account(Long invoiceNumber, Integer countStatus, Double amount, Date year) {
+    public Account(Long userId, Long invoiceNumber, Integer countStatus, Double amount, Integer year) {
         this.invoiceNumber = invoiceNumber;
+        this.userId = userId;
         this.countStatus = countStatus;
         this.amount = amount;
         this.year = year;
@@ -78,11 +79,11 @@ public class Account {
         this.amount = amount;
     }
 
-    public Date getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(Date year) {
+    public void setYear(Integer year) {
         this.year = year;
     }
 

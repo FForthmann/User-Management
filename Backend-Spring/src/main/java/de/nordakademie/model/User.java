@@ -66,11 +66,6 @@ public class User {
     }
 
     public User(Long userId,
-                String firstName,
-                String secondName,
-                String street,
-                Integer houseNumber,
-                Integer postalCode,
                 Name name, Address address, LocalDate birthday,
                 LocalDate entryDate,
                 LocalDate cancellationDate,

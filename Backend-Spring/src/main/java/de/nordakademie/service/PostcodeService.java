@@ -11,7 +11,7 @@ public interface PostcodeService {
 
     void deletePostcodeById(Long postcodeId);
 
-    void updatePostcode(Postcode postcode);
+    void updatePostcode(Long id, Postcode postcode);
 
     List<Postcode> findAllPostcodes();
 

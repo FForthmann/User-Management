@@ -17,7 +17,6 @@ public class UserController {
 
     @Inject
     public void setService(UserService service) {
-
         this.service = service;
     }
 

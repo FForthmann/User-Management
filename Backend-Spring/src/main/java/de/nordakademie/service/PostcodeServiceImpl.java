@@ -5,9 +5,11 @@ import de.nordakademie.repository.PostcodeRepository;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
+@Transactional
 public class PostcodeServiceImpl implements PostcodeService{
 
     private PostcodeRepository repository;
@@ -28,9 +30,10 @@ public class PostcodeServiceImpl implements PostcodeService{
     }
 
     @Override
-    public void updatePostcode(Postcode postcodeUpdate) {
-      //  Optional<Postcode> postcodePersistent = repository.findById(postcodeUpdate.getPostcode());
-
+    public void updatePostcode(Long id, Postcode postcodeUpdate) {
+      Optional<Postcode> postcodePersistent = repository.findById(id);
+      postcodePersistent.get().setPostcode(postcodeUpdate.getPostcode());
+      postcodePersistent.get().setLocation(postcodeUpdate.getLocation());
     }
 
     @Override
