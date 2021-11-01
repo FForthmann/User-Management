@@ -3,21 +3,58 @@ package de.nordakademie.model;
 import java.util.Date;
 import javax.persistence.*;
 
+
 @Entity(name = "User")
+@Table(name = "user")
 public class User {
 
     @Id
+    @SequenceGenerator(
+            name = "user_sequence",
+            sequenceName = "user_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "user_sequence"
+    )
+
+    @Column(
+            updatable = false,
+            nullable = false)
     private Long userId;
+
+    @Column(nullable = false)
     private String firstName;
+
+    @Column(nullable = false)
     private String secondName;
+
+    @Column(nullable = false)
     private String street;
+
+    @Column(nullable = false)
     private Integer houseNumber;
+
+    @Column(nullable = false)
     private Integer postalCode;
+
+    @Column(nullable = false)
     private Date birthday;
+
+    @Column(nullable = false)
     private Date entryDate;
+
+    @Column(nullable = false)
     private Date cancellationDate;
+
+    @Column(nullable = false)
     private String memberType;
+
+    @Column(nullable = false)
     private Integer accountDetails;
+
+    @Column(nullable = false)
     private Long familyId;
 
     public User(Long userId,
@@ -44,6 +81,9 @@ public class User {
         this.memberType = memberType;
         this.accountDetails = accountDetails;
         this.familyId = familyId;
+    }
+
+    public User() {
     }
 
     public Long getUserId() {
