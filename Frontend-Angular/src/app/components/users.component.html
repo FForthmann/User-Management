@@ -4,6 +4,9 @@
     <span>Reitverein Elmshorn</span>
     <span class="fill-remaining-space"></span>
   </mat-toolbar>
-  <app-user-list [users]="users"></app-user-list>
-  <app-user-form (save)="saveUser($event)"></app-user-form>
+
+  <app-user-list [users]="users"
+                 (add)="onAddUser()"
+  ></app-user-list>
+ <!-- <app-user-form (save)="saveUser($event)"></app-user-form>-->
 </div>

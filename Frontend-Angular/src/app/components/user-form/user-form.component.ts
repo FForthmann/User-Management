@@ -1,34 +1,49 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Inject, Output} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {User} from "../../model/user";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss']
 })
-export class UserFormComponent implements OnInit {
+export class UserFormComponent {
 
-  @Output() save = new EventEmitter<User>();
+  //@Output() save = new EventEmitter<User>();
 
-  constructor(public userService: UserService) { }
+  constructor(public userService: UserService,
+              public dialogRef: MatDialogRef<UserFormComponent>,
+              @Inject(MAT_DIALOG_DATA) public data: User) { }
 
-  ngOnInit(): void {
+  /**
+   * Function to pass Event to Parent Function (via Emit EventHandler)
+   *
+   * @Author: Luca Ulrich
+   * @returns: void
+   *
+   */
+  onSubmit(): void {
+    //this.save.emit(this.buildUser(this.userService.form.value))
+    this.closeDialog();
   }
 
-  onSubmit(): void {
-    this.save.emit(this.buildUser(this.userService.form.value))
+  private closeDialog() {
+    console.log('Closing Dialog');
+    this.userService.form.reset();
+    this.userService.initializeFormGroup();
+    this.dialogRef.close(this.buildUser(this.userService.form.value));
   }
 
   /**
-   * Function to build a User Object to pass to other functions
+   * Helper-Function to build a User Object to pass to other functions
    *
    * @Author: Luca Ulrich
    * @param userData
    * @returns: User Object
    * @TODO: Build a formUser Model or refactor this
    */
-  buildUser(userData: any): User {
+  private buildUser(userData: any): User {
     return {
       userId: 0,
       name: {

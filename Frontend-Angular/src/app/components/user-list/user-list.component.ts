@@ -1,7 +1,7 @@
 import {
-  Component,
+  Component, EventEmitter,
   Input,
-  OnInit
+  Output
 } from '@angular/core';
 import { User } from '../../model/user';
 
@@ -10,9 +10,10 @@ import { User } from '../../model/user';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent {
 
   @Input() users: User[] = [];
+  @Output() add = new EventEmitter<void>();
 
   displayedColumns: string[] = [
     'Mitgliedsnummer',
@@ -23,8 +24,9 @@ export class UserListComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
-
   onEdit(row: unknown): void {}
 
+  onAdd(): void {
+    this.add.emit();
+  }
 }

@@ -74,6 +74,24 @@ export class UserService {
     familyId: new FormControl('')
   });
 
+  initializeFormGroup() {
+    this.form.setValue({
+      firstName: '',
+      lastName: '',
+      accountDetails: '',
+      houseNumber: '',
+      postalCode: '',
+      street:'',
+      city: '',
+      birthday: '',
+      entryDate: '',
+      cancellationDate: '',
+      leavingDate: '',
+      memberType: '',
+      familyId: ''
+    });
+  }
+
   /**
    * Function to receive all Users/Members from the API
    *
