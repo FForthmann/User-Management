@@ -1,4 +1,7 @@
-<form [formGroup]="userService.form" class="normal-form" (submit)="onSubmit()">
+<mat-toolbar>
+  <button class="btn-dialog-close" mat-stroked-button (click)="closeDialog('close')" tabIndex="-1"><mat-icon>clear</mat-icon></button>
+</mat-toolbar>
+<form [formGroup]="userService.form" class="normal-form" (submit)="closeDialog('submit')">
   <mat-grid-list cols="3" rowHeight="300px">
     <mat-grid-tile>
       <div class="controles-container">

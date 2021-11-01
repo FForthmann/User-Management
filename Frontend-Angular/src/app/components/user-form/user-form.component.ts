@@ -10,36 +10,22 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 })
 export class UserFormComponent {
 
-  //@Output() save = new EventEmitter<User>();
-
   //@TODO: Refactor userService - maybe needs a fromService
   constructor(public userService: UserService,
               public dialogRef: MatDialogRef<UserFormComponent>,
               @Inject(MAT_DIALOG_DATA) public data: User) { }
 
   /**
-   * Function to pass Event to Parent Function (via Emit EventHandler)
+   * Function to close the Modal and send Data to Parent-Class on Eventcall
    *
    * @Author: Luca Ulrich
-   * @returns: void
-   *
-   */
-  onSubmit(): void {
-    //this.save.emit(this.buildUser(this.userService.form.value))
-    this.closeDialog();
-  }
-
-  /**
-   * Helper-Function to close the Modal and send Data to Parent-Class on Submit
-   *
-   * @Author: Luca Ulrich
-   * @private
+   * @param event: string
    * @returns: void
    */
-  private closeDialog(): void {
+  closeDialog(event: string): void {
+    this.dialogRef.close({ event: event, data:this.buildUser(this.userService.form.value)});
     this.userService.form.reset();
     this.userService.initializeFormGroup();
-    this.dialogRef.close(this.buildUser(this.userService.form.value));
   }
 
   /**
