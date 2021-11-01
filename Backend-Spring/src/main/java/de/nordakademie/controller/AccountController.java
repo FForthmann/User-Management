@@ -2,6 +2,7 @@ package de.nordakademie.controller;
 
 import de.nordakademie.model.Account;
 import de.nordakademie.model.MemberType;
+import de.nordakademie.model.Postcode;
 import de.nordakademie.service.AccountService;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/rest/account")
@@ -30,6 +32,11 @@ public class AccountController {
     public ResponseEntity<Account> deleteAccount(@PathVariable("id") Long accountId ){
         service.deleteAccountById(accountId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Account> findAccountById(@PathVariable("id") Long id) {
+        return service.findAccountById(id);
     }
 
     @PostMapping

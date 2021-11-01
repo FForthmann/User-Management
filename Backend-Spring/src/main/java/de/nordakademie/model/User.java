@@ -1,5 +1,6 @@
 package de.nordakademie.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -24,29 +25,20 @@ public class User {
             nullable = false)
     private Long userId;
 
-    @Column(nullable = false)
-    private String firstName;
+    @Embedded
+    private Name name;
+
+    @Embedded
+    private Address address;
 
     @Column(nullable = false)
-    private String secondName;
+    private LocalDate birthday;
 
     @Column(nullable = false)
-    private String street;
+    private LocalDate entryDate;
 
     @Column(nullable = false)
-    private Integer houseNumber;
-
-    @Column(nullable = false)
-    private Integer postalCode;
-
-    @Column(nullable = false)
-    private Date birthday;
-
-    @Column(nullable = false)
-    private Date entryDate;
-
-    @Column(nullable = false)
-    private Date cancellationDate;
+    private LocalDate cancellationDate;
 
     @Column(nullable = false)
     private String memberType;
@@ -57,24 +49,37 @@ public class User {
     @Column(nullable = false)
     private Long familyId;
 
+    public Name getName() {
+        return name;
+    }
+
+    public void setName(Name name) {
+        this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public User(Long userId,
                 String firstName,
                 String secondName,
                 String street,
                 Integer houseNumber,
                 Integer postalCode,
-                Date birthday,
-                Date entryDate,
-                Date cancellationDate,
+                Name name, Address address, LocalDate birthday,
+                LocalDate entryDate,
+                LocalDate cancellationDate,
                 String memberType,
                 Integer accountDetails,
                 Long familyId) {
         this.userId = userId;
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.street = street;
-        this.houseNumber = houseNumber;
-        this.postalCode = postalCode;
+        this.name = name;
+        this.address = address;
         this.birthday = birthday;
         this.entryDate = entryDate;
         this.cancellationDate = cancellationDate;
@@ -94,67 +99,27 @@ public class User {
         this.userId = userId;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public Integer getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(Integer houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public Integer getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(Integer postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
-    public Date getEntryDate() {
+    public LocalDate getEntryDate() {
         return entryDate;
     }
 
-    public void setEntryDate(Date entryDate) {
+    public void setEntryDate(LocalDate entryDate) {
         this.entryDate = entryDate;
     }
 
-    public Date getCancellationDate() {
+    public LocalDate getCancellationDate() {
         return cancellationDate;
     }
 
-    public void setCancellationDate(Date cancellationDate) {
+    public void setCancellationDate(LocalDate cancellationDate) {
         this.cancellationDate = cancellationDate;
     }
 
@@ -186,11 +151,8 @@ public class User {
     public String toString() {
         return "User{" +
                 "userId=" + userId +
-                ", firstName='" + firstName + '\'' +
-                ", secondName='" + secondName + '\'' +
-                ", street='" + street + '\'' +
-                ", houseNumber=" + houseNumber +
-                ", postalCode=" + postalCode +
+                ", name=" + name +
+                ", address=" + address +
                 ", birthday=" + birthday +
                 ", entryDate=" + entryDate +
                 ", cancellationDate=" + cancellationDate +

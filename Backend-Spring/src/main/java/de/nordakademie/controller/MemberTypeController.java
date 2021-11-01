@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/rest/memberType")
@@ -30,6 +31,11 @@ public class MemberTypeController {
     public ResponseEntity<MemberType> deleteMemberType(@PathVariable("id") String memberTypeId){
         service.deleteMemberTypeById(memberTypeId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<MemberType> findMemberTypeById(@PathVariable("id") String id) {
+        return service.findMemberTypeById(id);
     }
 
     @PostMapping
