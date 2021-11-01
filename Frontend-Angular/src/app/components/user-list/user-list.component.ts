@@ -26,6 +26,12 @@ export class UserListComponent {
 
   onEdit(row: unknown): void {}
 
+  /**
+   * Function that gets triggered by the Create-Button. Event is emitted to Parent.
+   *
+   * @Author: Luca Ulrich
+   * @returns: void
+   */
   onAdd(): void {
     this.add.emit();
   }

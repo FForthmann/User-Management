@@ -19,13 +19,28 @@ export class UsersComponent implements OnInit {
     this.reloadList();
   }
 
-  saveUser(user: User) {
+  /**
+   * Function to communicate with the userService to save a User.
+   *
+   * @Author: Luca Ulrich
+   * @param user
+   * @returns: void
+   */
+  saveUser(user: User): void {
     this.userService.saveUser(user).subscribe(() => {
       this.reloadList();
     });
   }
 
-  onAddUser() {
+  /**
+   * Function that gets called by Child-Modal.
+   * It initializes the Form and sets up the child-Modal. Also awaits the closing Dialog to do something with
+   * the data.
+   *
+   * @Author: Luca Ulrich
+   * @returns: void
+   */
+  onAddUser(): void {
     this.userService.initializeFormGroup();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -35,11 +50,17 @@ export class UsersComponent implements OnInit {
     const dialogRef = this.dialog.open(UserFormComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
       this.saveUser(result);
-      console.log(result);
     })
 
   }
 
+  /**
+   * Function to reload UserData
+   *
+   * @Author: Luca Ulrich
+   * @private
+   * @returns: void
+   */
   private reloadList(): void {
     this.userService.getUsers().subscribe((users: User[]) => {
       this.users = users;

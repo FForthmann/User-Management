@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Inject, Output} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {User} from "../../model/user";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
@@ -12,6 +12,7 @@ export class UserFormComponent {
 
   //@Output() save = new EventEmitter<User>();
 
+  //@TODO: Refactor userService - maybe needs a fromService
   constructor(public userService: UserService,
               public dialogRef: MatDialogRef<UserFormComponent>,
               @Inject(MAT_DIALOG_DATA) public data: User) { }
@@ -28,8 +29,14 @@ export class UserFormComponent {
     this.closeDialog();
   }
 
-  private closeDialog() {
-    console.log('Closing Dialog');
+  /**
+   * Helper-Function to close the Modal and send Data to Parent-Class on Submit
+   *
+   * @Author: Luca Ulrich
+   * @private
+   * @returns: void
+   */
+  private closeDialog(): void {
     this.userService.form.reset();
     this.userService.initializeFormGroup();
     this.dialogRef.close(this.buildUser(this.userService.form.value));
