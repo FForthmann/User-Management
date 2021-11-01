@@ -1,4 +1,4 @@
-package de.nordakademie.entity;
+package de.nordakademie.model;
 
 
 import javax.persistence.*;
