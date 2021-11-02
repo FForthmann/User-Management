@@ -1,7 +1,11 @@
-package de.nordakademie.backend;
+package de.nordakademie;
 
+import de.nordakademie.model.User;
+import de.nordakademie.repository.UserRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class BackendApplication {
