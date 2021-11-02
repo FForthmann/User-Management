@@ -1,7 +1,8 @@
 import {Component, Inject} from '@angular/core';
 import {UserService} from "../../services/user.service";
-import {User} from "../../model/user";
+import {formUser, saveUser, User} from "../../model/user";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-user-form',
@@ -11,7 +12,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 export class UserFormComponent {
 
   //@TODO: Refactor userService - maybe needs a fromService
-  constructor(public userService: UserService,
+  constructor(private datePipe: DatePipe,
+              public userService: UserService,
               public dialogRef: MatDialogRef<UserFormComponent>,
               @Inject(MAT_DIALOG_DATA) public data: User) { }
 
@@ -36,23 +38,25 @@ export class UserFormComponent {
    * @returns: User Object
    * @TODO: Build a formUser Model or refactor this
    */
-  private buildUser(userData: any): User {
+  private buildUser(userData: formUser): saveUser {
     return {
-      userId: 0,
       name: {
         firstName: userData.firstName,
         lastName: userData.lastName
       },
       address: {
         street: userData.street,
-        houseNumber: userData.houseNumber,
-        postalCode: userData.postalCode,
+        houseNumber: parseInt(userData.houseNumber),
+        postalCode: parseInt(userData.postalCode),
         city: userData.city
       },
-      birthday : new Date(userData.birthday),
-      entryDate : new Date(userData.entryDate),
-      memberType : userData.memberType,
-      accountDetails : userData.accountDetails
+      birthday: (this.datePipe.transform(userData.birthday, 'yyyy-MM-dd') as string),
+      entryDate: (this.datePipe.transform(userData.entryDate, 'yyyy-MM-dd') as string),
+      cancellationDate: "" ? "": (this.datePipe.transform(userData.cancellationDate, 'yyyy-MM-dd') as string),
+      leavingDate: "" ? "": (this.datePipe.transform(userData.leavingDate, 'yyyy-MM-dd') as string),
+      memberType: userData.memberType,
+      accountDetails: userData.accountDetails,
+      familyId: userData.familyId? parseInt(userData.familyId): undefined
     }
   }
 }

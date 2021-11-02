@@ -20,8 +20,8 @@ export class UserComponent implements OnInit {
       postalCode: 25524,
       city: "Itzehoe"
     },
-    birthday : new Date("2021-10-20"),
-    entryDate : new Date("2021-10-28"),
+    birthday : "2021-10-20",
+    entryDate : "2021-10-28",
     memberType : "Vollmember",
     accountDetails : 255255255255
   };
