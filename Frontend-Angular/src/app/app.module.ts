@@ -26,6 +26,7 @@ import { MatNativeDateModule } from "@angular/material/core";
 import { MatInputModule } from "@angular/material/input";
 import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {DatePipe} from "@angular/common";
+import { ModalViewComponent } from './components/modal-view/modal-view.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {DatePipe} from "@angular/common";
     UserComponent,
     UserListComponent,
     UsersComponent,
-    UserFormComponent
+    UserFormComponent,
+    ModalViewComponent
   ],
   imports: [
     BrowserModule,

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User } from '../model/user';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import {Observable, of, Subject} from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
@@ -15,6 +15,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
  * @Version: 1.0
  */
 export class UserService {
+  private openModalSubject: Subject<number | undefined> = new Subject<number | undefined>();
+  public modal = this.openModalSubject.asObservable();
+
   constructor(private http: HttpClient) {}
 
   form: FormGroup = new FormGroup({
@@ -67,6 +70,10 @@ export class UserService {
       memberType: user.memberType,
       familyId: user.familyId? user.familyId:''
     });
+  }
+
+  openModal(id?: number): void {
+    this.openModalSubject.next(id);
   }
 
   /**

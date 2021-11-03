@@ -1,22 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { User } from '../model/user';
 import { UserService } from '../services/user.service';
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {UserFormComponent} from "./user-form/user-form.component";
+import {ActivatedRoute, Router} from "@angular/router";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent implements OnInit, OnDestroy {
   users: User[] = [];
+  ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private userService: UserService,
-              private dialog: MatDialog) {}
+              private dialog: MatDialog,
+              private router: Router,
+              private route: ActivatedRoute) {
+    this.userService.modal.pipe(takeUntil(this.ngUnsubscribe)).subscribe( id => {
+      if (id) {
+        console.log('edit user with id ' + id);
+        // make edit stuff with user id
+        // check if really a number!!!
+      } else {
+        this.onAddUser();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.reloadList();
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   /**
@@ -57,6 +78,7 @@ export class UsersComponent implements OnInit {
 
     const dialogRef = this.dialog.open(UserFormComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((result) => {
+      this.router.navigate(['../'], { relativeTo: this.route });
       if( result.event === 'submit') {
         // Only saves Userdata if result.event is submit
         this.saveUser(result.data);
