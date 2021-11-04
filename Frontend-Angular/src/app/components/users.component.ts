@@ -6,6 +6,7 @@ import {UserFormComponent} from "./user-form/user-form.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
+import {FormService} from "../services/form.service";
 
 @Component({
   selector: 'app-users',
@@ -17,17 +18,15 @@ export class UsersComponent implements OnInit, OnDestroy {
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private userService: UserService,
+              private formService: FormService,
               private dialog: MatDialog,
               private router: Router,
               private route: ActivatedRoute) {
-    this.userService.modal.pipe(takeUntil(this.ngUnsubscribe)).subscribe( id => {
+    this.formService.modal.pipe(takeUntil(this.ngUnsubscribe)).subscribe( (id) => {
       if (id) {
         if(!isNaN(id)) {
-          console.log('Editing User:' + id);
           this.onEditUser(id);
         }
-        // make edit stuff with user id
-        // check if really a number!!!
       } else {
         this.onAddUser();
       }
@@ -73,7 +72,7 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @returns: void
    */
   onAddUser(): void {
-    this.userService.initializeFormGroup();
+    this.formService.initializeFormGroup();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -99,7 +98,7 @@ export class UsersComponent implements OnInit, OnDestroy {
    */
   onEditUser(id: number): void {
     this.userService.getUser(id).subscribe((user: User) => {
-      this.userService.populateForm(user);
+      this.formService.initializeFormGroup(user);
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;

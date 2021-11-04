@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {UserService} from "../../services/user.service";
 import {ActivatedRoute} from "@angular/router";
+import {FormService} from "../../services/form.service";
 
 @Component({
   selector: 'app-modal-view',
@@ -8,12 +8,12 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./modal-view.component.scss']
 })
 export class ModalViewComponent {
-  constructor(private userService: UserService,
+  constructor(private formService: FormService,
               private route: ActivatedRoute) {
     if('id' in route.snapshot.params) {
-      userService.openModal(route.snapshot.params.id);
+      formService.openModal(route.snapshot.params.id);
     } else {
-      userService.openModal();
+      formService.openModal();
     }
   }
 }

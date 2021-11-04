@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import {User} from '../model/user';
 import { HttpClient } from '@angular/common/http';
-import {Observable, Subject} from 'rxjs';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,66 +14,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
  * @Version: 1.0
  */
 export class UserService {
-  private openModalSubject: Subject<number | undefined> = new Subject<number | undefined>();
-  public modal = this.openModalSubject.asObservable();
 
   constructor(private http: HttpClient) {}
-
-  form: FormGroup = new FormGroup({
-    firstName: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
-    accountDetails: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$"), Validators.minLength(8)]),
-    street: new FormControl('', Validators.required),
-    houseNumber: new FormControl('', [Validators.pattern("^[0-9]*$"), Validators.required]),
-    postalCode: new FormControl('', [Validators.pattern("^[0-9]*$"), Validators.required]),
-    city: new FormControl('', Validators.required),
-    birthday: new FormControl('', Validators.required),
-    entryDate: new FormControl('', Validators.required),
-    cancellationDate: new FormControl(''),
-    leavingDate: new FormControl(''),
-    memberType: new FormControl('', Validators.required),
-    familyId: new FormControl('',[Validators.pattern("^[0-9]*$")])
-  });
-
-  initializeFormGroup(user?: User) {
-    this.form.setValue({
-      firstName: '',
-      lastName: '',
-      accountDetails: '',
-      houseNumber: '',
-      postalCode: '',
-      street:'',
-      city: '',
-      birthday: '',
-      entryDate: '',
-      cancellationDate: '',
-      leavingDate: '',
-      memberType: '',
-      familyId: ''
-    });
-  }
-
-  populateForm(user: User) {
-    this.form.setValue({
-      firstName: user.name.firstName,
-      lastName: user.name.lastName,
-      accountDetails: user.accountDetails,
-      houseNumber: user.address.houseNumber,
-      postalCode: user.address.postalCode,
-      street: user.address.street,
-      city: user.address.city,
-      birthday: user.birthday,
-      entryDate: user.entryDate,
-      cancellationDate: user.cancellationDate?user.cancellationDate:'',
-      leavingDate: user.leavingDate? user.leavingDate:'',
-      memberType: user.memberType,
-      familyId: user.familyId? user.familyId:''
-    });
-  }
-
-  openModal(id?: number): void {
-    this.openModalSubject.next(id);
-  }
 
   /**
    * Function to receive all Users/Members from the API
