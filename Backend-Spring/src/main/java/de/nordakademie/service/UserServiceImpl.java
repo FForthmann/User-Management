@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService{
         persistentUser.get().setBirthday(updateUser.getBirthday());
         persistentUser.get().setCancellationDate(updateUser.getCancellationDate());
         persistentUser.get().setEntryDate(updateUser.getEntryDate());
-        persistentUser.get().setAccountDetails(updateUser.getAccountDetails());
+        persistentUser.get().setBankAccountDetails(updateUser.getBankAccountDetails());
         persistentUser.get().setFamilyId(updateUser.getFamilyId());
         persistentUser.get().getName().setFirstName(updateUser.getName().getFirstName());
         persistentUser.get().getAddress().setHouseNumber(updateUser.getAddress().getHouseNumber());

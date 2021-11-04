@@ -4,9 +4,9 @@ package de.nordakademie.model;
 import javax.persistence.*;
 import java.util.Date;
 
-@Table(name = "account")
-@Entity(name = "Account")
-public class Account {
+@Table(name = "payments")
+@Entity(name = "Payments")
+public class Payments {
 
     @Id
     @SequenceGenerator(
@@ -23,7 +23,6 @@ public class Account {
             nullable = false)
     private Long invoiceNumber;
 
-
     @ManyToOne(optional = false)
     private User userId;
 
@@ -36,7 +35,7 @@ public class Account {
     @Column(nullable = false)
     private Integer year;
 
-    public Account(User userId, Long invoiceNumber, Integer countStatus, Double amount, Integer year) {
+    public Payments(User userId, Long invoiceNumber, Integer countStatus, Double amount, Integer year) {
         this.invoiceNumber = invoiceNumber;
         this.userId = userId;
         this.countStatus = countStatus;
@@ -44,7 +43,7 @@ public class Account {
         this.year = year;
     }
 
-    public Account() {
+    public Payments() {
 
     }
 

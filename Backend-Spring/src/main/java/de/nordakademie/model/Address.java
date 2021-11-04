@@ -2,6 +2,8 @@ package de.nordakademie.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Embeddable
 public class Address {
@@ -10,12 +12,12 @@ public class Address {
     private String street;
     @Column(nullable = false)
     private Integer houseNumber;
-    @Column(nullable = false)
-    private Integer postalCode;
+    @ManyToOne
+    private Postcode postalCode;
     @Column(nullable = false)
     private String city;
 
-    public Address(String street, Integer houseNumber, Integer postalCode, String city) {
+    public Address(String street, Integer houseNumber, Postcode postalCode, String city) {
         this.street = street;
         this.houseNumber = houseNumber;
         this.postalCode = postalCode;
@@ -42,11 +44,11 @@ public class Address {
         this.houseNumber = houseNumber;
     }
 
-    public Integer getPostalCode() {
+    public Postcode getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(Integer postalCode) {
+    public void setPostalCode(Postcode postalCode) {
         this.postalCode = postalCode;
     }
 

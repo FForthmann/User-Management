@@ -1,14 +1,8 @@
 package de.nordakademie.model;
 
 import java.time.LocalDate;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 @Entity(name = "User")
 @Table(name = "user")
 public class User {
@@ -46,23 +40,23 @@ public class User {
     @Column()
     private LocalDate leavingDate;
 
-    @Column(nullable = false)
-    private String memberType;
+    @ManyToOne(optional = false)
+    private MemberType memberType;
 
     @Column(nullable = false)
-    private Integer accountDetails;
+    private Integer bankAccountDetails;
 
-    @Column()
-    private Long familyId;
+    @ManyToOne
+    private User familyId;
 
     public User(Long userId,
                 Name name, Address address, LocalDate birthday,
                 LocalDate entryDate,
                 LocalDate cancellationDate,
                 LocalDate leavingDate,
-                String memberType,
-                Integer accountDetails,
-                Long familyId) {
+                MemberType memberType,
+                Integer bankAccountDetails,
+                User familyId) {
         this.userId = userId;
         this.name = name;
         this.address = address;
@@ -71,7 +65,7 @@ public class User {
         this.cancellationDate = cancellationDate;
         this.leavingDate = leavingDate;
         this.memberType = memberType;
-        this.accountDetails = accountDetails;
+        this.bankAccountDetails = bankAccountDetails;
         this.familyId = familyId;
     }
 
@@ -134,27 +128,27 @@ public class User {
         this.cancellationDate = cancellationDate;
     }
 
-    public String getMemberType() {
+    public MemberType getMemberType() {
         return memberType;
     }
 
-    public void setMemberType(String memberType) {
+    public void setMemberType(MemberType memberType) {
         this.memberType = memberType;
     }
 
-    public Integer getAccountDetails() {
-        return accountDetails;
+    public Integer getBankAccountDetails() {
+        return bankAccountDetails;
     }
 
-    public void setAccountDetails(Integer accountDetails) {
-        this.accountDetails = accountDetails;
+    public void setBankAccountDetails(Integer accountDetails) {
+        this.bankAccountDetails = accountDetails;
     }
 
-    public Long getFamilyId() {
+    public User getFamilyId() {
         return familyId;
     }
 
-    public void setFamilyId(Long familyId) {
+    public void setFamilyId(User familyId) {
         this.familyId = familyId;
     }
 
@@ -169,7 +163,7 @@ public class User {
                 ", cancellationDate=" + cancellationDate +
                 ", leavingDate=" + leavingDate +
                 ", memberType='" + memberType + '\'' +
-                ", accountDetails=" + accountDetails +
+                ", accountDetails=" + bankAccountDetails +
                 ", familyId=" + familyId +
                 '}';
     }
