@@ -6,8 +6,9 @@
     <mat-grid-tile>
       <div class="controles-container">
         <!--<input type="hidden" formControlName="$key">-->
-        <mat-form-field>
-          <input formControlName="firstName" matInput placeholder="Vorname*">
+        <mat-form-field appearance="outline">
+          <mat-label>Vorname</mat-label>
+          <input formControlName="firstName" matInput>
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
