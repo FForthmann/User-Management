@@ -1,14 +1,17 @@
 package de.nordakademie.model;
 
 import java.time.LocalDate;
-import java.util.Date;
-import javax.persistence.*;
-
-
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 @Entity(name = "User")
 @Table(name = "user")
 public class User {
-
     @Id
     @SequenceGenerator(
             name = "user_sequence",
@@ -34,11 +37,14 @@ public class User {
     @Column(nullable = false)
     private LocalDate birthday;
 
-    @Column(nullable = false)
+    @Column()
     private LocalDate entryDate;
 
-    @Column(nullable = false)
+    @Column()
     private LocalDate cancellationDate;
+
+    @Column()
+    private LocalDate leavingDate;
 
     @Column(nullable = false)
     private String memberType;
@@ -46,8 +52,39 @@ public class User {
     @Column(nullable = false)
     private Integer accountDetails;
 
-    @Column(nullable = false)
+    @Column()
     private Long familyId;
+
+    public User(Long userId,
+                Name name, Address address, LocalDate birthday,
+                LocalDate entryDate,
+                LocalDate cancellationDate,
+                LocalDate leavingDate,
+                String memberType,
+                Integer accountDetails,
+                Long familyId) {
+        this.userId = userId;
+        this.name = name;
+        this.address = address;
+        this.birthday = birthday;
+        this.entryDate = entryDate;
+        this.cancellationDate = cancellationDate;
+        this.leavingDate = leavingDate;
+        this.memberType = memberType;
+        this.accountDetails = accountDetails;
+        this.familyId = familyId;
+    }
+
+    public User() {
+    }
+
+    public LocalDate getLeavingDate() {
+        return leavingDate;
+    }
+
+    public void setLeavingDate(final LocalDate leavingDate) {
+        this.leavingDate = leavingDate;
+    }
 
     public Name getName() {
         return name;
@@ -63,27 +100,6 @@ public class User {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public User(Long userId,
-                Name name, Address address, LocalDate birthday,
-                LocalDate entryDate,
-                LocalDate cancellationDate,
-                String memberType,
-                Integer accountDetails,
-                Long familyId) {
-        this.userId = userId;
-        this.name = name;
-        this.address = address;
-        this.birthday = birthday;
-        this.entryDate = entryDate;
-        this.cancellationDate = cancellationDate;
-        this.memberType = memberType;
-        this.accountDetails = accountDetails;
-        this.familyId = familyId;
-    }
-
-    public User() {
     }
 
     public Long getUserId() {
@@ -151,6 +167,7 @@ public class User {
                 ", birthday=" + birthday +
                 ", entryDate=" + entryDate +
                 ", cancellationDate=" + cancellationDate +
+                ", leavingDate=" + leavingDate +
                 ", memberType='" + memberType + '\'' +
                 ", accountDetails=" + accountDetails +
                 ", familyId=" + familyId +

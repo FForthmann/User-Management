@@ -1,15 +1,9 @@
 package de.nordakademie.service;
 
-
-
-import de.nordakademie.model.Account;
-
 import java.util.List;
 import java.util.Optional;
-
+import de.nordakademie.model.Account;
 public interface AccountService {
-
-
     Account createAccount(Account account);
 
     void deleteAccountById(Long accountId);

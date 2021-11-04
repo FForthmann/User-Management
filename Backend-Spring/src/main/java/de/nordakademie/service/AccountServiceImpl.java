@@ -1,18 +1,15 @@
 package de.nordakademie.service;
 
-import de.nordakademie.model.Account;
-import de.nordakademie.model.MemberType;
-import de.nordakademie.repository.AccountRepository;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
-
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+import org.springframework.stereotype.Service;
+import de.nordakademie.model.Account;
+import de.nordakademie.repository.AccountRepository;
 @Service
 @Transactional
-public class AccountServiceImpl implements AccountService{
+public class AccountServiceImpl implements AccountService {
     private AccountRepository repository;
 
     @Override
@@ -26,12 +23,20 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public void updateAccount(Long id,Account account) {
+    public void updateAccount(Long id, Account account) {
         Optional<Account> accountPersistent = repository.findById(id);
-        accountPersistent.get().setAmount(account.getAmount());
-        accountPersistent.get().setCountStatus(account.getCountStatus());
-        accountPersistent.get().setYear(account.getYear());
-        accountPersistent.get().setUserId(account.getUserId());
+        accountPersistent
+                .get()
+                .setAmount(account.getAmount());
+        accountPersistent
+                .get()
+                .setCountStatus(account.getCountStatus());
+        accountPersistent
+                .get()
+                .setYear(account.getYear());
+        accountPersistent
+                .get()
+                .setUserId(account.getUserId());
     }
 
     @Override
