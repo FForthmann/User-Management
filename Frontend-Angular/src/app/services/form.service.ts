@@ -22,7 +22,8 @@ export class FormService {
   form: FormGroup = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
-    accountDetails: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$"), Validators.minLength(8)]),
+    accountDetails: new FormControl('', [Validators.required,
+      Validators.pattern("^[0-9]*$"), Validators.minLength(8)]),
     street: new FormControl('', Validators.required),
     houseNumber: new FormControl('', [Validators.pattern("^[0-9]*$"), Validators.required]),
     postalCode: new FormControl('', [Validators.pattern("^[0-9]*$"), Validators.required]),
@@ -35,7 +36,14 @@ export class FormService {
     familyId: new FormControl('',[Validators.pattern("^[0-9]*$")])
   });
 
-  initializeFormGroup(user?: User) {
+  /**
+   * Function to initialize the Form
+   *
+   * @Author: Luca Ulrich
+   * @param user? - If user is given, Form will be filled with Userdata
+   * @returns: void
+   */
+  initializeFormGroup(user?: User): void {
     if (user) {
       this.form.setValue({
         firstName: user.name.firstName,
@@ -71,6 +79,13 @@ export class FormService {
     }
   }
 
+  /**
+   * Function to reference the opened Modal
+   *
+   * @Author: Luca Ulrich
+   * @param id?
+   * @returns: void
+   */
   openModal(id?: number): void {
     this.openModalSubject.next(id);
   }

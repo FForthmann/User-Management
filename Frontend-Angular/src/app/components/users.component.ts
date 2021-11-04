@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { User } from '../model/user';
 import { UserService } from '../services/user.service';
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {UserFormComponent} from "./user-form/user-form.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subject} from "rxjs";
@@ -22,13 +22,13 @@ export class UsersComponent implements OnInit, OnDestroy {
               private dialog: MatDialog,
               private router: Router,
               private route: ActivatedRoute) {
-    this.formService.modal.pipe(takeUntil(this.ngUnsubscribe)).subscribe( (id) => {
+    this.formService.modal.pipe(takeUntil(this.ngUnsubscribe)).subscribe( (id: number | undefined) => {
       if (id) {
         if(!isNaN(id)) {
           this.onEditUser(id);
         }
       } else {
-        this.onAddUser();
+         this.onAddUser()
       }
     });
   }
@@ -55,17 +55,22 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Function to communicate with the userService to edit a User.
+   *
+   * @Author: Luca Ulrich
+   * @param user - User Object to edit user
+   * @returns: void
+   */
   editUser(user: User): void {
     this.userService.editUser(user).subscribe(() => {
       this.reloadList();
     });
   }
 
-
-  //@TODO: Needs to be refactored
   /**
-   * Function that gets called by Child-Modal.
-   * It initializes the Form and sets up the child-Modal. Also awaits the closing Dialog to do something with
+   * Function to save a User
+   * It initializes the Form and sets up the child-Modal. Also subscribes to the closing Dialog to do something with
    * the data.
    *
    * @Author: Luca Ulrich
@@ -73,38 +78,28 @@ export class UsersComponent implements OnInit, OnDestroy {
    */
   onAddUser(): void {
     this.formService.initializeFormGroup();
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
-
-    const dialogRef = this.dialog.open(UserFormComponent, dialogConfig);
+    const dialogRef = this.openModal();
     dialogRef.afterClosed().subscribe((result) => {
       this.router.navigate(['../'], { relativeTo: this.route });
       if( result.event === 'submit') {
-        // Only saves Userdata if result.event is submit
         this.saveUser(result.data);
       }
     })
   }
 
-  //@TODO: Needs to be refactored
   /**
    * Function to edit a User
+   * It initializes the Form and sets up the child-Modal. Also subscribes to the closing Dialog to do something with
+   * the data.
    *
    * @Author: Luca Ulrich
-   * @param user
+   * @param id: number - ID to get the specific User
    * @returns: void
    */
   onEditUser(id: number): void {
     this.userService.getUser(id).subscribe((user: User) => {
       this.formService.initializeFormGroup(user);
-      const dialogConfig = new MatDialogConfig();
-      dialogConfig.disableClose = true;
-      dialogConfig.autoFocus = true;
-      dialogConfig.width = "60%";
-
-      const dialogRef = this.dialog.open(UserFormComponent, dialogConfig);
+      const dialogRef = this.openModal();
       dialogRef.afterClosed().subscribe((result) => {
         this.router.navigate(['../'], { relativeTo: this.route });
         if (result.event === 'submit') {
@@ -113,8 +108,22 @@ export class UsersComponent implements OnInit, OnDestroy {
         }
       })
     });
+  }
 
+  /**
+   * Helper-Function to open a Modal with defined Settings
+   *
+   * @Author: Luca
+   * @private
+   * @returns: MatDialogRef<UserFormComponent>
+   */
+  private openModal(): MatDialogRef<UserFormComponent> {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "60%";
 
+    return this.dialog.open(UserFormComponent, dialogConfig);
   }
 
   /**

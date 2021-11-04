@@ -17,7 +17,7 @@ export class UserFormComponent {
               @Inject(MAT_DIALOG_DATA) public data: User) { }
 
   /**
-   * Function to close the Modal and send Data to Parent-Class on Eventcall
+   * Function to close the Modal and send Data to Parent-Class
    *
    * @Author: Luca Ulrich
    * @param event: string
