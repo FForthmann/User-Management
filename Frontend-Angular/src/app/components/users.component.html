@@ -6,8 +6,6 @@
   </mat-toolbar>
 
   <app-user-list [users]="users"
-                 (add)="onAddUser()"
-                 (edit)="onEditUser($event)"
   ></app-user-list>
- <!-- <app-user-form (save)="saveUser($event)"></app-user-form>-->
 </div>
+<router-outlet></router-outlet>
