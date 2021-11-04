@@ -35,17 +35,35 @@ export class UserService {
    * Function to send a saved User to API
    *
    * @Author: Luca Ulrich
-   * @param saveUser - a User to be saved
-   * @returns: Observable with an Array of Users
+   * @param saveUser: User - a User to be saved
+   * @returns: Observable with an User
    *
-   * @TODO: Fix Any Variable
    */
-  saveUser(saveUser: User): Observable<any> {
-    return this.http.post('/rest/user', saveUser);
+  saveUser(saveUser: User): Observable<User> {
+    return this.http.post<User>('/rest/user', saveUser);
   }
 
-
-  editUser(editUser: User): Observable<any>{
-    return this.http.put(`/rest/user/${editUser.userId}`, editUser);
+  /**
+   * Function to send a edited User to API
+   *
+   * @Author: Luca Ulrich
+   * @param saveUser: User - a User to be edited
+   * @returns: Observable with an User
+   *
+   */
+  editUser(editUser: User): Observable<User>{
+    return this.http.put<User>(`/rest/user/${editUser.userId}`, editUser);
  }
+
+  /**
+   * Function to send a delete Request to API
+   *
+   * @Author: Luca Ulrich
+   * @param userId: number - a UserId to be deleted
+   * @returns: void
+   *
+   */
+  deleteUser(userId: number): Observable<void> {
+    return this.http.delete<void>(`/rest/user/${userId}`)
+  }
 }

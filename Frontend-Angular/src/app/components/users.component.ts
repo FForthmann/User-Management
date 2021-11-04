@@ -69,6 +69,19 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Function to communicate with the userService to delete a User.
+   *
+   * @Author: Luca Ulrich
+   * @param user - User Object to delete user
+   * @returns: void
+   */
+  deleteUser(user: User): void {
+    this.userService.deleteUser(user.userId!).subscribe(() => {
+      this.reloadList();
+    })
+  }
+
+  /**
    * Function to save a User
    * It initializes the Form and sets up the child-Modal. Also subscribes to the closing Dialog to do something with
    * the data.
@@ -111,6 +124,21 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Function to react to onDelete Event
+   *
+   * @Author: Luca Ulrich
+   * @param id: number - UserID to be deleted
+   * @returns: void
+   */
+  onDeleteUser(id: number): void {
+    this.userService.getUser(id).subscribe((user: User) => {
+      if(user) {
+        this.deleteUser(user);
+      }
+    });
+  }
+
+  /**
    * Helper-Function to open a Modal with defined Settings
    *
    * @Author: Luca
@@ -138,7 +166,4 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.users = users;
     });
   }
-
-
-
 }
