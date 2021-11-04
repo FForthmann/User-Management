@@ -22,7 +22,10 @@ export class UsersComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute) {
     this.userService.modal.pipe(takeUntil(this.ngUnsubscribe)).subscribe( id => {
       if (id) {
-        console.log('edit user with id ' + id);
+        if(!isNaN(id)) {
+          console.log('Editing User:' + id);
+          this.onEditUser(id);
+        }
         // make edit stuff with user id
         // check if really a number!!!
       } else {
@@ -94,20 +97,25 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @param user
    * @returns: void
    */
-  onEditUser(user: User): void {
-    this.userService.populateForm(user);
+  onEditUser(id: number): void {
+    this.userService.getUser(id).subscribe((user: User) => {
+      this.userService.populateForm(user);
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.disableClose = true;
+      dialogConfig.autoFocus = true;
+      dialogConfig.width = "60%";
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
+      const dialogRef = this.dialog.open(UserFormComponent, dialogConfig);
+      dialogRef.afterClosed().subscribe((result) => {
+        this.router.navigate(['../'], { relativeTo: this.route });
+        if (result.event === 'submit') {
+          result.data['userId'] = user.userId;
+          this.editUser(result.data);
+        }
+      })
+    });
 
-    const dialogRef = this.dialog.open(UserFormComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe((result) => {
-      if( result.event === 'submit') {
-        this.editUser(result.data);
-      }
-    })
+
   }
 
   /**

@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {MatDialogConfig} from "@angular/material/dialog";
-import {UserFormComponent} from "../user-form/user-form.component";
+import { Component } from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {ActivatedRoute} from "@angular/router";
 

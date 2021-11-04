@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { User } from '../model/user';
+import {User} from '../model/user';
 import { HttpClient } from '@angular/common/http';
-import {Observable, of, Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Injectable({
@@ -86,6 +86,10 @@ export class UserService {
     return this.http.get<User[]>('/rest/user');
   }
 
+  getUser(id: number): Observable<User> {
+    return this.http.get<User>(`rest/user/${id}`);
+  }
+
   /**
    * Function to send a saved User to API
    *
@@ -100,8 +104,7 @@ export class UserService {
   }
 
 
-  editUser(editUser: User): any{
-    return [];
-    //return this.http.put(`/update-user/${id}`, editUser);
+  editUser(editUser: User): Observable<any>{
+    return this.http.put(`/rest/user/${editUser.userId}`, editUser);
  }
 }

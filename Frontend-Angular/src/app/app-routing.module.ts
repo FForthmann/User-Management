@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {UsersComponent} from "./components/users.component";
-import {UserFormComponent} from "./components/user-form/user-form.component";
 import {ModalViewComponent} from "./components/modal-view/modal-view.component";
 
 const routes: Routes = [

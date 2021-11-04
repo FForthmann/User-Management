@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {UserService} from "../../services/user.service";
-import {formUser, saveUser, User} from "../../model/user";
+import {formUser, User} from "../../model/user";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DatePipe} from "@angular/common";
 
@@ -38,7 +38,7 @@ export class UserFormComponent {
    * @returns: User Object
    * @TODO: Build a formUser Model or refactor this
    */
-  private buildUser(userData: formUser): saveUser {
+  private buildUser(userData: formUser): User {
     return {
       name: {
         firstName: userData.firstName,
