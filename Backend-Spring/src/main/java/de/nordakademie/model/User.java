@@ -37,7 +37,7 @@ public class User {
     @Column(nullable = false)
     private LocalDate birthday;
 
-    @Column()
+    @Column(nullable = false)
     private LocalDate entryDate;
 
     @Column()

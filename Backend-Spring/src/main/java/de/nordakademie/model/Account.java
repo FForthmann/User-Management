@@ -23,8 +23,9 @@ public class Account {
             nullable = false)
     private Long invoiceNumber;
 
-    @Column(nullable = false)
-    private Long userId;
+
+    @ManyToOne(optional = false)
+    private User userId;
 
     @Column(nullable = false)
     private Integer countStatus;
@@ -35,7 +36,7 @@ public class Account {
     @Column(nullable = false)
     private Integer year;
 
-    public Account(Long userId, Long invoiceNumber, Integer countStatus, Double amount, Integer year) {
+    public Account(User userId, Long invoiceNumber, Integer countStatus, Double amount, Integer year) {
         this.invoiceNumber = invoiceNumber;
         this.userId = userId;
         this.countStatus = countStatus;
@@ -55,11 +56,11 @@ public class Account {
         this.invoiceNumber = invoiceNumber;
     }
 
-    public Long getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
