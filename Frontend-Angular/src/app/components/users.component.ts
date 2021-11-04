@@ -138,7 +138,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
         dialogRef.componentInstance.confirmMessage = `Sind Sie sich sicher, dass sie den Nutzer: ${user.name.firstName}
         ${user.name.lastName} mit der Mitgliedsnummer: ${user.userId} löschen wollen?`;
-        
+
         dialogRef.afterClosed().subscribe((result) => {
           if (result) {
             this.deleteUser(user);
