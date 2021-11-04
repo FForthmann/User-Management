@@ -1,8 +1,8 @@
 import {Component, Inject} from '@angular/core';
-import {UserService} from "../../services/user.service";
-import {formUser, saveUser, User} from "../../model/user";
+import {formUser, User} from "../../model/user";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DatePipe} from "@angular/common";
+import {FormService} from "../../services/form.service";
 
 @Component({
   selector: 'app-user-form',
@@ -12,23 +12,22 @@ import {DatePipe} from "@angular/common";
 
 export class UserFormComponent {
 
-  //@TODO: Refactor userService - maybe needs a fromService
   constructor(private datePipe: DatePipe,
-              public userService: UserService,
+              public formService: FormService,
               public dialogRef: MatDialogRef<UserFormComponent>,
               @Inject(MAT_DIALOG_DATA) public data: User) { }
 
   /**
-   * Function to close the Modal and send Data to Parent-Class on Eventcall
+   * Function to close the Modal and send Data to Parent-Class
    *
    * @Author: Luca Ulrich
    * @param event: string
    * @returns: void
    */
   closeDialog(event: string): void {
-    this.dialogRef.close({ event: event, data:this.buildUser(this.userService.form.value)});
-    this.userService.form.reset();
-    this.userService.initializeFormGroup();
+    this.dialogRef.close({ event: event, data:this.buildUser(this.formService.form.value)});
+    this.formService.form.reset();
+    this.formService.initializeFormGroup();
   }
 
   /**
@@ -37,9 +36,8 @@ export class UserFormComponent {
    * @Author: Luca Ulrich
    * @param userData
    * @returns: User Object
-   * @TODO: Build a formUser Model or refactor this
    */
-  private buildUser(userData: formUser): saveUser {
+  private buildUser(userData: formUser): User {
     return {
       name: {
         firstName: userData.firstName,

@@ -1,14 +1,12 @@
 <mat-toolbar>
   <button class="btn-dialog-close" mat-stroked-button (click)="closeDialog('close')" tabIndex="-1"><mat-icon>clear</mat-icon></button>
 </mat-toolbar>
-<form [formGroup]="userService.form" class="normal-form" (submit)="closeDialog('submit')">
+<form [formGroup]="formService.form" class="normal-form" (submit)="closeDialog('submit')">
   <mat-grid-list cols="3" rowHeight="300px">
     <mat-grid-tile>
       <div class="controles-container">
-        <!--<input type="hidden" formControlName="$key">-->
-        <mat-form-field appearance="outline">
-          <mat-label>Vorname</mat-label>
-          <input formControlName="firstName" matInput>
+        <mat-form-field>
+          <input formControlName="firstName" matInput placeholder="Vorname*">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
@@ -86,10 +84,9 @@
 
         <div class="button-row">
           <button mat-raised-button color="primary" type="submit"
-                  [disabled]="userService.form.invalid"
+                  [disabled]="formService.form.invalid"
                   [mat-dialog-close]="data"
           >Save</button>
-          <!--<button mat-raised-button color="warn" (click)="onClear()">Clear</button>-->
         </div>
       </div>
     </mat-grid-tile>

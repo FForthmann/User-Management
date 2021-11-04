@@ -1,6 +1,6 @@
 <!-- Search and Create -->
 <div class="search-div">
-  <button mat-raised-button (click)="onAdd()">
+  <button mat-raised-button routerLink="create">
     <mat-icon>add</mat-icon>Create
   </button>
   <mat-form-field class="search-form-field" floatLabel="never">
@@ -39,7 +39,7 @@
   <ng-container matColumnDef="Aktionen">
     <th mat-header-cell *matHeaderCellDef>Aktionen</th>
     <td mat-cell *matCellDef="let row">
-      <button mat-icon-button (click)="onEdit(row)"><mat-icon>launch</mat-icon></button>
+      <button mat-icon-button [routerLink]="'edit/'+ row.userId"><mat-icon>launch</mat-icon></button>
       <button mat-icon-button color="warn"><mat-icon>delete_outline</mat-icon></button>
     </td>
   </ng-container>

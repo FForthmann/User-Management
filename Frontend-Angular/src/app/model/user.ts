@@ -1,10 +1,11 @@
 /**
- * Interface for a saveUser-Model
+ * Interface for a User-Model
  *
  * @Author: Luca Ulrich
- * @Version: 1.0
+ * @Version: 1.1
  */
-export interface saveUser {
+export interface User {
+  userId?: number
   name: {
     firstName: string;
     lastName: string;
@@ -22,17 +23,6 @@ export interface saveUser {
   memberType: string;
   accountDetails: number;
   familyId?: number;
-}
-
-/**
- * Interface for a single User Model
- *
- * @Author: Jan Ramm & Luca Ulrich
- * @Version: 1.1
- */
-
-export interface User extends saveUser{
-  userId: number;
 }
 
 /**

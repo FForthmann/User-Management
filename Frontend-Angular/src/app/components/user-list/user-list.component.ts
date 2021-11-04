@@ -1,7 +1,6 @@
 import {
-  Component, EventEmitter,
+  Component,
   Input,
-  Output
 } from '@angular/core';
 import { User } from '../../model/user';
 
@@ -13,8 +12,6 @@ import { User } from '../../model/user';
 export class UserListComponent {
 
   @Input() users: User[] = [];
-  @Output() add = new EventEmitter<void>();
-  @Output() edit = new EventEmitter<User>();
 
   displayedColumns: string[] = [
     'Mitgliedsnummer',
@@ -24,24 +21,4 @@ export class UserListComponent {
   ];
 
   constructor() {}
-
-  /**
-   * Function that gets triggered by the Create-Button. Event is emitted to Parent.
-   *
-   * @Author: Luca Ulrich
-   * @returns: void
-   */
-  onAdd(): void {
-    this.add.emit();
-  }
-
-  /**
-   * Function that gets triggered by the Edit-Button. Event is emitted to Parent.
-   *
-   * @Author: Luca Ulrich
-   * @returns: void
-   */
-  onEdit(row: User): void {
-    this.edit.emit(row);
-  }
 }
