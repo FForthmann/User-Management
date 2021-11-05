@@ -37,7 +37,7 @@ export class PaymentService {
   }
 
   /**
-   * Function to send a edited User to API
+   * Function to send a edited Payment to API
    *
    * @Author: Luca Ulrich
    * @param payment: Payment - Payment to be updated
