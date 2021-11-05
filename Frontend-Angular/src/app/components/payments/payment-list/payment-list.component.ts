@@ -16,8 +16,7 @@ export class PaymentListComponent {
     'Jahr',
     'Bankverbindung',
     'Beitrag',
-    'Status',
-    'Aktion'
+    'Status'
   ];
 
   constructor() { }

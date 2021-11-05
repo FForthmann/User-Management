@@ -29,6 +29,7 @@ import { ModalViewComponent } from './components/modal-view/modal-view.component
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { PaymentListComponent } from './components/payments/payment-list/payment-list.component';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import { PaymentListComponent } from './components/payments/payment-list/payment
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule
   ],
   providers: [
     DatePipe,
