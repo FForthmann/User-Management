@@ -33,15 +33,15 @@ export interface User {
  */
 export interface formUser {
   accountDetails: number;
-  birthday: Date;
-  cancellationDate?: Date;
+  birthday: string;
+  cancellationDate?: string;
   city: string,
-  entryDate: Date;
+  entryDate: string;
   familyId?: string;
   firstName: string;
   houseNumber: string;
   lastName: string;
-  leavingDate: Date;
+  leavingDate: string;
   memberType: string;
   postalCode: string;
   street: string;
