@@ -113,6 +113,7 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @returns: void
    */
   onEditUser(id: number): void {
+    this.formService.editable = true;
     this.userService.getUser(id).subscribe((user: User) => {
       this.formService.initializeFormGroup(user);
       const dialogRef = this.openFormModal();

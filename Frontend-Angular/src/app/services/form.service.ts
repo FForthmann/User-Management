@@ -14,6 +14,7 @@ import {User} from "../model/user";
  * @Version: 1.0
  */
 export class FormService {
+  editable!: boolean;
   private openModalSubject: Subject<{ id: number | undefined; action: string; }> = new Subject<{ id: number | undefined; action: string; }>();
   public modal: Observable<{ id: number | undefined; action: string; }> = this.openModalSubject.asObservable()
 
