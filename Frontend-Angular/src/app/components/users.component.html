@@ -6,6 +6,7 @@
   </mat-toolbar>
 
   <app-user-list [users]="users"
+                 (delete)="onDeleteUser($event)"
   ></app-user-list>
 </div>
 <router-outlet></router-outlet>

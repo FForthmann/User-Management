@@ -7,6 +7,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {FormService} from "../services/form.service";
+import {ConfirmationDialogComponent} from "./confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-users',
@@ -69,6 +70,19 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Function to communicate with the userService to delete a User.
+   *
+   * @Author: Luca Ulrich
+   * @param user - User Object to delete user
+   * @returns: void
+   */
+  deleteUser(user: User): void {
+    this.userService.deleteUser(user.userId!).subscribe(() => {
+      this.reloadList();
+    })
+  }
+
+  /**
    * Function to save a User
    * It initializes the Form and sets up the child-Modal. Also subscribes to the closing Dialog to do something with
    * the data.
@@ -78,7 +92,7 @@ export class UsersComponent implements OnInit, OnDestroy {
    */
   onAddUser(): void {
     this.formService.initializeFormGroup();
-    const dialogRef = this.openModal();
+    const dialogRef = this.openFormModal();
     dialogRef.afterClosed().subscribe((result) => {
       this.router.navigate(['../'], { relativeTo: this.route });
       if( result.event === 'submit') {
@@ -99,7 +113,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   onEditUser(id: number): void {
     this.userService.getUser(id).subscribe((user: User) => {
       this.formService.initializeFormGroup(user);
-      const dialogRef = this.openModal();
+      const dialogRef = this.openFormModal();
       dialogRef.afterClosed().subscribe((result) => {
         this.router.navigate(['../'], { relativeTo: this.route });
         if (result.event === 'submit') {
@@ -111,13 +125,37 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Helper-Function to open a Modal with defined Settings
+   * Function to react to onDelete Event
+   *
+   * @Author: Luca Ulrich
+   * @param id: number - UserID to be deleted
+   * @returns: void
+   */
+  onDeleteUser(id: number): void {
+    this.userService.getUser(id).subscribe((user: User) => {
+      if(user) {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {disableClose: false});
+
+        dialogRef.componentInstance.confirmMessage = `Sind Sie sich sicher, dass sie den Nutzer: ${user.name.firstName}
+        ${user.name.lastName} mit der Mitgliedsnummer: ${user.userId} löschen wollen?`;
+
+        dialogRef.afterClosed().subscribe((result) => {
+          if (result) {
+            this.deleteUser(user);
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * Helper-Function to open a Form-Modal with defined Settings
    *
    * @Author: Luca
    * @private
    * @returns: MatDialogRef<UserFormComponent>
    */
-  private openModal(): MatDialogRef<UserFormComponent> {
+  private openFormModal(): MatDialogRef<UserFormComponent> {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -138,7 +176,4 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.users = users;
     });
   }
-
-
-
 }
