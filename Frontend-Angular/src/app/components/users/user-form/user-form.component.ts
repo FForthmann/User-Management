@@ -1,8 +1,8 @@
 import {Component, Inject} from '@angular/core';
-import {formUser, User} from "../../model/user";
+import {formUser, User} from "../../../model/user";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DatePipe} from "@angular/common";
-import {FormService} from "../../services/form/form.service";
+import {FormService} from "../../../services/form/form.service";
 
 @Component({
   selector: 'app-user-form',
