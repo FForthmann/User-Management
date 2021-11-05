@@ -1,13 +1,14 @@
+<mat-toolbar>
+  <button class="btn-dialog-close" mat-stroked-button (click)="closeDialog('close')" tabIndex="-1"><mat-icon>clear</mat-icon></button>
+  <span class="example-spacer"></span>
+  <button mat-raised-button color="primary" type="submit"
+          [disabled]="formService.form.invalid"
+          [mat-dialog-close]="data">Save
+  </button>
+</mat-toolbar>
+
 <form [formGroup]="formService.form" class="normal-form" (submit)="closeDialog('submit')">
-  <mat-toolbar>
-    <button class="btn-dialog-close" mat-stroked-button (click)="closeDialog('close')" tabIndex="-1"><mat-icon>clear</mat-icon></button>
-    <span class="example-spacer"></span>
-    <button mat-raised-button color="primary" type="submit"
-              [disabled]="formService.form.invalid"
-              [mat-dialog-close]="data">Save
-    </button>
-  </mat-toolbar>
-  <mat-grid-list cols="3" rowHeight="550">
+  <mat-grid-list cols="2">
     <mat-grid-tile>
       <div class="controles-container">
         <mat-form-field>
@@ -67,6 +68,25 @@
           </select>
         </mat-form-field>
 
+        <mat-form-field>
+          <input formControlName="annualFee" matInput placeholder="Jahresbeitrag">
+          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input formControlName="accountDetails" matInput placeholder="Kontoverbindung">
+          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+        </mat-form-field>
+        </div>
+
+      <label>Zahlstatus</label>
+      <mat-radio-group formControlName="paymentStatus" aria-label="Select an option">
+        <mat-radio-button value="0">Nicht gezhalt</mat-radio-button>
+        <mat-radio-button value="1">Gezahlt</mat-radio-button>
+      </mat-radio-group>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <div class="controles-container">
         <mat-form-field>
           <input formControlName="entryDate" matInput [matDatepicker]="picker" placeholder="Eintrittsdatum">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
