@@ -57,13 +57,15 @@
     </mat-grid-tile>
     <mat-grid-tile>
       <div class="controles-container">
-        <div class="add-bottom-padding">
-          <mat-radio-group formControlName="memberType">
-            <mat-radio-button value="1">Vollmember</mat-radio-button>
-            <mat-radio-button value="2">Halbmember</mat-radio-button>
-            <mat-radio-button value="3">Other</mat-radio-button>
-          </mat-radio-group>
-        </div>
+        <mat-form-field>
+          <mat-label>Mitgliedsart</mat-label>
+          <select matNativeControl formControlName="memberType">
+            <option value="1">Vollmitglied</option>
+            <option value="2">Ermäßigt</option>
+            <option value="3">Jugendlich</option>
+            <option value="4">Fördermitglied</option>
+          </select>
+        </mat-form-field>
 
         <mat-form-field>
           <input formControlName="entryDate" matInput [matDatepicker]="picker" placeholder="Eintrittsdatum">
