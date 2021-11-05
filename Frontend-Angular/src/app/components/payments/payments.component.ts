@@ -44,8 +44,6 @@ export class PaymentsComponent implements OnInit {
   onPaymentEdit(paymentId: number): void {
     this.paymentService.getPayment(paymentId).subscribe((payment: Payment) => {
       if(payment) {
-        console.log('First Payment:')
-        console.log(payment);
         let paymentStatus: string = 'bezahlt';
         if (payment.countStatus === 5) { // change to !payment.countStatus
           paymentStatus = ' nicht bezahlt';

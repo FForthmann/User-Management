@@ -26,7 +26,7 @@ export class PaymentListComponent {
    * Function to emit Payment-Status-Change to Parent Function
    *
    * @Author: Luca Ulrich
-   * @param paymentId: number - ID/InvoceNumber of current Payment
+   * @param paymentId: number - ID/InvoiceNumber of current Payment
    * @returns: void
    */
   changePaymentStatus(paymentId: number): void {
