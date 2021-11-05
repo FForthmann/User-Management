@@ -23,13 +23,15 @@ export class UsersComponent implements OnInit, OnDestroy {
               private dialog: MatDialog,
               private router: Router,
               private route: ActivatedRoute) {
-    this.formService.modal.pipe(takeUntil(this.ngUnsubscribe)).subscribe( (id: number | undefined) => {
-      if (id) {
-        if(!isNaN(id)) {
-          this.onEditUser(id);
+    this.formService.modal.pipe(takeUntil(this.ngUnsubscribe)).subscribe( (obj: {id: number |undefined, action:string}) => {
+      if (obj.id) {
+        if(obj.action === 'edit') {
+          this.onEditUser(obj.id);
+        } else if (obj.action === 'delete') {
+          this.onDeleteUser(obj.id);
         }
       } else {
-         this.onAddUser()
+        this.onAddUser();
       }
     });
   }
@@ -140,6 +142,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         ${user.name.lastName} mit der Mitgliedsnummer: ${user.userId} löschen wollen?`;
 
         dialogRef.afterClosed().subscribe((result) => {
+          this.router.navigate(['../'], { relativeTo: this.route });
           if (result) {
             this.deleteUser(user);
           }

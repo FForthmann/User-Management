@@ -21,6 +21,10 @@ const routes: Routes = [
         path: "edit/:id",
         component: ModalViewComponent
       },
+      {
+        path: "delete/:id",
+        component: ModalViewComponent
+      },
     ]
   },
   { path: '**', redirectTo: 'users' }

@@ -1,6 +1,6 @@
 import {
-  Component, EventEmitter,
-  Input, Output,
+  Component,
+  Input,
 } from '@angular/core';
 import { User } from '../../model/user';
 
@@ -12,7 +12,6 @@ import { User } from '../../model/user';
 export class UserListComponent {
 
   @Input() users: User[] = [];
-  @Output() delete: EventEmitter<number> = new EventEmitter<number>();
 
   displayedColumns: string[] = [
     'Mitgliedsnummer',
@@ -22,8 +21,4 @@ export class UserListComponent {
   ];
 
   constructor() {}
-
-  deleteUser(userId: number) {
-    this.delete.emit(userId);
-  }
 }
