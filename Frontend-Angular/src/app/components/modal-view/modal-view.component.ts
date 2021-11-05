@@ -10,10 +10,16 @@ import {FormService} from "../../services/form.service";
 export class ModalViewComponent {
   constructor(private formService: FormService,
               private route: ActivatedRoute) {
-    if('id' in route.snapshot.params) {
-      formService.openModal(route.snapshot.params.id);
-    } else {
-      formService.openModal();
+    switch(route.snapshot.url[0].path) {
+      case 'create':
+        formService.openModal('create');
+        break;
+      case'edit':
+        formService.openModal('edit', route.snapshot.params.id);
+        break;
+      case 'delete':
+        formService.openModal('delete', route.snapshot.params.id);
+        break;
     }
   }
 }

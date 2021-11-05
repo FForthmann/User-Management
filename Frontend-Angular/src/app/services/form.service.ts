@@ -14,8 +14,8 @@ import {User} from "../model/user";
  * @Version: 1.0
  */
 export class FormService {
-  private openModalSubject: Subject<number | undefined> = new Subject<number | undefined>();
-  public modal: Observable<number | undefined> = this.openModalSubject.asObservable()
+  private openModalSubject: Subject<{ id: number | undefined; action: string; }> = new Subject<{ id: number | undefined; action: string; }>();
+  public modal: Observable<{ id: number | undefined; action: string; }> = this.openModalSubject.asObservable()
 
   constructor() { }
 
@@ -83,10 +83,12 @@ export class FormService {
    * Function to reference the opened Modal
    *
    * @Author: Luca Ulrich
-   * @param id?
+   * @param action - User Action performed in URL
+   * @param id - ID of the User that the Action is performed on
    * @returns: void
    */
-  openModal(id?: number): void {
-    this.openModalSubject.next(id);
+  openModal(action: string, id?: number): void {
+    const obj = {"id": id,"action": action}
+    this.openModalSubject.next(obj);
   }
 }
