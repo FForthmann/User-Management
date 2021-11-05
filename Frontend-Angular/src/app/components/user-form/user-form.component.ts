@@ -37,9 +37,6 @@ export class UserFormComponent {
    * @returns: User Object
    */
   private buildUser(userData: formUser): User {
-    //Austritte erfolgen immer zum Jahresende, sie müssen mindestens 3 Monate vor Ende des
-    // Kalenderjahres eingereicht werden
-    // 30-09 letztes Datum des Jahres
     let leavingDate: Date = new Date();
     let userObject: User = {
       name: {
