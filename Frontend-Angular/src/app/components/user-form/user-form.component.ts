@@ -15,7 +15,7 @@ export class UserFormComponent {
   constructor(private datePipe: DatePipe,
               public formService: FormService,
               public dialogRef: MatDialogRef<UserFormComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: User) { }
+              @Inject(MAT_DIALOG_DATA) public data: User) {}
 
   /**
    * Function to close the Modal and send Data to Parent-Class

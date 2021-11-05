@@ -3,32 +3,37 @@
     <mat-toolbar>
       <button class="btn-dialog-close" mat-stroked-button (click)="closeDialog('close')" tabIndex="-1"><mat-icon>clear</mat-icon></button>
       <span class="example-spacer"></span>
+
       <button mat-raised-button color="primary" type="submit"
+              *ngIf="!formService.readonly"
               [disabled]="formService.form.invalid"
               [mat-dialog-close]="data">Save
       </button>
+      <button mat-raised-button color="primary" *ngIf="formService.readonly"
+      (click)="formService.readonly = !formService.readonly">Edit</button>
+
     </mat-toolbar>
   </mat-grid-tile-header>
   <mat-grid-list cols="2">
     <mat-grid-tile>
       <div class="controles-container">
         <mat-form-field>
-          <input formControlName="firstName" matInput placeholder="Vorname*">
+          <input formControlName="firstName" matInput placeholder="Vorname*" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input formControlName="lastName" matInput placeholder="Nachnamme*">
+          <input formControlName="lastName" matInput placeholder="Nachnamme*" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input formControlName="accountDetails" matInput placeholder="Bankverbindung*">
+          <input formControlName="accountDetails" matInput placeholder="Bankverbindung*" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input formControlName="birthday" matInput [matDatepicker]="birthday" placeholder="Geburtsdatum">
+          <input formControlName="birthday" matInput [matDatepicker]="birthday" placeholder="Geburtsdatum" [disabled]="this.formService.readonly">
           <mat-datepicker-toggle matSuffix [for]="birthday"></mat-datepicker-toggle>
           <mat-datepicker #birthday></mat-datepicker>
         </mat-form-field>
@@ -37,22 +42,23 @@
     <mat-grid-tile>
       <div class="controles-container">
         <mat-form-field>
-          <input formControlName="street" matInput placeholder="Straße">
+          <input formControlName="street" matInput placeholder="Straße" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input formControlName="houseNumber" matInput placeholder="Hausnummer">
+          <input
+            formControlName="houseNumber" matInput placeholder="Hausnummer" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input formControlName="postalCode" matInput placeholder="Postleitzahl">
+          <input formControlName="postalCode" matInput placeholder="Postleitzahl" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input formControlName="city" matInput placeholder="Stadt/Ort">
+          <input formControlName="city" matInput placeholder="Stadt/Ort" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
       </div>
@@ -61,7 +67,7 @@
       <div class="controles-container">
         <mat-form-field>
           <mat-label>Mitgliedsart</mat-label>
-          <mat-select [disabled]="!this.formService.editable" matNativeControl formControlName="memberType">
+          <mat-select matNativeControl formControlName="memberType" [disabled]="this.formService.readonly">
             <mat-option value="1">Vollmitglied</mat-option>
             <mat-option value="2">Ermäßigt</mat-option>
             <mat-option value="3">Jugendlich</mat-option>
@@ -70,44 +76,38 @@
         </mat-form-field>
 
         <mat-form-field>
-          <input formControlName="annualFee" matInput placeholder="Jahresbeitrag">
+          <input formControlName="annualFee" matInput placeholder="Jahresbeitrag" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input formControlName="accountDetails" matInput placeholder="Kontoverbindung">
+          <input formControlName="accountDetails" matInput placeholder="Kontoverbindung" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
         </div>
-
-      <label>Zahlstatus</label>
-      <mat-radio-group [disabled]="true"  formControlName="paymentStatus" aria-label="Select an option">
-        <mat-radio-button value="0">Nicht gezhalt</mat-radio-button>
-        <mat-radio-button value="1">Gezahlt</mat-radio-button>
-      </mat-radio-group>
     </mat-grid-tile>
     <mat-grid-tile>
       <div class="controles-container">
         <mat-form-field>
-          <input formControlName="entryDate" matInput [matDatepicker]="picker" placeholder="Eintrittsdatum">
+          <input formControlName="entryDate" matInput [matDatepicker]="picker" placeholder="Eintrittsdatum" [disabled]="this.formService.readonly">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field>
-          <input formControlName="cancellationDate" matInput [matDatepicker]="cancellationDate" placeholder="Kündigungsdatum">
+          <input formControlName="cancellationDate" matInput [matDatepicker]="cancellationDate" placeholder="Kündigungsdatum" [disabled]="this.formService.readonly">
           <mat-datepicker-toggle matSuffix [for]="cancellationDate"></mat-datepicker-toggle>
           <mat-datepicker #cancellationDate></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field>
-          <input formControlName="leavingDate" matInput [matDatepicker]="leavingDate" placeholder="Austrittsdatum">
+          <input formControlName="leavingDate" matInput [matDatepicker]="leavingDate" placeholder="Austrittsdatum" [disabled]="this.formService.readonly">
           <mat-datepicker-toggle matSuffix [for]="leavingDate"></mat-datepicker-toggle>
           <mat-datepicker #leavingDate></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field>
-          <input formControlName="familyId" matInput placeholder="Familienmitglieds ID">
+          <input formControlName="familyId" matInput placeholder="Familienmitglieds ID" [readonly]="formService.readonly">
         </mat-form-field>
       </div>
     </mat-grid-tile>

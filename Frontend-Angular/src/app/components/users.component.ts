@@ -93,6 +93,7 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @returns: void
    */
   onAddUser(): void {
+    this.formService.readonly = false;
     this.formService.initializeFormGroup();
     const dialogRef = this.openFormModal();
     dialogRef.afterClosed().subscribe((result) => {
@@ -113,7 +114,7 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @returns: void
    */
   onEditUser(id: number): void {
-    this.formService.editable = true;
+    this.formService.readonly = true;
     this.userService.getUser(id).subscribe((user: User) => {
       this.formService.initializeFormGroup(user);
       const dialogRef = this.openFormModal();
