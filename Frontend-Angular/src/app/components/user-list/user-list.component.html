@@ -1,0 +1,46 @@
+<!-- Search and Create -->
+<div class="search-div">
+  <button mat-raised-button routerLink="create">
+    <mat-icon>add</mat-icon>Create
+  </button>
+  <mat-form-field class="search-form-field" floatLabel="never">
+    <input matInput placeholder="Search" autocomplete="off" >
+    <button mat-button matSuffix mat-icon-button aria-label="Clear">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<!-- Table Data -->
+<table mat-table [dataSource]="users" class="mat-elevation-z8">
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  <!-- UserID Column -->
+  <ng-container matColumnDef="Mitgliedsnummer">
+    <th mat-header-cell *matHeaderCellDef>Mitgliedsnummer</th>
+    <td mat-cell *matCellDef="let user"> {{user.userId}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="Name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let user"> {{user.name.firstName}} {{user.name.lastName}}</td>
+  </ng-container>
+
+  <!-- MemberType Column -->
+  <ng-container matColumnDef="Mitgliedsart">
+    <th mat-header-cell *matHeaderCellDef>Mitgliedsart</th>
+    <td mat-cell *matCellDef="let user"> {{user.memberType}} </td>
+  </ng-container>
+
+  <!-- Actions Column -->
+  <ng-container matColumnDef="Aktionen">
+    <th mat-header-cell *matHeaderCellDef>Aktionen</th>
+    <td mat-cell *matCellDef="let row">
+      <button mat-icon-button [routerLink]="'edit/'+ row.userId"><mat-icon>launch</mat-icon></button>
+      <button mat-icon-button [routerLink]="'delete/'+ row.userId" color="warn"><mat-icon>delete_outline</mat-icon></button>
+    </td>
+  </ng-container>
+</table>
