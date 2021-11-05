@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {UsersComponent} from "./components/users/users.component";
 import {ModalViewComponent} from "./components/modal-view/modal-view.component";
+import {PaymentsComponent} from "./components/payments/payments.component";
 
 const routes: Routes = [
   {
@@ -26,6 +27,11 @@ const routes: Routes = [
         component: ModalViewComponent
       },
     ]
+  },
+  {
+    path: "payments",
+    component: PaymentsComponent,
+    children:[]
   },
   { path: '**', redirectTo: 'users' }
 ];

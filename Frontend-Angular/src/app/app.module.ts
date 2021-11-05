@@ -27,6 +27,8 @@ import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/
 import {DatePipe} from "@angular/common";
 import { ModalViewComponent } from './components/modal-view/modal-view.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { PaymentsComponent } from './components/payments/payments.component';
+import { PaymentListComponent } from './components/payments/payment-list/payment-list.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     UsersComponent,
     UserFormComponent,
     ModalViewComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    PaymentsComponent,
+    PaymentListComponent
   ],
   imports: [
     BrowserModule,

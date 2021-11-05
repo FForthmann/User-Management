@@ -11,7 +11,7 @@ import {Payment} from "../../model/payment";
  *
  * @Author: Luca Ulrich
  */
-export class PaymentsService {
+export class PaymentService {
 
   constructor(private http: HttpClient) { }
 
