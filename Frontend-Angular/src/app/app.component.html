@@ -1,1 +1,15 @@
+<div>
+  <mat-toolbar color="primary">
+
+    <a mat-button class="companyName" routerLink="/">
+      <span>Reitverein Elmshorn</span>
+    </a>
+    <span class="fill-remaining-space"></span>
+    <div fxShow="true" fxHide.lt-md="true">
+      <a mat-button routerLink="/users">Nutzerverwaltung</a>
+      <a mat-button routerLink="/payments">Rechnungen</a>
+    </div>
+  </mat-toolbar>
+</div>
 <router-outlet></router-outlet>
+
