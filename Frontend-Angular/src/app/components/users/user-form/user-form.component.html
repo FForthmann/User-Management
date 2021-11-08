@@ -3,7 +3,6 @@
     <mat-toolbar>
       <button class="btn-dialog-close" mat-stroked-button (click)="closeDialog('close')" tabIndex="-1"><mat-icon>clear</mat-icon></button>
       <span class="example-spacer"></span>
-
       <button mat-raised-button color="primary" type="submit"
               *ngIf="!formService.readonly"
               [disabled]="formService.form.invalid"
@@ -14,24 +13,21 @@
 
     </mat-toolbar>
   </mat-grid-tile-header>
-  <mat-grid-list cols="2">
+  <mat-grid-list cols="breakpoint" rowHeight="2:1" (window:resize)="onResize($event)" [gutterSize]="'10px'">
     <mat-grid-tile>
       <div class="controles-container">
         <mat-form-field>
           <input formControlName="firstName" matInput placeholder="Vorname*" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
-
         <mat-form-field>
           <input formControlName="lastName" matInput placeholder="Nachnamme*" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
-
         <mat-form-field>
           <input formControlName="accountDetails" matInput placeholder="Bankverbindung*" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
-
         <mat-form-field>
           <input formControlName="birthday" matInput [matDatepicker]="birthday" placeholder="Geburtsdatum" [disabled]="this.formService.readonly">
           <mat-datepicker-toggle matSuffix [for]="birthday"></mat-datepicker-toggle>

@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {formUser, User} from "../../../model/user";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DatePipe} from "@angular/common";
@@ -10,13 +10,23 @@ import {FormService} from "../../../services/form/form.service";
   styleUrls: ['./user-form.component.scss']
 })
 
-export class UserFormComponent {
+export class UserFormComponent implements OnInit{
 
   constructor(private datePipe: DatePipe,
               public formService: FormService,
               public dialogRef: MatDialogRef<UserFormComponent>,
               @Inject(MAT_DIALOG_DATA) public data: User) {}
 
+  breakpoint: number = 1;
+  ngOnInit() {
+    this.breakpoint = (window.innerWidth <= 480) ? 1 : 6;
+  }
+
+  //TODO: dont know which type to use
+  // @ts-ignore
+  onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 480) ? 1 : 6;
+  }
   /**
    * Function to close the Modal and send Data to Parent-Class
    *
