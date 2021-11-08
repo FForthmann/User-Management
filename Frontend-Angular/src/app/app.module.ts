@@ -30,6 +30,7 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
 import { PaymentsComponent } from './components/payments/payments.component';
 import { PaymentListComponent } from './components/payments/payment-list/payment-list.component';
 import {MatTooltipModule} from "@angular/material/tooltip";
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     MatNativeDateModule,
     MatCheckboxModule,
     MatDialogModule,
-    MatTooltipModule
+    MatTooltipModule,
+    FlexLayoutModule
   ],
   providers: [
     DatePipe,
