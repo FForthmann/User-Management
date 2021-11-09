@@ -27,7 +27,7 @@ public class Payments {
     private User userId;
 
     @Column(nullable = false)
-    private Integer countStatus;
+    private Boolean countStatus;
 
     @Column(nullable = false)
     private Double amount;
@@ -35,7 +35,7 @@ public class Payments {
     @Column(nullable = false)
     private Integer year;
 
-    public Payments(User userId, Long invoiceNumber, Integer countStatus, Double amount, Integer year) {
+    public Payments(User userId, Long invoiceNumber, Boolean countStatus, Double amount, Integer year) {
         this.invoiceNumber = invoiceNumber;
         this.userId = userId;
         this.countStatus = countStatus;
@@ -63,11 +63,11 @@ public class Payments {
         this.userId = userId;
     }
 
-    public Integer getCountStatus() {
+    public Boolean getCountStatus() {
         return countStatus;
     }
 
-    public void setCountStatus(Integer countStatus) {
+    public void setCountStatus(Boolean countStatus) {
         this.countStatus = countStatus;
     }
 

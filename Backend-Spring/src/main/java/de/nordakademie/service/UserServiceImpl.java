@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean checkMandatoryAttributesAreNotNull(User createUser) {
-        return isNull(createUser.getAddress().getCity(), createUser.getAddress().getHouseNumber(), createUser.getAddress().getStreet(), createUser.getAddress().getPostalCode().getPostcode(), createUser.getAddress().getPostalCode().getLocation(), createUser.getBirthday(), createUser.getBankAccountDetails(), createUser.getEntryDate(), createUser.getMemberType().getDescription(), createUser.getName().getFirstName(), createUser.getName().getLastName());
+        return isNull(createUser.getAddress().getHouseNumber(), createUser.getAddress().getStreet(), createUser.getAddress().getPostalCode().getPostcode(), createUser.getAddress().getPostalCode().getLocation(), createUser.getBirthday(), createUser.getBankAccountDetails(), createUser.getEntryDate(), createUser.getMemberType().getDescription(), createUser.getName().getFirstName(), createUser.getName().getLastName());
     }
 
     private boolean isNull(Object... strArr) {

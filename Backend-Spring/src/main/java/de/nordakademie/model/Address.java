@@ -17,14 +17,12 @@ public class Address {
     @ManyToOne
     @JsonUnwrapped
     private Postcode postalCode;
-    @Column(nullable = false)
-    private String city;
 
-    public Address(String street, Integer houseNumber, Postcode postalCode, String city) {
+
+    public Address(String street, Integer houseNumber, Postcode postalCode) {
         this.street = street;
         this.houseNumber = houseNumber;
         this.postalCode = postalCode;
-        this.city = city;
     }
 
     public Address() {
@@ -53,13 +51,5 @@ public class Address {
 
     public void setPostalCode(Postcode postalCode) {
         this.postalCode = postalCode;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 }
