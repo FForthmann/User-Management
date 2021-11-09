@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,13 +41,23 @@ public class MemberTypeController {
 
     @PostMapping
     public ResponseEntity<MemberType> createMemberType(@RequestBody MemberType memberType){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createMemberType(memberType));
+        try{
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.createMemberType(memberType));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<MemberType> updateMemberType(@PathVariable("id") String id, @RequestBody MemberType memberType){
-        service.updateMemberType(id, memberType);
-        return ResponseEntity.ok().build();
+        try {
+            service.updateMemberType(id, memberType);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException ex){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch(EntityNotFoundException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
 }

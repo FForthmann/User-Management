@@ -23,7 +23,6 @@ public class UserServiceImpl implements UserService {
 
     @Inject
     public void setRepository(UserRepository repository) {
-
         this.repository = repository;
     }
 
@@ -46,12 +45,12 @@ public class UserServiceImpl implements UserService {
         }
 
         // Validation if MemberType exists in DB
-        if (existsMemberTypeInDB(createUser)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_MEMBERTYPE_NOT_IN_DB);
+        if (!existsMemberTypeInDB(createUser)) {
+            throw new IllegalArgumentException(ApiMessages.MSG_MEMBERTYPE_NOT_IN_DB +  createUser.getMemberType().getDescription());
         }
 
-        // If Postal Code doesnt exist in DB, here it will be created
-        if (existsPostalCodeInDB(createUser)) {
+        // If Postal Code doesn't exist in DB, here it will be created
+        if (!existsPostalCodeInDB(createUser)) {
             this.postcodeRepository.save(createUser.getAddress().getPostalCode());
         }
 
@@ -66,7 +65,7 @@ public class UserServiceImpl implements UserService {
         }
 
         Optional<User> persistentUser = repository.findById(id);
-        if (persistentUser.isPresent()) {
+        if (!persistentUser.isPresent()) {
             throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
         }
 
@@ -87,7 +86,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(long userId) {
         Optional<User> user = repository.findById(userId);
 
-        if (user.isPresent()) {
+        if (!user.isPresent()) {
             throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
         }
 
@@ -99,13 +98,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAllUser() {
-
         return (List<User>) repository.findAll();
     }
 
     @Override
     public Optional<User> findUserById(Long userId) {
-
         return repository.findById(userId);
     }
 
@@ -119,14 +116,13 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean checkMandatoryAttributesAreNotNull(User createUser) {
-        return isNull(createUser.getAddress().getCity(), createUser.getAddress().getHouseNumber(), createUser.getAddress().getStreet(), createUser.getAddress().getPostalCode().getPostcode(), createUser.getAddress().getPostalCode().getLocation(), createUser.getBirthday(), createUser.getBankAccountDetails(), createUser.getEntryDate(), createUser.getMemberType(), createUser.getName().getFirstName(), createUser.getName().getLastName());
+        return isNull(createUser.getAddress().getCity(), createUser.getAddress().getHouseNumber(), createUser.getAddress().getStreet(), createUser.getAddress().getPostalCode().getPostcode(), createUser.getAddress().getPostalCode().getLocation(), createUser.getBirthday(), createUser.getBankAccountDetails(), createUser.getEntryDate(), createUser.getMemberType().getDescription(), createUser.getName().getFirstName(), createUser.getName().getLastName());
     }
 
     private boolean isNull(Object... strArr) {
         for (Object st : strArr) {
             if (st == null)
                 return true;
-
         }
         return false;
     }

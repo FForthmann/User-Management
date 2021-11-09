@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,13 +39,25 @@ public class PaymentsController {
 
     @PostMapping
     public ResponseEntity<Payments> createAccount(@RequestBody Payments payments){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createAccount(payments));
+        try{
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.createAccount(payments));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Payments> updateAccount(@PathVariable("id") Long id, @RequestBody Payments payments){
-        service.updateAccount(id, payments);
-        return ResponseEntity.ok().build();
+
+        try{
+            service.updateAccount(id, payments);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException ex){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch(EntityNotFoundException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
     }
 
 }

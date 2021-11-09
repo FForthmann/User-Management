@@ -1,5 +1,7 @@
 package de.nordakademie.model;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+
 import java.time.LocalDate;
 import javax.persistence.*;
 
@@ -41,6 +43,7 @@ public class User {
     private LocalDate leavingDate;
 
     @ManyToOne(optional = false)
+    @JsonUnwrapped
     private MemberType memberType;
 
     @Column(nullable = false)

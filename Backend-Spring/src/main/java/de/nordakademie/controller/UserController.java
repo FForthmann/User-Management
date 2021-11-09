@@ -5,6 +5,7 @@ import de.nordakademie.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
@@ -23,12 +24,10 @@ public class UserController {
 
     @GetMapping
     public List<User> findAllUser() {
-
         return service.findAllUser();
     }
     @GetMapping("/{id}")
     public Optional<User> findUserById(@PathVariable("id") Long userId) {
-
         return service.findUserById(userId);
     }
 
@@ -43,6 +42,7 @@ public class UserController {
         try{
             return ResponseEntity.status(HttpStatus.CREATED).body(service.createUser(user));
         } catch (IllegalArgumentException ex){
+            ex.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }

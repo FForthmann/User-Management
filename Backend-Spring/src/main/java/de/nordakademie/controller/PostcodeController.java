@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,11 @@ public class PostcodeController {
 
     @PostMapping
     public ResponseEntity<Postcode> createPostcode(@RequestBody Postcode postcode){
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.createPostcode(postcode));
+        try{
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.createPostcode(postcode));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @GetMapping("/{id}")
@@ -45,8 +50,15 @@ public class PostcodeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Postcode> updatePostcode(@PathVariable("id") Long id, @RequestBody Postcode postcode){
-        service.updatePostcode(id,postcode);
-        return ResponseEntity.ok().build();
+        try {
+            service.updatePostcode(id,postcode);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException ex){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch(EntityNotFoundException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
     }
 
 }
