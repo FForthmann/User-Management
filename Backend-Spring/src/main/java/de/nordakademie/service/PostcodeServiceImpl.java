@@ -43,13 +43,6 @@ public class PostcodeServiceImpl implements PostcodeService {
 
     @Override
     public void deletePostcodeById(Long postcodeId) {
-
-        // TODO Validation etc.
-        // Überprüfen, falls wir ein Postcode löschen, dass es nicht mehr irgendwo verwendet wird
-        if (userService.isPostcodeInUse(postcodeId)){
-            throw new IllegalArgumentException(ApiMessages.MSG_USER_NOT_IN_DB);
-        }
-
         repository.deleteById(postcodeId);
     }
 

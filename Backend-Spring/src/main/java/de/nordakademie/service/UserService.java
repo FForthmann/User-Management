@@ -18,6 +18,4 @@ public interface UserService {
 
     Optional<User> findUserById(Long userId);
 
-    boolean isPostcodeInUse(long postcode);
-
 }
