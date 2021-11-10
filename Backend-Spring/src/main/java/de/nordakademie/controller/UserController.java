@@ -2,10 +2,11 @@ package de.nordakademie.controller;
 
 import de.nordakademie.model.User;
 import de.nordakademie.service.UserService;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpStatusCodeException;
+
 
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
@@ -33,8 +34,14 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable("id") Long userId){
-        service.deleteUserById(userId);
-        return ResponseEntity.ok().build();
+        try {
+            service.deleteUserById(userId);
+            return ResponseEntity.ok().build();
+        } catch(IllegalArgumentException ex){
+            ex.printStackTrace();
+           return  ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
     }
 
     @PostMapping

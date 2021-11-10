@@ -112,6 +112,7 @@ public class PaymentsServiceImpl implements PaymentsService {
         accountPersistent.get().setCountStatus(payments.getCountStatus());
         accountPersistent.get().setYear(payments.getYear());
         accountPersistent.get().setUserId(payments.getUserId());
+        accountPersistent.get().setBankAccountDetails(payments.getBankAccountDetails());
     }
 
     /**
@@ -135,6 +136,11 @@ public class PaymentsServiceImpl implements PaymentsService {
         return repository.findById(paymentsId);
     }
 
+    @Override
+    public boolean existsUserInPayments(long userId) {
+        return repository.existsUserInPayments(userId);
+    }
+
 
     /**
      * Checks all mandatory attributes are not null
@@ -143,7 +149,7 @@ public class PaymentsServiceImpl implements PaymentsService {
      * @return Boolean-Value if the mandatory attributes are not null
      */
     private boolean checkMandatoryAttributesAreNotNull(Payments createPayments) {
-        return isNull(createPayments.getAmount(), createPayments.getCountStatus(), createPayments.getYear(), createPayments.getUserId());
+        return isNull(createPayments.getAmount(), createPayments.getCountStatus(), createPayments.getYear(), createPayments.getUserId(), createPayments.getBankAccountDetails());
     }
 
     /**

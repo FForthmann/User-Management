@@ -2,6 +2,7 @@ package de.nordakademie.service;
 
 import de.nordakademie.model.User;
 import de.nordakademie.repository.MemberTypeRepository;
+import de.nordakademie.repository.PaymentsRepository;
 import de.nordakademie.repository.PostcodeRepository;
 import de.nordakademie.repository.UserRepository;
 import de.nordakademie.util.ApiMessages;
@@ -19,7 +20,13 @@ public class UserServiceImpl implements UserService {
 
     private MemberTypeRepository memberTypeRepository;
     private PostcodeRepository postcodeRepository;
+    private PaymentsRepository paymentsRepository;
     private UserRepository repository;
+
+    @Inject
+    public void setPaymentsRepository(PaymentsRepository paymentsRepository) {
+        this.paymentsRepository = paymentsRepository;
+    }
 
     @Inject
     public void setRepository(UserRepository repository) {
@@ -72,7 +79,6 @@ public class UserServiceImpl implements UserService {
         persistentUser.get().setBirthday(updateUser.getBirthday());
         persistentUser.get().setCancellationDate(updateUser.getCancellationDate());
         persistentUser.get().setEntryDate(updateUser.getEntryDate());
-        persistentUser.get().setBankAccountDetails(updateUser.getBankAccountDetails());
         persistentUser.get().setFamilyId(updateUser.getFamilyId());
         persistentUser.get().getName().setFirstName(updateUser.getName().getFirstName());
         persistentUser.get().getAddress().setHouseNumber(updateUser.getAddress().getHouseNumber());
@@ -84,10 +90,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(long userId) {
-        Optional<User> user = repository.findById(userId);
 
+        Optional<User> user = repository.findById(userId);
         if (!user.isPresent()) {
             throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
+        }
+
+        // Was gehört zum Löschen alles dazu
+        // Wenn User in Payments vorhanden, dann muss auch Payments gelöscht werden
+        if (paymentsRepository.existsUserInPayments(userId)){
+
         }
 
         // Darf dieser überhaupt gelöscht werden?
@@ -115,7 +127,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean checkMandatoryAttributesAreNotNull(User createUser) {
-        return isNull(createUser.getAddress().getHouseNumber(), createUser.getAddress().getStreet(), createUser.getAddress().getPostalCode().getPostcode(), createUser.getAddress().getPostalCode().getLocation(), createUser.getBirthday(), createUser.getBankAccountDetails(), createUser.getEntryDate(), createUser.getMemberType().getDescription(), createUser.getName().getFirstName(), createUser.getName().getLastName());
+        return isNull(createUser.getAddress().getHouseNumber(), createUser.getAddress().getStreet(), createUser.getAddress().getPostalCode().getPostcode(), createUser.getAddress().getPostalCode().getLocation(), createUser.getBirthday(), createUser.getEntryDate(), createUser.getMemberType().getDescription(), createUser.getName().getFirstName(), createUser.getName().getLastName());
     }
 
     private boolean isNull(Object... strArr) {
@@ -125,4 +137,6 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+
+
 }

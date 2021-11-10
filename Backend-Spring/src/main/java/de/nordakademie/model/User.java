@@ -46,9 +46,6 @@ public class User {
     @JsonUnwrapped
     private MemberType memberType;
 
-    @Column(nullable = false)
-    private Integer bankAccountDetails;
-
     @ManyToOne
     private User familyId;
 
@@ -58,7 +55,6 @@ public class User {
                 LocalDate cancellationDate,
                 LocalDate leavingDate,
                 MemberType memberType,
-                Integer bankAccountDetails,
                 User familyId) {
         this.userId = userId;
         this.name = name;
@@ -68,7 +64,6 @@ public class User {
         this.cancellationDate = cancellationDate;
         this.leavingDate = leavingDate;
         this.memberType = memberType;
-        this.bankAccountDetails = bankAccountDetails;
         this.familyId = familyId;
     }
 
@@ -139,14 +134,6 @@ public class User {
         this.memberType = memberType;
     }
 
-    public Integer getBankAccountDetails() {
-        return bankAccountDetails;
-    }
-
-    public void setBankAccountDetails(Integer accountDetails) {
-        this.bankAccountDetails = accountDetails;
-    }
-
     public User getFamilyId() {
         return familyId;
     }
@@ -166,7 +153,6 @@ public class User {
                 ", cancellationDate=" + cancellationDate +
                 ", leavingDate=" + leavingDate +
                 ", memberType='" + memberType + '\'' +
-                ", accountDetails=" + bankAccountDetails +
                 ", familyId=" + familyId +
                 '}';
     }

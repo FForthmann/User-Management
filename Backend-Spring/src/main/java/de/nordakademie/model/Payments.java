@@ -2,8 +2,11 @@ package de.nordakademie.model;
 
 
 import javax.persistence.*;
-import java.util.Date;
 
+@NamedNativeQueries(value = {
+        @NamedNativeQuery(name = "Payments.existsUserInPayments", query = "SELECT EXISTS (SELECT * FROM PAYMENTS WHERE USER_ID_USER_ID = :userId)"),
+        @NamedNativeQuery(name = "Payments.deleteAllPaymentsByUserId", query = "DELETE FROM PAYMENTS WHERE INVOICE_NUMBER IN (SELECT INVOICE_NUMBER FROM PAYMENTS WHERE USER_ID_USER_ID = :userId)")
+})
 @Table(name = "payments")
 @Entity(name = "Payments")
 public class Payments {
@@ -35,12 +38,16 @@ public class Payments {
     @Column(nullable = false)
     private Integer year;
 
-    public Payments(User userId, Long invoiceNumber, Boolean countStatus, Double amount, Integer year) {
+    @Column(nullable = false)
+    private Integer bankAccountDetails;
+
+    public Payments(User userId, Long invoiceNumber, Boolean countStatus, Double amount, Integer year, Integer bankAccountDetails) {
         this.invoiceNumber = invoiceNumber;
         this.userId = userId;
         this.countStatus = countStatus;
         this.amount = amount;
         this.year = year;
+        this.bankAccountDetails = bankAccountDetails;
     }
 
     public Payments() {
@@ -89,12 +96,21 @@ public class Payments {
 
     @Override
     public String toString() {
-        return "Account{" +
+        return "Payments{" +
                 "invoiceNumber=" + invoiceNumber +
                 ", userId=" + userId +
                 ", countStatus=" + countStatus +
                 ", amount=" + amount +
                 ", year=" + year +
+                ", bankAccountDetails=" + bankAccountDetails +
                 '}';
+    }
+
+    public Integer getBankAccountDetails() {
+        return bankAccountDetails;
+    }
+
+    public void setBankAccountDetails(Integer bankAccountDetails) {
+        this.bankAccountDetails = bankAccountDetails;
     }
 }

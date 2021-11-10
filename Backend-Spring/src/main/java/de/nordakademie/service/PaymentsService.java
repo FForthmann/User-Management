@@ -14,4 +14,6 @@ public interface PaymentsService {
 
     Optional<Payments> findPaymentsById(Long accountId);
 
+    boolean existsUserInPayments(long userId);
+
 }
