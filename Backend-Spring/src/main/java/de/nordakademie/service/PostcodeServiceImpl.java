@@ -4,6 +4,7 @@ import de.nordakademie.model.Postcode;
 import de.nordakademie.model.User;
 import de.nordakademie.repository.PostcodeRepository;
 import de.nordakademie.util.ApiMessages;
+import org.springframework.data.mapping.model.MappingInstantiationException;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -17,6 +18,12 @@ import java.util.Optional;
 public class PostcodeServiceImpl implements PostcodeService {
 
     private PostcodeRepository repository;
+    private UserService userService;
+
+    @Inject
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Inject
     public void setRepository(PostcodeRepository repository) {
@@ -38,9 +45,14 @@ public class PostcodeServiceImpl implements PostcodeService {
     public void deletePostcodeById(Long postcodeId) {
 
         // TODO Validation etc.
+        // Überprüfen, falls wir ein Postcode löschen, dass es nicht mehr irgendwo verwendet wird
+        if (userService.isPostcodeInUse(postcodeId)){
+            throw new IllegalArgumentException(ApiMessages.MSG_USER_NOT_IN_DB);
+        }
 
         repository.deleteById(postcodeId);
     }
+
 
     @Override
     public void updatePostcode(Long id, Postcode postcodeUpdate) {
@@ -70,6 +82,8 @@ public class PostcodeServiceImpl implements PostcodeService {
         return repository.findById(postcodeId);
     }
 
+
+
     private boolean checkMandatoryAttributesAreNotNull(Postcode createPostcode) {
         return isNull(createPostcode.getPostcode(), createPostcode.getLocation());
     }
@@ -81,6 +95,7 @@ public class PostcodeServiceImpl implements PostcodeService {
         }
         return false;
     }
+
 
 
 }

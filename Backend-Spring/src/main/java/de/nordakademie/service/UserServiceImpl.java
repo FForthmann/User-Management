@@ -106,6 +106,11 @@ public class UserServiceImpl implements UserService {
         return repository.findById(userId);
     }
 
+    @Override
+    public boolean isPostcodeInUse(long postcode) {
+        return repository.isPostcodeInUse(postcode);
+    }
+
 
     private boolean existsMemberTypeInDB(User createUser) {
         return this.memberTypeRepository.existsById(createUser.getMemberType().getDescription());

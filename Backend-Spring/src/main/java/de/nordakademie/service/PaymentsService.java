@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.Optional;
 import de.nordakademie.model.Payments;
 public interface PaymentsService {
-    Payments createAccount(Payments payments);
+    Payments createPayments(Payments payments);
 
-    void deleteAccountById(Long accountId);
+    void deletePaymentsById(Long accountId);
 
-    void updateAccount(Long id, Payments payments);
+    void updatePayments(Long id, Payments payments);
 
-    List<Payments> findAllAccounts();
+    List<Payments> findAllPayments();
 
-    Optional<Payments> findAccountById(Long accountId);
+    Optional<Payments> findPaymentsById(Long accountId);
 
 }

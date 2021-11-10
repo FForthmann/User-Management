@@ -23,24 +23,24 @@ public class PaymentsController {
 
     @GetMapping
     public List<Payments> findAllAccounts(){
-        return service.findAllAccounts();
+        return service.findAllPayments();
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Payments> deleteAccount(@PathVariable("id") Long accountId ){
-        service.deleteAccountById(accountId);
+        service.deletePaymentsById(accountId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
     public Optional<Payments> findAccountById(@PathVariable("id") Long id) {
-        return service.findAccountById(id);
+        return service.findPaymentsById(id);
     }
 
     @PostMapping
     public ResponseEntity<Payments> createAccount(@RequestBody Payments payments){
         try{
-            return ResponseEntity.status(HttpStatus.CREATED).body(service.createAccount(payments));
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.createPayments(payments));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -50,7 +50,7 @@ public class PaymentsController {
     public ResponseEntity<Payments> updateAccount(@PathVariable("id") Long id, @RequestBody Payments payments){
 
         try{
-            service.updateAccount(id, payments);
+            service.updatePayments(id, payments);
             return ResponseEntity.ok().build();
         } catch (IllegalArgumentException ex){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
