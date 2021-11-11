@@ -60,16 +60,10 @@ public class UserController {
     public ResponseEntity<User> createUser(
             @RequestBody
                     User user) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(service.createUser(user));
-        } catch ( IllegalArgumentException ex ) {
-            ex.printStackTrace();
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .build();
-        }
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(service.createUser(user));
+
     }
 
     @PutMapping("/{id}")
