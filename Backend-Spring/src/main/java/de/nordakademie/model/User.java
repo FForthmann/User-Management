@@ -1,10 +1,16 @@
 package de.nordakademie.model;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-
 import java.time.LocalDate;
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 @Entity(name = "User")
 @Table(name = "user")
 public class User {
@@ -50,7 +56,9 @@ public class User {
     private User familyId;
 
     public User(Long userId,
-                Name name, Address address, LocalDate birthday,
+                Name name,
+                Address address,
+                LocalDate birthday,
                 LocalDate entryDate,
                 LocalDate cancellationDate,
                 LocalDate leavingDate,

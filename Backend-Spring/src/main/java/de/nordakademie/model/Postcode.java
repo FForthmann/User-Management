@@ -3,12 +3,11 @@ package de.nordakademie.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
 @Entity
 public class Postcode {
-
     @Id
     private Long postcode;
+
     @Column(nullable = false)
     private String location;
 

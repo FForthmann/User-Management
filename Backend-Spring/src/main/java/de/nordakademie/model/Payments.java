@@ -1,16 +1,24 @@
 package de.nordakademie.model;
 
-
-import javax.persistence.*;
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 @NamedNativeQueries(value = {
         @NamedNativeQuery(name = "Payments.existsUserInPayments", query = "SELECT EXISTS (SELECT * FROM PAYMENTS WHERE USER_ID_USER_ID = :userId)"),
-        @NamedNativeQuery(name = "Payments.deleteAllPaymentsByUserId", query = "DELETE FROM PAYMENTS WHERE INVOICE_NUMBER IN (SELECT INVOICE_NUMBER FROM PAYMENTS WHERE USER_ID_USER_ID = :userId)")
+        @NamedNativeQuery(name = "Payments.deleteAllPaymentsByUserId",
+                          query = "DELETE FROM PAYMENTS WHERE INVOICE_NUMBER IN (SELECT INVOICE_NUMBER FROM PAYMENTS WHERE USER_ID_USER_ID = " +
+                                  ":userId)")
 })
 @Table(name = "payments")
 @Entity(name = "Payments")
 public class Payments {
-
     @Id
     @SequenceGenerator(
             name = "invoiceNumber_sequence",

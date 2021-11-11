@@ -3,12 +3,11 @@ package de.nordakademie.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
 @Entity(name = "MemberType")
 public class MemberType {
-
     @Id
     private String description;
+
     @Column
     private Double amount;
 

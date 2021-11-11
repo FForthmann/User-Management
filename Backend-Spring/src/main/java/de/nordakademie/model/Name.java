@@ -2,11 +2,11 @@ package de.nordakademie.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-
 @Embeddable
 public class Name {
     @Column(nullable = false)
     private String firstName;
+
     @Column(nullable = false)
     private String lastName;
 

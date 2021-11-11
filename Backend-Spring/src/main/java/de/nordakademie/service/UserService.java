@@ -1,13 +1,9 @@
 package de.nordakademie.service;
 
-import de.nordakademie.model.User;
-import org.springframework.data.repository.query.Param;
-
 import java.util.List;
 import java.util.Optional;
-
+import de.nordakademie.model.User;
 public interface UserService {
-
     User createUser(User user);
 
     void updateUser(Long id, User user);

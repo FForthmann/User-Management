@@ -5,13 +5,10 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-
-import de.nordakademie.model.Postcode;
-import de.nordakademie.util.ApiMessages;
 import org.springframework.stereotype.Service;
 import de.nordakademie.model.Payments;
 import de.nordakademie.repository.PaymentsRepository;
-
+import de.nordakademie.util.ApiMessages;
 /**
  * Payments Service Implementation
  */
@@ -19,6 +16,7 @@ import de.nordakademie.repository.PaymentsRepository;
 @Transactional
 public class PaymentsServiceImpl implements PaymentsService {
     private PaymentsRepository repository;
+
     private UserService userService;
 
     /**
@@ -27,10 +25,9 @@ public class PaymentsServiceImpl implements PaymentsService {
      * @param userService new {@Link UserService}
      */
     @Inject
-    public void setUserService(UserService userService){
+    public void setUserService(UserService userService) {
         this.userService = userService;
     }
-
 
     /**
      * Set the Payments Repository
@@ -50,7 +47,7 @@ public class PaymentsServiceImpl implements PaymentsService {
     public Payments createPayments(Payments payments) {
 
         // Check if JSON is filled correctly.
-        if (checkMandatoryAttributesAreNotNull(payments)){
+        if (checkMandatoryAttributesAreNotNull(payments)) {
             throw new IllegalArgumentException(ApiMessages.MSG_NULL);
         }
 
@@ -69,7 +66,11 @@ public class PaymentsServiceImpl implements PaymentsService {
      * @return Boolean-Value if User exists in DB
      */
     private boolean existsUserInDB(Payments payments) {
-        return this.userService.findUserById(payments.getUserId().getUserId()).isPresent();
+        return this.userService
+                .findUserById(payments
+                                      .getUserId()
+                                      .getUserId())
+                .isPresent();
     }
 
     /**
@@ -93,7 +94,7 @@ public class PaymentsServiceImpl implements PaymentsService {
     public void updatePayments(Long id, Payments payments) {
 
         // Check if JSON is filled correctly.
-        if (checkMandatoryAttributesAreNotNull(payments)){
+        if (checkMandatoryAttributesAreNotNull(payments)) {
             throw new IllegalArgumentException(ApiMessages.MSG_NULL);
         }
 
@@ -108,11 +109,21 @@ public class PaymentsServiceImpl implements PaymentsService {
         }
 
         // Update Payments in DB
-        accountPersistent.get().setAmount(payments.getAmount());
-        accountPersistent.get().setCountStatus(payments.getCountStatus());
-        accountPersistent.get().setYear(payments.getYear());
-        accountPersistent.get().setUserId(payments.getUserId());
-        accountPersistent.get().setBankAccountDetails(payments.getBankAccountDetails());
+        accountPersistent
+                .get()
+                .setAmount(payments.getAmount());
+        accountPersistent
+                .get()
+                .setCountStatus(payments.getCountStatus());
+        accountPersistent
+                .get()
+                .setYear(payments.getYear());
+        accountPersistent
+                .get()
+                .setUserId(payments.getUserId());
+        accountPersistent
+                .get()
+                .setBankAccountDetails(payments.getBankAccountDetails());
     }
 
     /**
@@ -141,7 +152,6 @@ public class PaymentsServiceImpl implements PaymentsService {
         return repository.existsUserInPayments(userId);
     }
 
-
     /**
      * Checks all mandatory attributes are not null
      *
@@ -149,7 +159,8 @@ public class PaymentsServiceImpl implements PaymentsService {
      * @return Boolean-Value if the mandatory attributes are not null
      */
     private boolean checkMandatoryAttributesAreNotNull(Payments createPayments) {
-        return isNull(createPayments.getAmount(), createPayments.getCountStatus(), createPayments.getYear(), createPayments.getUserId(), createPayments.getBankAccountDetails());
+        return isNull(createPayments.getAmount(), createPayments.getCountStatus(), createPayments.getYear(), createPayments.getUserId(),
+                      createPayments.getBankAccountDetails());
     }
 
     /**
@@ -159,7 +170,7 @@ public class PaymentsServiceImpl implements PaymentsService {
      * @return Boolean-Value if Strings are null or not
      */
     private boolean isNull(Object... strArr) {
-        for (Object st : strArr) {
+        for ( Object st : strArr ) {
             if (st == null)
                 return true;
         }

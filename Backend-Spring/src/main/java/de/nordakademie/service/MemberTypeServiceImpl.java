@@ -1,21 +1,17 @@
 package de.nordakademie.service;
 
-import de.nordakademie.model.MemberType;
-import de.nordakademie.model.Postcode;
-import de.nordakademie.repository.MemberTypeRepository;
-import de.nordakademie.util.ApiMessages;
-import org.springframework.stereotype.Service;
-
+import java.util.List;
+import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.lang.reflect.Member;
-import java.util.List;
-import java.util.Optional;
-
+import org.springframework.stereotype.Service;
+import de.nordakademie.model.MemberType;
+import de.nordakademie.repository.MemberTypeRepository;
+import de.nordakademie.util.ApiMessages;
 @Service
 @Transactional
-public class MemberTypeServiceImpl implements MemberTypeService{
+public class MemberTypeServiceImpl implements MemberTypeService {
     private MemberTypeRepository repository;
 
     @Inject
@@ -27,7 +23,7 @@ public class MemberTypeServiceImpl implements MemberTypeService{
     public MemberType createMemberType(MemberType memberType) {
 
         // Check if JSON is filled correctly.
-        if (checkMandatoryAttributesAreNotNull(memberType)){
+        if (checkMandatoryAttributesAreNotNull(memberType)) {
             throw new IllegalArgumentException(ApiMessages.MSG_NULL);
         }
 
@@ -43,7 +39,7 @@ public class MemberTypeServiceImpl implements MemberTypeService{
     public void updateMemberType(String membertypeId, MemberType memberType) {
 
         // Check if JSON is filled correctly.
-        if (checkMandatoryAttributesAreNotNull(memberType)){
+        if (checkMandatoryAttributesAreNotNull(memberType)) {
             throw new IllegalArgumentException(ApiMessages.MSG_NULL);
         }
 
@@ -51,8 +47,12 @@ public class MemberTypeServiceImpl implements MemberTypeService{
         if (!memberTypePersistent.isPresent()) {
             throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
         }
-        memberTypePersistent.get().setAmount(memberType.getAmount());
-        memberTypePersistent.get().setDescription(memberType.getDescription());
+        memberTypePersistent
+                .get()
+                .setAmount(memberType.getAmount());
+        memberTypePersistent
+                .get()
+                .setDescription(memberType.getDescription());
     }
 
     @Override
@@ -65,13 +65,12 @@ public class MemberTypeServiceImpl implements MemberTypeService{
         return repository.findById(memberTypeId);
     }
 
-
     private boolean checkMandatoryAttributesAreNotNull(MemberType createMemberType) {
         return isNull(createMemberType.getDescription(), createMemberType.getAmount());
     }
 
     private boolean isNull(Object... strArr) {
-        for (Object st : strArr) {
+        for ( Object st : strArr ) {
             if (st == null)
                 return true;
         }

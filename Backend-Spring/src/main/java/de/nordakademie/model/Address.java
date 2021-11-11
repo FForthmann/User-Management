@@ -1,23 +1,20 @@
 package de.nordakademie.model;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 @Embeddable
 public class Address {
-
     @Column(nullable = false)
     private String street;
+
     @Column(nullable = false)
     private Integer houseNumber;
+
     @ManyToOne
     @JsonUnwrapped
     private Postcode postalCode;
-
 
     public Address(String street, Integer houseNumber, Postcode postalCode) {
         this.street = street;
