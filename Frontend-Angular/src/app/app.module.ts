@@ -27,6 +27,7 @@ import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/
 import {DatePipe} from "@angular/common";
 import { ModalViewComponent } from './components/modal-view/modal-view.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule
   ],
   providers: [
     DatePipe,
