@@ -8,6 +8,7 @@ import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {FormService} from "../services/form.service";
 import {ConfirmationDialogComponent} from "./confirmation-dialog/confirmation-dialog.component";
+import {NotificationService} from "../services/notifications/notification.service";
 
 @Component({
   selector: 'app-users',
@@ -20,6 +21,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService,
               private formService: FormService,
+              private notificationService: NotificationService,
               private dialog: MatDialog,
               private router: Router,
               private route: ActivatedRoute) {
@@ -176,7 +178,12 @@ export class UsersComponent implements OnInit, OnDestroy {
    */
   private reloadList(): void {
     this.userService.getUsers().subscribe((users: User[]) => {
+      if(users.length < 1) {
+        this.notificationService.warn('Keine Nutzerdaten gefunden!');
+      }
       this.users = users;
+    },() => {
+      this.notificationService.error('Keine Verbindung zur Datenbank!');
     });
   }
 }
