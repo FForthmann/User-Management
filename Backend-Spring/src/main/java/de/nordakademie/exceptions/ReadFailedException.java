@@ -1,21 +1,21 @@
 package de.nordakademie.exceptions;
 
-import java.time.ZonedDateTime;
 import org.springframework.http.HttpStatus;
-public class ApiException extends Exception {
+public class ReadFailedException extends Exception {
     private final String message;
 
     private final Throwable throwable;
 
     private final HttpStatus httpStatus;
 
-    private final ZonedDateTime timestamp;
-
-    public ApiException(final String message, final Throwable throwable, final HttpStatus httpStatus, final ZonedDateTime timestamp) {
+    public ReadFailedException(final String message, final Throwable throwable, final HttpStatus httpStatus) {
         this.message = message;
         this.throwable = throwable;
         this.httpStatus = httpStatus;
-        this.timestamp = timestamp;
+    }
+
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
     }
 
     @Override
@@ -27,11 +27,4 @@ public class ApiException extends Exception {
         return throwable;
     }
 
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
-    }
-
-    public ZonedDateTime getTimestamp() {
-        return timestamp;
-    }
 }

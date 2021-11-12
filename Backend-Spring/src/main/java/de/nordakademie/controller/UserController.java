@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import de.nordakademie.exceptions.CreateFailedException;
 import de.nordakademie.model.User;
 import de.nordakademie.service.UserService;
+import de.nordakademie.util.ExceptionMessages;
 @RestController
 @RequestMapping(path = "/rest/user")
 public class UserController {
@@ -59,11 +61,15 @@ public class UserController {
     @PostMapping
     public ResponseEntity<User> createUser(
             @RequestBody
-                    User user) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(service.createUser(user));
-
+                    User user) throws CreateFailedException {
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(service.createUser(user));
+        } catch ( IllegalArgumentException ex ) {
+            ex.printStackTrace();
+            throw new CreateFailedException(ExceptionMessages.USER_CREATION_FAILED, ex, HttpStatus.MULTI_STATUS);
+        }
     }
 
     @PutMapping("/{id}")
