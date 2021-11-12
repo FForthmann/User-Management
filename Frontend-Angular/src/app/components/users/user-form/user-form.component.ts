@@ -65,7 +65,8 @@ export class UserFormComponent implements OnInit{
       cancellationDate: "" ? "": (this.datePipe.transform(userData.cancellationDate, 'yyyy-MM-dd') as string),
       memberType: userData.memberType,
       accountDetails: userData.accountDetails,
-      familyId: userData.familyId? parseInt(userData.familyId): undefined
+      familyId: userData.familyId? parseInt(userData.familyId): undefined,
+      annualFee: userData.annualFee
     }
 
     if (userData.cancellationDate) {

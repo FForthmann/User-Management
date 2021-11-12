@@ -34,7 +34,8 @@ export class FormService {
     cancellationDate: new FormControl(''),
     leavingDate: new FormControl(''),
     memberType: new FormControl('', Validators.required),
-    familyId: new FormControl('',[Validators.pattern("^[0-9]*$")])
+    familyId: new FormControl('',[Validators.pattern("^[0-9]*$")]),
+    annualFee: new FormControl('', [Validators.pattern("^[0-9]")])
   });
 
   /**
@@ -59,7 +60,8 @@ export class FormService {
         cancellationDate: user.cancellationDate?user.cancellationDate:'',
         leavingDate: user.leavingDate? user.leavingDate:'',
         memberType: user.memberType,
-        familyId: user.familyId? user.familyId:''
+        familyId: user.familyId? user.familyId:'',
+        annualFee: user.annualFee? user.annualFee:''
       });
     } else {
       this.form.setValue({
@@ -75,7 +77,8 @@ export class FormService {
         cancellationDate: '',
         leavingDate: '',
         memberType: '',
-        familyId: ''
+        familyId: '',
+        annualFee: ''
       });
     }
   }
