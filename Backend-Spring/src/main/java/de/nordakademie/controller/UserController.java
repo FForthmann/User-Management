@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import de.nordakademie.exceptions.CreateFailedException;
+import de.nordakademie.exceptions.DeleteFailedException;
+import de.nordakademie.exceptions.ReadFailedException;
+import de.nordakademie.exceptions.UpdateFailedException;
 import de.nordakademie.model.User;
 import de.nordakademie.service.UserService;
 import de.nordakademie.util.ExceptionMessages;
@@ -36,14 +39,19 @@ public class UserController {
     @GetMapping("/{id}")
     public Optional<User> findUserById(
             @PathVariable("id")
-                    Long userId) {
-        return service.findUserById(userId);
+                    Long userId) throws ReadFailedException {
+        try {
+            return service.findUserById(userId);
+        } catch ( EntityNotFoundException ex ) {
+            ex.printStackTrace();
+            throw new ReadFailedException(ExceptionMessages.USER_READ_FAILED, ex, HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(
             @PathVariable("id")
-                    Long userId) {
+                    Long userId) throws DeleteFailedException {
         try {
             service.deleteUserById(userId);
             return ResponseEntity
@@ -51,9 +59,9 @@ public class UserController {
                     .build();
         } catch ( IllegalArgumentException ex ) {
             ex.printStackTrace();
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .build();
+            throw new DeleteFailedException(ExceptionMessages.USER_DELETE_ILLEGAL_ARGUMENT, ex, HttpStatus.BAD_REQUEST);
+        } catch ( EntityNotFoundException ex ) {
+            throw new DeleteFailedException(ExceptionMessages.USER_NOT_FOUND_WHEN_DELETE, ex, HttpStatus.NOT_FOUND);
         }
 
     }
@@ -68,7 +76,7 @@ public class UserController {
                     .body(service.createUser(user));
         } catch ( IllegalArgumentException ex ) {
             ex.printStackTrace();
-            throw new CreateFailedException(ExceptionMessages.USER_CREATION_FAILED, ex, HttpStatus.MULTI_STATUS);
+            throw new CreateFailedException(ExceptionMessages.USER_CREATION_FAILED, ex, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -77,20 +85,16 @@ public class UserController {
             @PathVariable("id")
                     Long id,
             @RequestBody
-                    User user) {
+                    User user) throws UpdateFailedException {
         try {
             service.updateUser(id, user);
             return ResponseEntity
                     .ok()
                     .build();
         } catch ( IllegalArgumentException ex ) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .build();
+            throw new UpdateFailedException(ExceptionMessages.USER_UPDATE_ILLEGAL_ARGUMENT, ex, HttpStatus.BAD_REQUEST);
         } catch ( EntityNotFoundException ex ) {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .build();
+            throw new UpdateFailedException(ExceptionMessages.USER_NOT_FOUND_WHEN_UPDATE, ex, HttpStatus.NOT_FOUND);
         }
 
     }
