@@ -1,26 +1,22 @@
 <form [formGroup]="formService.form" class="normal-form" (submit)="closeDialog('submit')">
-<!--  <mat-grid-tile-header>-->
   <div class="container" fxLayout="column">
-    <mat-toolbar fxLayout="row">
-      <button mat-raised-button class="btn-dialog-close" color="warn" mat-stroked-button (click)="closeDialog('close')" tabIndex="-1"><mat-icon>clear</mat-icon></button>
+    <p>
+      <mat-toolbar fxLayout="row">
+        <button mat-raised-button class="btn-dialog-close" color="warn" mat-stroked-button (click)="closeDialog('close')" tabIndex="-1"><mat-icon>clear</mat-icon></button>
 
-      <span class="example-spacer"></span>
+        <span class="example-spacer"></span>
 
-      <button mat-raised-button color="primary" type="submit"
-              *ngIf="!formService.readonly"
-              [disabled]="formService.form.invalid"
-              [mat-dialog-close]="data">Save
-      </button>
+        <button mat-raised-button color="primary" type="submit"
+                *ngIf="!formService.readonly"
+                [disabled]="formService.form.invalid"
+                [mat-dialog-close]="data">Save
+        </button>
 
-      <button mat-raised-button color="primary" *ngIf="formService.readonly"
-      (click)="formService.readonly = !formService.readonly">Edit</button>
-
-    </mat-toolbar>
-<!--  </mat-grid-tile-header>-->
-<!--  <mat-grid-list cols="breakpoint" rowHeight="2:1" (window:resize)="onResize($event)" [gutterSize]="'10px'">-->
-<!--    <mat-grid-tile>-->
-<!--      <div class="controles-container">-->
-  <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.md="column" fxLayout.sm="column" fxLayoutGap="2%" fxLayoutAlign="center">
+        <button mat-raised-button color="primary" *ngIf="formService.readonly"
+        (click)="formService.readonly = !formService.readonly">Edit</button>
+      </mat-toolbar>
+    </p>
+      <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.md="column" fxLayout.sm="column" fxLayoutGap="2%" fxLayoutAlign="center">
         <mat-form-field fxFlex="20%">
           <input formControlName="firstName" matInput placeholder="Vorname*" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
@@ -39,10 +35,7 @@
           <mat-datepicker #birthday></mat-datepicker>
         </mat-form-field>
       </div>
-<!--    </mat-grid-tile>-->
-<!--    <mat-grid-tile>-->
-<!--      <div class="controles-container">-->
-    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.md="column" fxLayout.sm="column" fxLayoutGap="2%" fxLayoutAlign="center">
+      <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.md="column" fxLayout.sm="column" fxLayoutGap="2%" fxLayoutAlign="center">
         <mat-form-field fxFlex="20%">
           <input formControlName="street" matInput placeholder="Straße" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
@@ -64,10 +57,7 @@
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
       </div>
-<!--    </mat-grid-tile>-->
-<!--    <mat-grid-tile>-->
-<!--      <div class="controles-container">-->
-    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.md="column" fxLayout.sm="column" fxLayoutGap="2%" fxLayoutAlign="center">
+      <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.md="column" fxLayout.sm="column" fxLayoutGap="2%" fxLayoutAlign="center">
         <mat-form-field fxFlex="20%">
           <mat-label>Mitgliedsart</mat-label>
           <mat-select formControlName="memberType" [disabled]="this.formService.readonly">
@@ -87,11 +77,8 @@
           <input formControlName="accountDetails" matInput placeholder="Kontoverbindung" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
-        </div>
-<!--    </mat-grid-tile>-->
-<!--    <mat-grid-tile>-->
-<!--      <div class="controles-container">-->
-    <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.md="column" fxLayout.sm="column" fxLayoutGap="2%" fxLayoutAlign="center">
+      </div>
+      <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.md="column" fxLayout.sm="column" fxLayoutGap="2%" fxLayoutAlign="center">
         <mat-form-field fxFlex="20%">
           <input formControlName="entryDate" matInput [matDatepicker]="picker" placeholder="Eintrittsdatum" [disabled]="this.formService.readonly">
           <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -114,7 +101,5 @@
           <input formControlName="familyId" matInput placeholder="Familienmitglieds ID" [readonly]="formService.readonly">
         </mat-form-field>
       </div>
-<!--    </mat-grid-tile>-->
-<!--  </mat-grid-list>-->
-</div>
+  </div>
 </form>
