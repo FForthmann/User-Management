@@ -50,8 +50,8 @@ public class PostcodeController {
         } catch ( IllegalArgumentException ex ) {
             ex.printStackTrace();
             throw new DeleteFailedException(ExceptionMessages.POSTCODE_DELETE_ILLEGAL_ARGUMENT, ex, HttpStatus.BAD_REQUEST);
-            // ToDo fafor: Beim Delete eines nicht vorhandenen Postcodes wird der gewollte Text nicht angezeigt. Der Fehlercode ist korrekt.
         } catch ( EmptyResultDataAccessException ex ) {
+            // ToDo fafor: Beim Delete eines nicht vorhandenen Postcodes wird der gewollte Text nicht angezeigt. Der Fehlercode ist korrekt.
             throw new DeleteFailedException(ExceptionMessages.POSTCODE_NOT_FOUND_WHEN_DELETE, ex, HttpStatus.BAD_REQUEST);
         } catch ( ConstraintViolationException ex ) {
             // ToDo fafor: Falsche Exception, wird nicht getriggert und endet am Frontend mit 500 Internal Error
