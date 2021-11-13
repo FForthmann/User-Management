@@ -46,6 +46,18 @@ public final class ExceptionMessages {
 
     public static final String MEMBERTYPE_NOT_FOUND_WHEN_UPDATE = "The membertype cannot be updated because it does not exist in the database.";
 
+    public static final String PAYMENT_CREATION_FAILED = "The creation of the payment failed because the data entered is invalid or incomplete.";
+
+    public static final String PAYMENT_DELETE_ILLEGAL_ARGUMENT = "The payments's deletion failed because the data entered is invalid or incomplete.";
+
+    public static final String PAYMENT_NOT_FOUND_WHEN_DELETE = "The payment cannot be deleted because it does not exist in the database.";
+
+    public static final String PAYMENT_READ_FAILED = "The payment cannot be retrieved because it does not exist in the database.";
+
+    public static final String PAYMENT_UPDATE_ILLEGAL_ARGUMENT = "Updating the payment failed because the data entered is invalid or incomplete.";
+
+    public static final String PAYMENT_NOT_FOUND_WHEN_UPDATE = "The payment cannot be updated because it does not exist in the database.";
+
     private ExceptionMessages() {
         // Constructor to hide the public one
     }
