@@ -12,7 +12,7 @@ import {catchError, retry} from "rxjs/operators";
  * Class to communicate with the API for Users/Members
  *
  * @Author: Luca Ulrich
- * @Version: 1.1
+ * @Version: 1.2
  */
 export class UserService {
 
@@ -39,7 +39,10 @@ export class UserService {
    * @returns: Observable with a Single User Object
    */
   getUser(id: number): Observable<User> {
-    return this.http.get<User>(`rest/user/${id}`);
+    return this.http.get<User>(`rest/user/${id}`).pipe(
+      retry(1),
+      catchError(this.handleError)
+    );
   }
 
   /**
@@ -51,7 +54,10 @@ export class UserService {
    *
    */
   saveUser(saveUser: User): Observable<User> {
-    return this.http.post<User>('/rest/user', saveUser);
+    return this.http.post<User>('/rest/user', saveUser).pipe(
+      retry(1),
+      catchError(this.handleError)
+    );
   }
 
   /**
@@ -63,7 +69,10 @@ export class UserService {
    *
    */
   editUser(editUser: User): Observable<User>{
-    return this.http.put<User>(`/rest/user/${editUser.userId}`, editUser);
+    return this.http.put<User>(`/rest/user/${editUser.userId}`, editUser).pipe(
+      retry(1),
+      catchError(this.handleError)
+    );
  }
 
   /**
@@ -75,7 +84,10 @@ export class UserService {
    *
    */
   deleteUser(userId: number): Observable<void> {
-    return this.http.delete<void>(`/rest/user/${userId}`)
+    return this.http.delete<void>(`/rest/user/${userId}`).pipe(
+      retry(1),
+      catchError(this.handleError)
+    );
   }
 
   /**
@@ -86,16 +98,21 @@ export class UserService {
    * @returns: Observable<never>
    */
   handleError(error: HttpErrorResponse): Observable<never> {
+    console.log('Error-Handling activated!')
     let errorMessage: string = '';
 
     switch (error.status) {
       case 504:
-        errorMessage = 'Keine Verbindung zur Datenbank ' + `(${error.status})!`
+        errorMessage = 'Keine Verbindung zur Datenbank!';
+        break;
+      case 400:
+        errorMessage = error.error.localizedMessage;
         break;
       default:
-        errorMessage = 'Es ist ein unbekannter Fehler aufgetreten!'
+        errorMessage = 'Es ist ein unbekannter Fehler aufgetreten!';
         break;
     }
+
     return throwError(errorMessage);
 
   }
