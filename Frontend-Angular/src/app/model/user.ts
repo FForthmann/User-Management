@@ -2,7 +2,7 @@
  * Interface for a User-Model
  *
  * @Author: Luca Ulrich
- * @Version: 1.1
+ * @Version: 1.2
  */
 export interface User {
   userId?: number
@@ -10,39 +10,48 @@ export interface User {
     firstName: string;
     lastName: string;
   }
+  // accountDetails: number
   address: {
     street: string;
     houseNumber: number;
-    postalCode: number;
-    city: string;
+    postcode: number;
+    location: string;
   }
   birthday: string;
   entryDate: string;
   cancellationDate?: string;
   leavingDate?: string;
-  memberType: string;
-  accountDetails: number;
-  familyId?: number;
+  description: string;
+  amount?: number;
+  familyId?: {
+    userId: number;
+  };
 }
 
 /**
  * Interface for a formUser Model
  *
  * @Author: Luca Ulrich
- * @Version: 1.0
+ * @Version: 1.1
  */
 export interface formUser {
-  accountDetails: number;
-  birthday: string;
-  cancellationDate?: string;
-  city: string,
-  entryDate: string;
-  familyId?: string;
   firstName: string;
-  houseNumber: string;
   lastName: string;
-  leavingDate: string;
-  memberType: string;
-  postalCode: string;
+
+  // accountDetails: string;
+
   street: string;
+  houseNumber: string;
+  postcode: string;
+  location: string,
+
+  birthday: string;
+  entryDate: string;
+  cancellationDate?: string;
+  leavingDate?: string;
+
+  description: string;
+  amount?: string;
+
+  familyId?: string;
 }
