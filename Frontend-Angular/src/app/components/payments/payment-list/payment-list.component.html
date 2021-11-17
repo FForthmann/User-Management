@@ -18,7 +18,7 @@
   <!-- Name Column -->
   <ng-container matColumnDef="Bankverbindung">
     <th mat-header-cell *matHeaderCellDef>Bankverbindung</th>
-    <td mat-cell *matCellDef="let payment"> payment.accountDetails</td>
+    <td mat-cell *matCellDef="let payment"> {{payment.bankAccountDetails}}</td>
   </ng-container>
 
   <!-- Amount Column -->

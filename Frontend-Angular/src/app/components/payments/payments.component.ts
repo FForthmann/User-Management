@@ -3,6 +3,7 @@ import {Payment} from "../../model/payment";
 import {PaymentService} from "../../services/payments/payment.service";
 import {MatDialog} from "@angular/material/dialog";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
+import {NotificationService} from "../../services/notifications/notification.service";
 
 @Component({
   selector: 'app-payments',
@@ -13,6 +14,7 @@ export class PaymentsComponent implements OnInit {
   payments: Payment[] = [];
 
   constructor(private paymentService: PaymentService,
+              private notificationService: NotificationService,
               private dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -29,7 +31,12 @@ export class PaymentsComponent implements OnInit {
    */
   private reloadList(): void {
     this.paymentService.getPayments().subscribe((payments: Payment[]) => {
+      if (payments.length < 1) {
+        this.notificationService.warn('Keine Rechnungen gefunden!');
+      }
       this.payments = payments;
+    },(message: string) => {
+      this.notificationService.error(message);
     });
   }
 
@@ -61,8 +68,6 @@ export class PaymentsComponent implements OnInit {
             this.editPayment(payment);
           }
         });
-
-
       }
     })
   }
@@ -77,6 +82,8 @@ export class PaymentsComponent implements OnInit {
   editPayment(payment: Payment): void {
     this.paymentService.editPayment(payment).subscribe((payment: Payment) => {
       this.reloadList();
-    })
+    },(message: string) => {
+      this.notificationService.error(message);
+    });
   }
 }
