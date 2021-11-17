@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {FormService} from "../../services/form.service";
+import {FormService} from "../../services/form/form.service";
 
 @Component({
   selector: 'app-modal-view',
