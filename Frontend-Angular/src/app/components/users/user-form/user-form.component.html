@@ -74,7 +74,7 @@
         </mat-form-field>
 
         <mat-form-field fxFlex="20%">
-          <input formControlName="leavingDate" matInput [matDatepicker]="leavingDate" placeholder="Austrittsdatum" [disabled]="this.formService.readonly">
+          <input formControlName="leavingDate" matInput [matDatepicker]="leavingDate" placeholder="Austrittsdatum">
           <mat-datepicker-toggle matSuffix [for]="leavingDate"></mat-datepicker-toggle>
           <mat-datepicker #leavingDate></mat-datepicker>
         </mat-form-field>
@@ -97,7 +97,7 @@
       </mat-form-field>
 
       <mat-form-field fxFlex="30%">
-        <input formControlName="amount" matInput placeholder="Jahresbeitrag" [readonly]="formService.readonly">
+        <input formControlName="amount" matInput placeholder="Jahresbeitrag">
         <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
       </mat-form-field>
 

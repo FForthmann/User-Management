@@ -32,10 +32,10 @@ export class FormService {
     birthday: new FormControl('', Validators.required),
     entryDate: new FormControl('', Validators.required),
     cancellationDate: new FormControl(''),
-    leavingDate: new FormControl(''),
+    leavingDate: new FormControl({value: '',disabled: true}),
     memberType: new FormControl('', Validators.required),
     familyId: new FormControl('',[Validators.pattern("^[0-9]*$")]),
-    annualFee: new FormControl('', [Validators.pattern("^[0-9]")])
+    amount: new FormControl({value: '',disabled: true}, [Validators.pattern("^[0-9]")])
   });
 
   /**
@@ -61,7 +61,7 @@ export class FormService {
         leavingDate: user.leavingDate? user.leavingDate:'',
         memberType: user.memberType,
         familyId: user.familyId? user.familyId:'',
-        annualFee: user.amount? user.amount:''
+        amount: user.amount? user.amount:''
       });
     } else {
       this.form.setValue({
@@ -78,7 +78,7 @@ export class FormService {
         leavingDate: '',
         memberType: '',
         familyId: '',
-        annualFee: ''
+        amount: ''
       });
     }
   }
