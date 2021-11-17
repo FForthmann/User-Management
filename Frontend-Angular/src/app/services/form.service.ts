@@ -22,17 +22,18 @@ export class FormService {
   form: FormGroup = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
-    accountDetails: new FormControl('', [Validators.required,
-      Validators.pattern("^[0-9]*$"), Validators.minLength(8)]),
-    street: new FormControl('', Validators.required),
+    // accountDetails: new FormControl('', [Validators.required,
+    //   Validators.pattern("^[0-9]*$"), Validators.minLength(8)]),
     houseNumber: new FormControl('', [Validators.pattern("^[0-9]*$"), Validators.required]),
-    postalCode: new FormControl('', [Validators.pattern("^[0-9]*$"), Validators.required]),
-    city: new FormControl('', Validators.required),
+    postcode: new FormControl('', [Validators.pattern("^[0-9]*$"), Validators.required]),
+    street: new FormControl('', Validators.required),
+    location: new FormControl('', Validators.required),
     birthday: new FormControl('', Validators.required),
     entryDate: new FormControl('', Validators.required),
     cancellationDate: new FormControl(''),
     leavingDate: new FormControl(''),
-    memberType: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required),
+    amount: new FormControl(''),
     familyId: new FormControl('',[Validators.pattern("^[0-9]*$")])
   });
 
@@ -48,32 +49,34 @@ export class FormService {
       this.form.setValue({
         firstName: user.name.firstName,
         lastName: user.name.lastName,
-        accountDetails: user.accountDetails,
+        // accountDetails: user.accountDetails,
         houseNumber: user.address.houseNumber,
-        postalCode: user.address.postalCode,
+        postcode: user.address.postcode,
         street: user.address.street,
-        city: user.address.city,
+        location: user.address.location,
         birthday: user.birthday,
         entryDate: user.entryDate,
         cancellationDate: user.cancellationDate?user.cancellationDate:'',
         leavingDate: user.leavingDate? user.leavingDate:'',
-        memberType: user.memberType,
-        familyId: user.familyId? user.familyId:''
+        description: user.description,
+        amount: user.amount? user.amount:'',
+        familyId: user.familyId?.userId? user.familyId.userId:''
       });
     } else {
       this.form.setValue({
         firstName: '',
         lastName: '',
-        accountDetails: '',
+        // accountDetails: '',
         houseNumber: '',
-        postalCode: '',
+        postcode: '',
         street: '',
-        city: '',
+        location: '',
         birthday: '',
         entryDate: '',
         cancellationDate: '',
         leavingDate: '',
-        memberType: '',
+        description: '',
+        amount: '',
         familyId: ''
       });
     }
