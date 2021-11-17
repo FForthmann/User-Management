@@ -22,18 +22,18 @@ export class PaymentService {
    * @returns: Observable with an Array of Payments
    */
   getPayments(): Observable<Payment[]> {
-    return this.http.get<Payment[]>('/rest/account');
+    return this.http.get<Payment[]>('/rest/payments');
   }
 
   /**
    * Function to recieve a single Payment with given ID
    *
    * @Author: Luca Ulrich
-   * @param id: number - ID to recieve Payment from
+   * @param id: number - ID to receive Payment from
    * @returns: Observable with an Payment-Object
    */
   getPayment(id: number): Observable<Payment> {
-    return this.http.get<Payment>(`/rest/account/${id}`);
+    return this.http.get<Payment>(`/rest/payments/${id}`);
   }
 
   /**
@@ -45,6 +45,6 @@ export class PaymentService {
    *
    */
   editPayment(payment: Payment): Observable<Payment>{
-    return this.http.put<Payment>(`/rest/account/${payment.invoiceNumber}`, payment);
+    return this.http.put<Payment>(`/rest/payments/${payment.invoiceNumber}`, payment);
   }
 }

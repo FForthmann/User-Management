@@ -33,11 +33,11 @@
         matTooltip="✘ = nicht bezahlt | ✓ = bezahlt">Status</th>
     <td mat-cell *matCellDef="let payment">
       <button mat-icon-button color="primary"
-      *ngIf="payment.countStatus != 5"
+      *ngIf="payment.countStatus"
               matTooltip="Als nicht bezahlt markieren!"
       (click)="changePaymentStatus(payment.invoiceNumber)"><mat-icon>done_outline</mat-icon></button>
       <button mat-icon-button color="warn"
-              *ngIf="payment.countStatus == 5"
+              *ngIf="!payment.countStatus"
               matTooltip="Als bezahlt markieren!"
               (click)="changePaymentStatus(payment.invoiceNumber)"><mat-icon>cancel</mat-icon></button>
     </td>
