@@ -182,8 +182,8 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.notificationService.warn('Keine Nutzerdaten gefunden!');
       }
       this.users = users;
-    },() => {
-      this.notificationService.error('Keine Verbindung zur Datenbank!');
+    },(message: string) => {
+      this.notificationService.error(message);
     });
   }
 }
