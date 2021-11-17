@@ -98,7 +98,6 @@ export class UserService {
    * @returns: Observable<never>
    */
   handleError(error: HttpErrorResponse): Observable<never> {
-    console.log('Error-Handling activated!')
     let errorMessage: string = '';
 
     switch (error.status) {

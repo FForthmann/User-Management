@@ -1,14 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import { User } from '../../model/user';
 import { UserService } from '../../services/users/user.service';
+import {NotificationService} from "../../services/notifications/notification.service";
 import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {UserFormComponent} from "./user-form/user-form.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
-import {FormService} from "../services/form.service";
-import {ConfirmationDialogComponent} from "./confirmation-dialog/confirmation-dialog.component";
-import {NotificationService} from "../services/notifications/notification.service";
 import {FormService} from "../../services/form/form.service";
 import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 
