@@ -68,6 +68,8 @@ export class PaymentsComponent implements OnInit {
             this.editPayment(payment);
           }
         });
+      } else {
+        this.notificationService.error(`Keinen Rechnung mit der Rechnungsnummer: ${paymentId} gefunden!`);
       }
     })
   }
@@ -80,7 +82,14 @@ export class PaymentsComponent implements OnInit {
    * @returns: void
    */
   editPayment(payment: Payment): void {
-    this.paymentService.editPayment(payment).subscribe((payment: Payment) => {
+    this.paymentService.editPayment(payment).subscribe(() => {
+      if (payment.countStatus) {
+        this.notificationService.success(`Die Rechnung:
+        "${payment.invoiceNumber}" wurde als bezahlt markiert!`);
+      } else {
+        this.notificationService.warn(`Die Rechnung:
+        "${payment.invoiceNumber}" wurde als nicht bezahlt markiert!`);
+      }
       this.reloadList();
     },(message: string) => {
       this.notificationService.error(message);
