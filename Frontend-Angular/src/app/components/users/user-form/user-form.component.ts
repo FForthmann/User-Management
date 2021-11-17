@@ -66,7 +66,7 @@ export class UserFormComponent implements OnInit{
       memberType: userData.memberType,
       accountDetails: userData.accountDetails,
       familyId: userData.familyId? parseInt(userData.familyId): undefined,
-      annualFee: userData.annualFee
+      amount: userData.amount
     }
 
     if (userData.cancellationDate) {

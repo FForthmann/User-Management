@@ -61,7 +61,7 @@ export class FormService {
         leavingDate: user.leavingDate? user.leavingDate:'',
         memberType: user.memberType,
         familyId: user.familyId? user.familyId:'',
-        annualFee: user.annualFee? user.annualFee:''
+        annualFee: user.amount? user.amount:''
       });
     } else {
       this.form.setValue({

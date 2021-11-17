@@ -23,7 +23,7 @@ export interface User {
   memberType: string;
   accountDetails: number;
   familyId?: number;
-  annualFee?: number;
+  amount?: number;
 }
 
 /**
@@ -46,5 +46,5 @@ export interface formUser {
   memberType: string;
   postalCode: string;
   street: string;
-  annualFee: number;
+  amount: number;
 }
