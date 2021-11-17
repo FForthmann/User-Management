@@ -1,7 +1,7 @@
 /**
  * Interface for a User-Model
  *
- * @Author: Luca Ulrich
+ * @Author: Luca Ulrich & Jan Ramm
  * @Version: 1.1
  */
 export interface User {
@@ -23,13 +23,13 @@ export interface User {
   memberType: string;
   accountDetails: number;
   familyId?: number;
-  annualFee: number;
+  annualFee?: number;
 }
 
 /**
  * Interface for a formUser Model
  *
- * @Author: Luca Ulrich
+ * @Author: Luca Ulrich & Jan Ramm
  * @Version: 1.0
  */
 export interface formUser {

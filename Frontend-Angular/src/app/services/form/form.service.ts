@@ -10,7 +10,7 @@ import {User} from "../../model/user";
 /**
  * Class to handle Form Operations
  *
- * @Author: Luca Ulrich
+ * @Author: Luca Ulrich & Jan Ramm
  * @Version: 1.0
  */
 export class FormService {
@@ -41,7 +41,7 @@ export class FormService {
   /**
    * Function to initialize the Form
    *
-   * @Author: Luca Ulrich
+   * @Author: Luca Ulrich & Jan Ramm
    * @param user? - If user is given, Form will be filled with Userdata
    * @returns: void
    */

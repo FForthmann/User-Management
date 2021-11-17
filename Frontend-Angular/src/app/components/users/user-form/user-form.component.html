@@ -18,19 +18,15 @@
     </p>
     <div class="container" fxLayout="column" fxLayout.xs="row" fxLayout.md="column" fxLayout.sm="row" fxLayoutGap="1.5%" fxLayoutAlign="center">
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.md="row" fxLayout.sm="column" fxLayoutGap="1.5%" fxLayoutAlign="center">
-        <mat-form-field fxFlex="20%">
+        <mat-form-field fxFlex="30%">
           <input formControlName="firstName" matInput placeholder="Vorname*" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
-        <mat-form-field fxFlex="20%">
+        <mat-form-field fxFlex="30%">
           <input formControlName="lastName" matInput placeholder="Nachnamme*" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
-        <mat-form-field fxFlex="20%">
-          <input formControlName="accountDetails" matInput placeholder="Bankverbindung*" [readonly]="formService.readonly">
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
-        </mat-form-field>
-        <mat-form-field fxFlex="20%">
+        <mat-form-field fxFlex="30%">
           <input formControlName="birthday" matInput [matDatepicker]="birthday" placeholder="Geburtsdatum" [disabled]="this.formService.readonly">
           <mat-datepicker-toggle matSuffix [for]="birthday"></mat-datepicker-toggle>
           <mat-datepicker #birthday></mat-datepicker>
