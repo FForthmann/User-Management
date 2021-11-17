@@ -43,7 +43,7 @@ export class UserFormComponent implements OnInit{
   /**
    * Helper-Function to build a User Object to pass to other functions
    *
-   * @Author: Luca Ulrich
+   * @Author: Luca Ulrich & Jan Ramm
    * @param userData
    * @returns: User Object
    */
