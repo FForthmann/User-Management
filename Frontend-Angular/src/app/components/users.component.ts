@@ -101,6 +101,8 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.router.navigate(['../'], { relativeTo: this.route });
       if( result.event === 'submit') {
         this.saveUser(result.data);
+        this.notificationService.success(`Der Nutzer:
+        "${result.data.name.firstName + ' '+ result.data.name.lastName}" wurde erfolgreich angelegt!`)
       }
     })
   }
@@ -122,6 +124,8 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.router.navigate(['../'], { relativeTo: this.route });
         if (result.event === 'submit') {
           result.data['userId'] = user.userId;
+          this.notificationService.success(`Der Nutzer:
+        "${result.data.name.firstName + ' '+ result.data.name.lastName}" wurde erfolgreich editiert!`)
           this.editUser(result.data);
         }
       })
@@ -146,6 +150,8 @@ export class UsersComponent implements OnInit, OnDestroy {
         dialogRef.afterClosed().subscribe((result) => {
           this.router.navigate(['../'], { relativeTo: this.route });
           if (result) {
+            this.notificationService.success(`Der Nutzer:
+        "${user.name.firstName + ' '+ user.name.lastName}" wurde erfolgreich gelöscht!`)
             this.deleteUser(user);
           }
         });
