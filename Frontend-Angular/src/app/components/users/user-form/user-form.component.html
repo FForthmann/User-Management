@@ -58,15 +58,13 @@
           </mat-form-field>
 
           <mat-form-field fxFlex="20%">
-            <input formControlName="cancellationDate" matInput [matDatepicker]="cancellationDate" placeholder="Kündigungsdatum" [disabled]="this.formService.readonly">
+            <input formControlName="cancellationDate" matInput [matDatepicker]="cancellationDate" (dateChange)="onDateChange($event)" placeholder="Kündigungsdatum" [disabled]="this.formService.readonly">
             <mat-datepicker-toggle matSuffix [for]="cancellationDate"></mat-datepicker-toggle>
             <mat-datepicker #cancellationDate></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field fxFlex="20%">
-            <input formControlName="leavingDate" matInput [matDatepicker]="leavingDate" placeholder="Austrittsdatum">
-            <mat-datepicker-toggle matSuffix [for]="leavingDate"></mat-datepicker-toggle>
-            <mat-datepicker #leavingDate></mat-datepicker>
+            <input formControlName="leavingDate" matInput placeholder="{{leavingDate}}">
           </mat-form-field>
 
           <mat-form-field fxFlex="20%">

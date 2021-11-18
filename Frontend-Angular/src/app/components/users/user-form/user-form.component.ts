@@ -5,6 +5,7 @@ import {DatePipe} from "@angular/common";
 import {FormService} from "../../../services/form/form.service";
 import {MemberType} from "../../../model/memberType";
 import {MembertypeService} from "../../../services/memberTypes/membertype.service";
+import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 
 @Component({
   selector: 'app-user-form',
@@ -16,6 +17,7 @@ export class UserFormComponent implements OnInit{
 
   breakpoint: number = 1;
   memberTypes: MemberType[] = [];
+  leavingDate: string = 'Austrittsdatum';
 
   constructor(private datePipe: DatePipe,
               private memberTypeService: MembertypeService,
@@ -31,11 +33,19 @@ export class UserFormComponent implements OnInit{
     this.breakpoint = (window.innerWidth <= 480) ? 1 : 6;
   }
 
-  //TODO: dont know which type to use
-  // @ts-ignore
-  onResize(event) {
-    this.breakpoint = (event.target.innerWidth <= 480) ? 1 : 6;
+
+  /**
+   * Function to trigger Flex-Box on Window-size
+   *
+   * @Author: Jan Ram & Luca Ulrich
+   * @param event: UIEvent
+   * @returns: void
+   */
+  onResize(event: UIEvent): void {
+    const target = event.target as Window;
+    this.breakpoint = (target.innerWidth <= 480) ? 1 : 6;
   }
+
   /**
    * Function to close the Modal and send Data to Parent-Class
    *
@@ -115,5 +125,10 @@ export class UserFormComponent implements OnInit{
       leavingDate = new Date(year, 11, 31);
     }
     return leavingDate;
+  }
+
+  onDateChange(event: MatDatepickerInputEvent<any>) {
+    const leavingDate = this.calculateLeavingDate(event.value as string)
+    this.leavingDate = this.datePipe.transform(leavingDate, 'dd/MM/yyyy') as string;
   }
 }
