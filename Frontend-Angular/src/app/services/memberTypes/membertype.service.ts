@@ -23,7 +23,7 @@ export class MembertypeService {
    * @returns: Observable<MemberType[]> - Array with all MemberType Objects
    */
   getMemberTypes(): Observable<MemberType[]> {
-    return this.http.get<MemberType[]>(`/rest/membertype`);
+    return this.http.get<MemberType[]>(`/rest/memberType`);
   }
 
   /**
@@ -34,6 +34,6 @@ export class MembertypeService {
    * @returns: Observable<MemberType> - Observable with a single MemberType Object
    */
   getMemberType(id: number): Observable<MemberType> {
-    return this.http.get<MemberType>(`/rest/membertype/${id}`);
+    return this.http.get<MemberType>(`/rest/memberType/${id}`);
   }
 }
