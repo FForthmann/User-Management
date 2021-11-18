@@ -34,7 +34,7 @@ export class FormService {
     cancellationDate: new FormControl(''),
     leavingDate: new FormControl({value: '',disabled: true}),
     description: new FormControl('', Validators.required),
-    amount: new FormControl({value: '',disabled: true}, [Validators.pattern("^[0-9]")])
+    amount: new FormControl({value: '',disabled: true}, [Validators.pattern("^[0-9]")]),
     familyId: new FormControl('',[Validators.pattern("^[0-9]*$")])
   });
 
