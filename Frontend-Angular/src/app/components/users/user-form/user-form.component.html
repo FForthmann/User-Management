@@ -1,21 +1,21 @@
 <mat-dialog-content>
-<form [formGroup]="formService.form" class="normal-form" (submit)="closeDialog('submit')">
-    <p>
-      <mat-toolbar fxLayout="row">
-        <button mat-raised-button class="btn-dialog-close" color="warn" mat-stroked-button (click)="closeDialog('close')" tabIndex="-1"><mat-icon>clear</mat-icon></button>
+  <p>
+    <mat-toolbar fxLayout="row">
+      <button mat-raised-button class="btn-dialog-close" color="warn" mat-stroked-button (click)="closeDialog('close')" tabIndex="-1"><mat-icon>clear</mat-icon></button>
 
-        <span class="example-spacer"></span>
+      <span class="example-spacer"></span>
 
-        <button mat-raised-button color="primary" type="submit"
-                *ngIf="!formService.readonly"
-                [disabled]="formService.form.invalid"
-                [mat-dialog-close]="data">Save
-        </button>
+      <button mat-raised-button color="primary" type="submit"
+              *ngIf="!formService.readonly"
+              [disabled]="formService.form.invalid"
+              [mat-dialog-close]="data">Save
+      </button>
 
-        <button mat-raised-button color="primary" *ngIf="formService.readonly"
-        (click)="formService.readonly = !formService.readonly">Edit</button>
-      </mat-toolbar>
-    </p>
+      <button mat-raised-button color="primary" *ngIf="formService.readonly"
+              (click)="formService.readonly = !formService.readonly">Edit</button>
+    </mat-toolbar>
+  </p>
+  <form [formGroup]="formService.form" class="normal-form" (submit)="closeDialog('submit')">
     <div class="container" fxLayout="column" fxLayout.sm="row" fxLayoutGap="1.5%" fxLayoutAlign="center">
         <div class="container" fxLayout="row" fxLayout.xs="column"  fxLayout.sm="column" fxLayoutGap="1.5%" fxLayoutAlign="center">
           <mat-form-field fxFlex="30%">
