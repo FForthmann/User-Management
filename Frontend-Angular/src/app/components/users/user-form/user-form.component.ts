@@ -17,7 +17,7 @@ export class UserFormComponent implements OnInit{
 
   breakpoint: number = 1;
   memberTypes: MemberType[] = [];
-  leavingDate: string = 'Austrittsdatum';
+  leavingDate: string = '';
 
   constructor(private datePipe: DatePipe,
               private memberTypeService: MembertypeService,
@@ -127,7 +127,15 @@ export class UserFormComponent implements OnInit{
     return leavingDate;
   }
 
-  onDateChange(event: MatDatepickerInputEvent<any>) {
+  /**
+   * Function that gets triggered by a Change in users-form cancellation Date. It transforms the cancellationDate
+   * to a string that gets displayed in the leavingDate field
+   *
+   * @Author: Luca Ulrich
+   * @param event
+   * @returns: void
+   */
+  onDateChange(event: MatDatepickerInputEvent<any>): void {
     const leavingDate = this.calculateLeavingDate(event.value as string)
     this.leavingDate = this.datePipe.transform(leavingDate, 'dd/MM/yyyy') as string;
   }

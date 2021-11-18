@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable, Subject} from "rxjs";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {User} from "../../model/user";
+import {DatePipe} from "@angular/common";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class FormService {
   private openModalSubject: Subject<{ id: number | undefined; action: string; }> = new Subject<{ id: number | undefined; action: string; }>();
   public modal: Observable<{ id: number | undefined; action: string; }> = this.openModalSubject.asObservable()
 
-  constructor() { }
+  constructor(private datePipe: DatePipe) { }
 
   form: FormGroup = new FormGroup({
     firstName: new FormControl('', Validators.required),
@@ -57,7 +58,7 @@ export class FormService {
         birthday: user.birthday,
         entryDate: user.entryDate,
         cancellationDate: user.cancellationDate?user.cancellationDate:'',
-        leavingDate: user.leavingDate? user.leavingDate:'',
+        leavingDate: user.leavingDate? this.datePipe.transform(user.leavingDate, 'dd/MM/yyyy') as string:'',
         description: user.description,
         amount: user.amount? user.amount:'',
         familyId: user.familyId?.userId? user.familyId.userId:''
