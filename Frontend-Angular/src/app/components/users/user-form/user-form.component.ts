@@ -63,24 +63,30 @@ export class UserFormComponent implements OnInit{
         firstName: userData.firstName,
         lastName: userData.lastName
       },
+      // accountDetails: userData.accountDetails,
       address: {
         street: userData.street,
         houseNumber: parseInt(userData.houseNumber),
-        postalCode: parseInt(userData.postalCode),
-        city: userData.city
+        postcode: parseInt(userData.postcode),
+        location: userData.location
       },
       birthday: (this.datePipe.transform(userData.birthday, 'yyyy-MM-dd') as string),
       entryDate: (this.datePipe.transform(userData.entryDate, 'yyyy-MM-dd') as string),
-      cancellationDate: "" ? "": (this.datePipe.transform(userData.cancellationDate, 'yyyy-MM-dd') as string),
-      memberType: userData.memberType,
-      accountDetails: userData.accountDetails,
-      familyId: userData.familyId? parseInt(userData.familyId): undefined,
-      amount: userData.amount
+      description: userData.description,
     }
 
+
     if (userData.cancellationDate) {
+      userObject['cancellationDate'] = this.datePipe.transform(userData.cancellationDate, 'yyyy-MM-dd') as string
       leavingDate = this.calculateLeavingDate(userData.cancellationDate);
       userObject['leavingDate'] = this.datePipe.transform(leavingDate, 'yyyy-MM-dd') as string;
+    }
+
+    if (userData.familyId) {
+      userObject = { ...userObject,
+        familyId: {
+        userId: parseInt(userData.familyId)
+      }}
     }
 
     return userObject;

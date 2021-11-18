@@ -29,7 +29,8 @@ import { ModalViewComponent } from './components/modal-view/modal-view.component
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { PaymentListComponent } from './components/payments/payment-list/payment-list.component';
-import {MatTooltipModule} from "@angular/material/tooltip";
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
@@ -62,6 +63,8 @@ import { FlexLayoutModule } from "@angular/flex-layout";
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
+    MatDialogModule,
+    MatSnackBarModule,
     MatDialogModule,
     MatTooltipModule,
     FlexLayoutModule
