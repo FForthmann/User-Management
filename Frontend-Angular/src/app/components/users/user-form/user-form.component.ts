@@ -1,20 +1,50 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {formUser, User} from "../../../model/user";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DatePipe} from "@angular/common";
 import {FormService} from "../../../services/form/form.service";
+import {MemberType} from "../../../model/memberType";
+import {MembertypeService} from "../../../services/memberTypes/membertype.service";
+import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.scss']
 })
-export class UserFormComponent {
+
+export class UserFormComponent implements OnInit{
+
+  breakpoint: number = 1;
+  memberTypes: MemberType[] = [];
+  leavingDate: string = '';
 
   constructor(private datePipe: DatePipe,
+              private memberTypeService: MembertypeService,
               public formService: FormService,
               public dialogRef: MatDialogRef<UserFormComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: User) { }
+              @Inject(MAT_DIALOG_DATA) public data: User) {}
+
+
+  ngOnInit() {
+    this.memberTypeService.getMemberTypes().subscribe((memberTypes: MemberType[]) => {
+      this.memberTypes = memberTypes;
+    });
+    this.breakpoint = (window.innerWidth <= 480) ? 1 : 6;
+  }
+
+
+  /**
+   * Function to trigger Flex-Box on Window-size
+   *
+   * @Author: Jan Ram & Luca Ulrich
+   * @param event: UIEvent
+   * @returns: void
+   */
+  onResize(event: UIEvent): void {
+    const target = event.target as Window;
+    this.breakpoint = (target.innerWidth <= 480) ? 1 : 6;
+  }
 
   /**
    * Function to close the Modal and send Data to Parent-Class
@@ -33,7 +63,7 @@ export class UserFormComponent {
    * Helper-Function to build a User Object to pass to other functions
    *
    * @Author: Luca Ulrich
-   * @param userData
+   * @param userData: formUser
    * @returns: User Object
    */
   private buildUser(userData: formUser): User {
@@ -95,5 +125,18 @@ export class UserFormComponent {
       leavingDate = new Date(year, 11, 31);
     }
     return leavingDate;
+  }
+
+  /**
+   * Function that gets triggered by a Change in users-form cancellation Date. It transforms the cancellationDate
+   * to a string that gets displayed in the leavingDate field
+   *
+   * @Author: Luca Ulrich
+   * @param event
+   * @returns: void
+   */
+  onDateChange(event: MatDatepickerInputEvent<any>): void {
+    const leavingDate = this.calculateLeavingDate(event.value as string)
+    this.leavingDate = this.datePipe.transform(leavingDate, 'dd/MM/yyyy') as string;
   }
 }

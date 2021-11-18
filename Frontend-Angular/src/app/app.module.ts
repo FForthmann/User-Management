@@ -16,7 +16,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { UserFormComponent } from './components/users/user-form/user-form.component';
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatGridListModule } from "@angular/material/grid-list";
-import { MatFormFieldModule } from "@angular/material/form-field";
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from "@angular/material/form-field";
 import { MatRadioModule } from "@angular/material/radio";
 import { MatSelectModule } from "@angular/material/select";
 import { MatDatepickerModule } from "@angular/material/datepicker";
@@ -31,6 +31,7 @@ import { PaymentsComponent } from './components/payments/payments.component';
 import { PaymentListComponent } from './components/payments/payment-list/payment-list.component';
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 @NgModule({
   declarations: [
@@ -66,9 +67,11 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
     MatSnackBarModule,
     MatDialogModule,
     MatTooltipModule,
+    FlexLayoutModule
   ],
   providers: [
     DatePipe,
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
     { provide: MAT_DIALOG_DATA, useValue: {} },
     { provide: MatDialogRef, useValue: {} }],
   bootstrap: [AppComponent]
