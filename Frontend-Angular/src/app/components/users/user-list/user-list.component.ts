@@ -2,7 +2,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { User } from '../../model/user';
+import { User } from '../../../model/user';
 
 @Component({
   selector: 'app-user-list',

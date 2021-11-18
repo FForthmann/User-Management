@@ -1,13 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { User } from '../model/user';
-import { UserService } from '../services/user.service';
+import { User } from '../../model/user';
+import { UserService } from '../../services/users/user.service';
+import {NotificationService} from "../../services/notifications/notification.service";
 import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
 import {UserFormComponent} from "./user-form/user-form.component";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
-import {FormService} from "../services/form.service";
-import {ConfirmationDialogComponent} from "./confirmation-dialog/confirmation-dialog.component";
+import {FormService} from "../../services/form/form.service";
+import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-users',
@@ -20,6 +21,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   constructor(private userService: UserService,
               private formService: FormService,
+              private notificationService: NotificationService,
               private dialog: MatDialog,
               private router: Router,
               private route: ActivatedRoute) {
@@ -54,7 +56,11 @@ export class UsersComponent implements OnInit, OnDestroy {
    */
   saveUser(user: User): void {
     this.userService.saveUser(user).subscribe(() => {
+      this.notificationService.success(`Der Nutzer:
+        "${user.name.firstName + ' '+ user.name.lastName}" wurde erfolgreich angelegt!`)
       this.reloadList();
+    },(message: string) => {
+      this.notificationService.error(message);
     });
   }
 
@@ -67,7 +73,11 @@ export class UsersComponent implements OnInit, OnDestroy {
    */
   editUser(user: User): void {
     this.userService.editUser(user).subscribe(() => {
+      this.notificationService.success(`Der Nutzer:
+        "${user.name.firstName + ' '+ user.name.lastName}" wurde erfolgreich editiert!`)
       this.reloadList();
+    },(message: string) => {
+      this.notificationService.error(message);
     });
   }
 
@@ -80,7 +90,11 @@ export class UsersComponent implements OnInit, OnDestroy {
    */
   deleteUser(user: User): void {
     this.userService.deleteUser(user.userId!).subscribe(() => {
+      this.notificationService.success(`Der Nutzer:
+        "${user.name.firstName + ' '+ user.name.lastName}" wurde erfolgreich gelöscht!`)
       this.reloadList();
+    },(message: string) => {
+      this.notificationService.error(message);
     })
   }
 
@@ -114,6 +128,7 @@ export class UsersComponent implements OnInit, OnDestroy {
    */
   onEditUser(id: number): void {
     this.userService.getUser(id).subscribe((user: User) => {
+      if(user) {
       this.formService.initializeFormGroup(user);
       const dialogRef = this.openFormModal();
       dialogRef.afterClosed().subscribe((result) => {
@@ -123,7 +138,9 @@ export class UsersComponent implements OnInit, OnDestroy {
           this.editUser(result.data);
         }
       })
-    });
+    } else {
+        this.notificationService.error(`Keinen Nutzer mit der Mitgliedsnummer: ${id} gefunden!`);
+      }});
   }
 
   /**
@@ -147,6 +164,8 @@ export class UsersComponent implements OnInit, OnDestroy {
             this.deleteUser(user);
           }
         });
+      } else {
+        this.notificationService.error(`Keinen Nutzer mit der Mitgliedsnummer: ${id} gefunden!`);
       }
     });
   }
@@ -154,7 +173,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   /**
    * Helper-Function to open a Form-Modal with defined Settings
    *
-   * @Author: Luca
+   * @Author: Luca Ulrich
    * @private
    * @returns: MatDialogRef<UserFormComponent>
    */
@@ -176,7 +195,12 @@ export class UsersComponent implements OnInit, OnDestroy {
    */
   private reloadList(): void {
     this.userService.getUsers().subscribe((users: User[]) => {
+      if(users.length < 1) {
+        this.notificationService.warn('Keine Nutzerdaten gefunden!');
+      }
       this.users = users;
+    },(message: string) => {
+      this.notificationService.error(message);
     });
   }
 }

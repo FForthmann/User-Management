@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable, Subject} from "rxjs";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {User} from "../model/user";
+import {User} from "../../model/user";
 
 @Injectable({
   providedIn: 'root'

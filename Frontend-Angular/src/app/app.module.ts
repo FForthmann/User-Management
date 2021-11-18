@@ -7,13 +7,13 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatListModule } from "@angular/material/list";
 import { MatIconModule } from "@angular/material/icon";
-import { UserListComponent } from './components/user-list/user-list.component';
+import { UserListComponent } from './components/users/user-list/user-list.component';
 import { MatTableModule } from "@angular/material/table";
 import { MatButtonModule } from "@angular/material/button";
-import { UsersComponent } from './components/users.component';
+import { UsersComponent } from './components/users/users.component';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { HttpClientModule } from "@angular/common/http";
-import { UserFormComponent } from './components/user-form/user-form.component';
+import { UserFormComponent } from './components/users/user-form/user-form.component';
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -27,6 +27,10 @@ import {MAT_DIALOG_DATA, MatDialogModule, MatDialogRef} from "@angular/material/
 import {DatePipe} from "@angular/common";
 import { ModalViewComponent } from './components/modal-view/modal-view.component';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { PaymentsComponent } from './components/payments/payments.component';
+import { PaymentListComponent } from './components/payments/payment-list/payment-list.component';
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -35,7 +39,9 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     UsersComponent,
     UserFormComponent,
     ModalViewComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    PaymentsComponent,
+    PaymentListComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +62,10 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSnackBarModule,
+    MatDialogModule,
+    MatTooltipModule,
   ],
   providers: [
     DatePipe,
