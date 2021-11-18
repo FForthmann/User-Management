@@ -107,7 +107,7 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @returns: void
    */
   onAddUser(): void {
-    this.formService.readonly = false;
+    this.formService.triggerAccessibility(false);
     this.formService.initializeFormGroup();
     const dialogRef = this.openFormModal();
     dialogRef.afterClosed().subscribe((result) => {
@@ -128,7 +128,7 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @returns: void
    */
   onEditUser(id: number): void {
-    this.formService.readonly = true;
+    this.formService.triggerAccessibility(true);
     this.userService.getUser(id).subscribe((user: User) => {
       if(user) {
       this.formService.initializeFormGroup(user);
