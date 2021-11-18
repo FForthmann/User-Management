@@ -3,6 +3,8 @@ import {formUser, User} from "../../../model/user";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {DatePipe} from "@angular/common";
 import {FormService} from "../../../services/form/form.service";
+import {MemberType} from "../../../model/memberType";
+import {MembertypeService} from "../../../services/memberTypes/membertype.service";
 
 @Component({
   selector: 'app-user-form',
@@ -12,13 +14,20 @@ import {FormService} from "../../../services/form/form.service";
 
 export class UserFormComponent implements OnInit{
 
+  breakpoint: number = 1;
+  memberTypes: MemberType[] = [];
+
   constructor(private datePipe: DatePipe,
+              private memberTypeService: MembertypeService,
               public formService: FormService,
               public dialogRef: MatDialogRef<UserFormComponent>,
               @Inject(MAT_DIALOG_DATA) public data: User) {}
 
-  breakpoint: number = 1;
+
   ngOnInit() {
+    this.memberTypeService.getMemberTypes().subscribe((memberTypes: MemberType[]) => {
+      this.memberTypes = memberTypes;
+    });
     this.breakpoint = (window.innerWidth <= 480) ? 1 : 6;
   }
 
@@ -43,8 +52,8 @@ export class UserFormComponent implements OnInit{
   /**
    * Helper-Function to build a User Object to pass to other functions
    *
-   * @Author: Luca Ulrich & Jan Ramm
-   * @param userData
+   * @Author: Luca Ulrich
+   * @param userData: formUser
    * @returns: User Object
    */
   private buildUser(userData: formUser): User {

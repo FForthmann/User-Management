@@ -89,10 +89,11 @@
         <mat-form-field fxFlex="30%">
           <mat-label>Mitgliedsart</mat-label>
           <mat-select formControlName="memberType" [disabled]="this.formService.readonly">
-            <mat-option value="Vollmitglied">Vollmitglied</mat-option>
-            <mat-option value="Ermäßigt">Ermäßigt</mat-option>
-            <mat-option value="Jugendlich">Jugendlich</mat-option>
-            <mat-option value="Fördermitglied">Fördermitglied</mat-option>
+              <mat-option *ngFor=" let memberType of memberTypes" [value]="memberType.description">{{memberType.description}}</mat-option>
+<!--            <mat-option value="Vollmitglied">Vollmitglied</mat-option>-->
+<!--            <mat-option value="Ermäßigt">Ermäßigt</mat-option>-->
+<!--            <mat-option value="Jugendlich">Jugendlich</mat-option>-->
+<!--            <mat-option value="Fördermitglied">Fördermitglied</mat-option>-->
           </mat-select>
         </mat-form-field>
 
