@@ -50,7 +50,7 @@
             <input formControlName="postcode" matInput placeholder="Postleitzahl" [readonly]="formService.readonly">
             <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
           </mat-form-field>
-          
+
           <mat-form-field fxFlex="20%">
             <input formControlName="location" matInput placeholder="Stadt/Ort" [readonly]="formService.readonly">
             <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
@@ -88,7 +88,7 @@
       <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="1.5%" fxLayoutAlign="center">
         <mat-form-field fxFlex="30%">
           <mat-label>Mitgliedsart</mat-label>
-          <mat-select formControlName="memberType" [disabled]="this.formService.readonly">
+          <mat-select formControlName="description" [disabled]="this.formService.readonly">
               <mat-option *ngFor=" let memberType of memberTypes" [value]="memberType.description">{{memberType.description}}</mat-option>
 <!--            <mat-option value="Vollmitglied">Vollmitglied</mat-option>-->
 <!--            <mat-option value="Ermäßigt">Ermäßigt</mat-option>-->
