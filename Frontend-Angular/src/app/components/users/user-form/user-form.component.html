@@ -90,10 +90,6 @@
           <mat-label>Mitgliedsart</mat-label>
           <mat-select formControlName="description" [disabled]="this.formService.readonly">
               <mat-option *ngFor=" let memberType of memberTypes" [value]="memberType.description">{{memberType.description}}</mat-option>
-<!--            <mat-option value="Vollmitglied">Vollmitglied</mat-option>-->
-<!--            <mat-option value="Ermäßigt">Ermäßigt</mat-option>-->
-<!--            <mat-option value="Jugendlich">Jugendlich</mat-option>-->
-<!--            <mat-option value="Fördermitglied">Fördermitglied</mat-option>-->
           </mat-select>
         </mat-form-field>
 
@@ -103,7 +99,8 @@
         </mat-form-field>
 
         <mat-form-field fxFlex="30%">
-          <input formControlName="accountDetails" matInput placeholder="Kontoverbindung" [readonly]="formService.readonly">
+<!--          <input formControlName="accountDetails" matInput placeholder="Kontoverbindung" [readonly]="formService.readonly">-->
+          <input  matInput placeholder="Kontoverbindung" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
       </div>

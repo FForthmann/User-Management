@@ -1,7 +1,7 @@
 /**
  * Interface for a User-Model
  *
- * @Author: Luca Ulrich & Jan Ramm
+ * @Author: Luca Ulrich
  * @Version: 1.2
  */
 export interface User {
@@ -31,7 +31,7 @@ export interface User {
 /**
  * Interface for a formUser Model
  *
- * @Author: Luca Ulrich & Jan Ramm
+ * @Author: Luca Ulrich
  * @Version: 1.1
  */
 export interface formUser {

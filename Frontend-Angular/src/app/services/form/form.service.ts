@@ -11,7 +11,6 @@ import {User} from "../../model/user";
  * Class to handle Form Operations
  *
  * @Author: Luca Ulrich & Jan Ramm
- * @Version: 1.0
  */
 export class FormService {
   readonly: boolean = false;
@@ -41,7 +40,7 @@ export class FormService {
   /**
    * Function to initialize the Form
    *
-   * @Author: Luca Ulrich & Jan Ramm
+   * @Author: Luca Ulrich
    * @param user? - If user is given, Form will be filled with Userdata
    * @returns: void
    */
