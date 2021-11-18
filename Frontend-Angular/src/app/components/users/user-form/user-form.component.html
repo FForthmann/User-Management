@@ -2,17 +2,7 @@
   <p>
     <mat-toolbar fxLayout="row">
       <button mat-raised-button class="btn-dialog-close" color="warn" mat-stroked-button (click)="closeDialog('close')" tabIndex="-1"><mat-icon>clear</mat-icon></button>
-
       <span class="example-spacer"></span>
-
-      <button mat-raised-button color="primary" type="submit"
-              *ngIf="!formService.readonly"
-              [disabled]="formService.form.invalid"
-              [mat-dialog-close]="data">Save
-      </button>
-
-      <button mat-raised-button color="primary" *ngIf="formService.readonly"
-              (click)="formService.readonly = !formService.readonly">Edit</button>
     </mat-toolbar>
   </p>
   <form [formGroup]="formService.form" class="normal-form" (submit)="closeDialog('submit')">
@@ -103,6 +93,16 @@
           <input  matInput placeholder="Kontoverbindung" [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
+
+
+        <button mat-raised-button color="primary" type="submit"
+                *ngIf="!formService.readonly"
+                [disabled]="formService.form.invalid"
+                [mat-dialog-close]="data">Save
+        </button>
+
+        <button mat-raised-button color="primary" *ngIf="formService.readonly"
+                (click)="formService.readonly = !formService.readonly">Edit</button>
       </div>
       </div>
 </form>
