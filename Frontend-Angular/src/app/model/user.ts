@@ -1,22 +1,23 @@
 /**
  * Interface for a User-Model
  *
- * @Author: Luca Ulrich
- * @Version: 1.2
+ * @author Luca Ulrich
+ * @contributor Jan Ramm
+ * @version 1.2
  */
 export interface User {
-  userId?: number
+  userId?: number;
   name: {
     firstName: string;
     lastName: string;
-  }
+  };
   // accountDetails: number
   address: {
     street: string;
     houseNumber: number;
     postcode: number;
     location: string;
-  }
+  };
   birthday: string;
   entryDate: string;
   cancellationDate?: string;
@@ -31,8 +32,8 @@ export interface User {
 /**
  * Interface for a formUser Model
  *
- * @Author: Luca Ulrich
- * @Version: 1.1
+ * @author Luca Ulrich
+ * @version 1.1
  */
 export interface formUser {
   firstName: string;

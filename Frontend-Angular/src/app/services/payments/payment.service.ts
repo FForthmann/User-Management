@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Observable, throwError} from "rxjs";
-import {Payment} from "../../model/payment";
-import {catchError, retry} from "rxjs/operators";
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { Payment } from '../../model/payment';
+import { catchError, retry } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,17 +10,20 @@ import {catchError, retry} from "rxjs/operators";
 /**
  * Class to communicate with the API for Payments
  *
- * @Author: Luca Ulrich
+ * @author Luca Ulrich
+ * @version 1.2
  */
 export class PaymentService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   /**
-   * Function to receive all Payments from the API
+   * Function to send a get Request to API.
+   * It receives all Payments from the API.
    *
-   * @Author: Luca Ulrich
-   * @returns: Observable with an Array of Payments
+   * @author Luca Ulrich
+   * @returns {Observable<Payment[]>} - Observable with an Array of Payments
    */
   getPayments(): Observable<Payment[]> {
     return this.http.get<Payment[]>('/rest/payments').pipe(
@@ -30,11 +33,12 @@ export class PaymentService {
   }
 
   /**
-   * Function to recieve a single Payment with given ID
+   * Function to send a get Request to API.
+   * It receives a single Payment with given ID.
    *
-   * @Author: Luca Ulrich
-   * @param id: number - ID to receive Payment from
-   * @returns: Observable with an Payment-Object
+   * @author Luca Ulrich
+   * @param  {number} id - ID to receive Payment from
+   * @returns {Observable<Payment[]>} - Observable with a single Object of Payments
    */
   getPayment(id: number): Observable<Payment> {
     return this.http.get<Payment>(`/rest/payments/${id}`).pipe(
@@ -44,14 +48,15 @@ export class PaymentService {
   }
 
   /**
-   * Function to send a edited Payment to API
+   * Function to send a put Request to API.
+   * It updates a saved Payment in the Database.
    *
-   * @Author: Luca Ulrich
-   * @param payment: Payment - Payment to be updated
-   * @returns: Observable with an Payment
+   * @author Luca Ulrich
+   * @param {Payment} payment - Payment to be updated
+   * @returns {Observable<Payment[]>} - Observable with a single Object of Payments
    *
    */
-  editPayment(payment: Payment): Observable<Payment>{
+  editPayment(payment: Payment): Observable<Payment> {
     return this.http.put<Payment>(`/rest/payments/${payment.invoiceNumber}`, payment).pipe(
       retry(1),
       catchError(this.handleError)
@@ -59,11 +64,11 @@ export class PaymentService {
   }
 
   /**
-   * Function to handle Error-Events in Payment-Service. It throws the errorMessage back to the Component.
+   * Function to handle Error-Events in Service. It throws the errorMessage back to the Component.
    *
-   * @Author: Luca Ulrich
-   * @param error: HttpErrorResponse - Errorevent passed to Function
-   * @returns: Observable<never>
+   * @author Luca Ulrich
+   * @param {HttpErrorResponse} error - Errorevent passed to Function
+   * @returns {Observable<never>}
    */
   handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage: string = '';

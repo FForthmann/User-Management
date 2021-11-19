@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {FormService} from "../../services/form/form.service";
+import { ActivatedRoute } from '@angular/router';
+import { FormService } from '../../services/form/form.service';
 
 @Component({
   selector: 'app-modal-view',
@@ -10,7 +10,8 @@ import {FormService} from "../../services/form/form.service";
 export class ModalViewComponent {
   constructor(private formService: FormService,
               private route: ActivatedRoute) {
-    switch(route.snapshot.url[0].path) {
+    // Checks the active url for active Route
+    switch (route.snapshot.url[0].path) {
       case 'create':
         formService.openModal('create');
         break;

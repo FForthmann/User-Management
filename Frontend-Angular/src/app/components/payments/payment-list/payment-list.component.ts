@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Payment} from "../../../model/payment";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Payment } from '../../../model/payment';
 
 @Component({
   selector: 'app-payment-list',
@@ -9,8 +9,9 @@ import {Payment} from "../../../model/payment";
 export class PaymentListComponent {
 
   @Input() payments: Payment[] = [];
-  @Output() edit: EventEmitter<number> = new EventEmitter<number>()
+  @Output() edit: EventEmitter<number> = new EventEmitter<number>();
 
+  /** @type {string[]} */
   displayedColumns: string[] = [
     'Rechnungsnummer',
     'Jahr',
@@ -19,14 +20,15 @@ export class PaymentListComponent {
     'Status'
   ];
 
-  constructor() { }
+  constructor() {
+  }
 
   /**
    * Function to emit Payment-Status-Change to Parent Function
    *
-   * @Author: Luca Ulrich
-   * @param paymentId: number - ID/InvoiceNumber of current Payment
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {number} paymentId - ID/InvoiceNumber of current Payment
+   * @returns {void}
    */
   changePaymentStatus(paymentId: number): void {
     this.edit.emit(paymentId);

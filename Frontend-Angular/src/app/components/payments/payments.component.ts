@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Payment} from "../../model/payment";
-import {PaymentService} from "../../services/payments/payment.service";
-import {MatDialog} from "@angular/material/dialog";
-import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
-import {NotificationService} from "../../services/notifications/notification.service";
+import { Payment } from '../../model/payment';
+import { PaymentService } from '../../services/payments/payment.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { NotificationService } from '../../services/notifications/notification.service';
 
 @Component({
   selector: 'app-payments',
@@ -11,11 +11,13 @@ import {NotificationService} from "../../services/notifications/notification.ser
   styleUrls: ['./payments.component.scss']
 })
 export class PaymentsComponent implements OnInit {
+  /** @type {Payment[]} */
   payments: Payment[] = [];
 
   constructor(private paymentService: PaymentService,
               private notificationService: NotificationService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
     this.reloadList();
@@ -25,9 +27,9 @@ export class PaymentsComponent implements OnInit {
   /**
    * Helper-Function to reload PaymentData
    *
-   * @Author: Luca Ulrich
+   * @author Luca Ulrich
    * @private
-   * @returns: void
+   * @returns {void}
    */
   private reloadList(): void {
     this.paymentService.getPayments().subscribe((payments: Payment[]) => {
@@ -35,7 +37,7 @@ export class PaymentsComponent implements OnInit {
         this.notificationService.warn('Keine Rechnungen gefunden!');
       }
       this.payments = payments;
-    },(message: string) => {
+    }, (message: string) => {
       this.notificationService.error(message);
     });
   }
@@ -44,13 +46,13 @@ export class PaymentsComponent implements OnInit {
    * Function to react on Child Payment-Status-Change-Event
    * Checks for current Payment-Status and changes it to the opposite
    *
-   * @Author: Luca Ulrich
-   * @param paymentId: number - ID of Payment
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {number} paymentId - ID of Payment
+   * @returns {void}
    */
   onPaymentEdit(paymentId: number): void {
     this.paymentService.getPayment(paymentId).subscribe((payment: Payment) => {
-      if(payment) {
+      if (payment) {
         let paymentStatus: string = 'bezahlt';
         if (payment.countStatus) {
           paymentStatus = ' nicht bezahlt';
@@ -58,7 +60,7 @@ export class PaymentsComponent implements OnInit {
         } else {
           payment.countStatus = !payment.countStatus;
         }
-        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {disableClose: false});
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, { disableClose: false });
 
         dialogRef.componentInstance.confirmMessage = `Sind Sie sich sicher, dass Sie die Rechnung: ${payment.invoiceNumber}
         in einer Höhe von: ${payment.amount}€ als ${paymentStatus} setzen wollen?`;
@@ -71,15 +73,15 @@ export class PaymentsComponent implements OnInit {
       } else {
         this.notificationService.error(`Keinen Rechnung mit der Rechnungsnummer: ${paymentId} gefunden!`);
       }
-    })
+    });
   }
 
   /**
    * Function to communicate with paymentService to edit Payment
    *
-   * @Author: Luca Ulrich
-   * @param payment: Payment - Payment to be edited
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {Payment} payment - Payment to be edited
+   * @returns {void}
    */
   editPayment(payment: Payment): void {
     this.paymentService.editPayment(payment).subscribe(() => {
@@ -91,7 +93,7 @@ export class PaymentsComponent implements OnInit {
         "${payment.invoiceNumber}" wurde als nicht bezahlt markiert!`);
       }
       this.reloadList();
-    },(message: string) => {
+    }, (message: string) => {
       this.notificationService.error(message);
     });
   }

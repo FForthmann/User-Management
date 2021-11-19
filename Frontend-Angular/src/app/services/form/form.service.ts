@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Observable, Subject} from "rxjs";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {User} from "../../model/user";
-import {DatePipe} from "@angular/common";
+import { Observable, Subject } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { User } from '../../model/user';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -11,39 +11,58 @@ import {DatePipe} from "@angular/common";
 /**
  * Class to handle Form Operations
  *
- * @Author: Luca Ulrich & Jan Ramm
+ * @author Luca Ulrich
+ * @contributor Jan Ramm
  */
 export class FormService {
+  /** @type {boolean} **/
   readonly: boolean = false;
+
+  /**
+   * @type {Subject<{id: number | undefined; action: string;}>}
+   *    - number if id is present
+   *    - undefined if id is missing
+   *    - action - performed action event
+   */
   private openModalSubject: Subject<{ id: number | undefined; action: string; }> = new Subject<{ id: number | undefined; action: string; }>();
-  public modal: Observable<{ id: number | undefined; action: string; }> = this.openModalSubject.asObservable()
 
-  constructor(private datePipe: DatePipe) { }
+  /**
+   * @type {Observable<{ id: number | undefined; action: string;}>}
+   *    - number if id is present
+   *    - undefined if id is missing
+   *    - action - performed action event
+   */
+  public modal: Observable<{ id: number | undefined; action: string; }> = this.openModalSubject.asObservable();
 
+  constructor(private datePipe: DatePipe) {
+  }
+
+  /** @type {FormGroup} **/
   form: FormGroup = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     // accountDetails: new FormControl('', [Validators.required,
     //   Validators.pattern("^[0-9]*$"), Validators.minLength(8)]),
-    houseNumber: new FormControl('', [Validators.pattern("^[0-9]*$"), Validators.required]),
-    postcode: new FormControl('', [Validators.pattern("^[0-9]*$"), Validators.required]),
+    houseNumber: new FormControl('', [Validators.pattern('^[0-9]*$'), Validators.required]),
+    postcode: new FormControl('', [Validators.pattern('^[0-9]*$'), Validators.required]),
     street: new FormControl('', Validators.required),
     location: new FormControl('', Validators.required),
     birthday: new FormControl('', Validators.required),
     entryDate: new FormControl('', Validators.required),
     cancellationDate: new FormControl(''),
-    leavingDate: new FormControl({value: '',disabled: true}),
+    leavingDate: new FormControl({ value: '', disabled: true }),
     description: new FormControl('', Validators.required),
-    amount: new FormControl({value: '',disabled: true}, [Validators.pattern("^[0-9]")]),
-    familyId: new FormControl('',[Validators.pattern("^[0-9]*$")])
+    amount: new FormControl({ value: '', disabled: true }, [Validators.pattern('^[0-9]')]),
+    familyId: new FormControl('', [Validators.pattern('^[0-9]*$')])
   });
 
   /**
-   * Function to initialize the Form
+   * Function to initialize the Form. It fills the Form with given data. If no user is present, the form will be filled
+   * with empty strings.
    *
-   * @Author: Luca Ulrich
-   * @param user? - If user is given, Form will be filled with Userdata
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {User} user? - If user is given, Form will be filled with Userdata
+   * @returns {void}
    */
   initializeFormGroup(user?: User): void {
     if (user) {
@@ -57,11 +76,11 @@ export class FormService {
         location: user.address.location,
         birthday: user.birthday,
         entryDate: user.entryDate,
-        cancellationDate: user.cancellationDate?user.cancellationDate:'',
-        leavingDate: user.leavingDate? this.datePipe.transform(user.leavingDate, 'dd/MM/yyyy') as string:'',
+        cancellationDate: user.cancellationDate ? user.cancellationDate : '',
+        leavingDate: user.leavingDate ? this.datePipe.transform(user.leavingDate, 'dd/MM/yyyy') as string : '',
         description: user.description,
-        amount: user.amount? user.amount:'',
-        familyId: user.familyId?.userId? user.familyId.userId:''
+        amount: user.amount ? user.amount : '',
+        familyId: user.familyId?.userId ? user.familyId.userId : ''
       });
     } else {
       this.form.setValue({
@@ -84,19 +103,19 @@ export class FormService {
   }
 
   /**
-   * Helper-function to handle the accessibility of Input fields.
+   * Function to handle the accessibility of Input fields.
    *
-   * @Author: Luca Ulrich
-   * @param status?: boolean - true if user can only view data (disabled access)
+   * @author Luca Ulrich
+   * @param {boolean} status? - true if user can only view data (disabled access)
    *                         - false if user can edit data (enabled access)
    *                         - undefined: Button is clicked to switch modes
-   * @returns: void
+   * @returns {void}
    */
   triggerAccessibility(status?: boolean): void {
     if (status) {
       this.readonly = status;
     } else {
-      this.readonly = !this.readonly
+      this.readonly = !this.readonly;
     }
     if (this.readonly) {
       this.form.get('birthday')!.disable();
@@ -112,15 +131,16 @@ export class FormService {
   }
 
   /**
-   * Function to reference the opened Modal
+   * Function to reference the opened Modal.
    *
-   * @Author: Luca Ulrich
-   * @param action - User Action performed in URL
-   * @param id - ID of the User that the Action is performed on
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {string} action - User Action performed in URL
+   * @param {number} id? - ID of the User that the Action is performed on
+   *                     - undefined if id is not present
+   * @returns {void}
    */
   openModal(action: string, id?: number): void {
-    const obj = {"id": id,"action": action}
+    const obj = { 'id': id, 'action': action };
     this.openModalSubject.next(obj);
   }
 }

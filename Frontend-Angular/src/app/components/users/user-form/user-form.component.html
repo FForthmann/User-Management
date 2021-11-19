@@ -1,107 +1,119 @@
 <mat-dialog-content>
   <p>
-    <mat-toolbar fxLayout="row">
-      <button mat-raised-button class="btn-dialog-close" color="warn" mat-stroked-button (click)="closeDialog('close')" tabIndex="-1"><mat-icon>clear</mat-icon></button>
-      <span class="example-spacer"></span>
+    <mat-toolbar fxLayout='row'>
+      <button mat-raised-button class='btn-dialog-close' color='warn' mat-stroked-button
+              (click)="closeDialog('close')" tabIndex='-1'>
+        <mat-icon>clear</mat-icon>
+      </button>
+      <span class='example-spacer'></span>
     </mat-toolbar>
   </p>
-  <form [formGroup]="formService.form" class="normal-form" (submit)="closeDialog('submit')">
-    <div class="container" fxLayout="column" fxLayout.sm="row" fxLayoutGap="1.5%" fxLayoutAlign="center">
-        <div class="container" fxLayout="row" fxLayout.xs="column"  fxLayout.sm="column" fxLayoutGap="1.5%" fxLayoutAlign="center">
-          <mat-form-field fxFlex="30%">
-            <input formControlName="firstName" matInput placeholder="Vorname*" [readonly]="formService.readonly">
-            <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
-          </mat-form-field>
-          <mat-form-field fxFlex="30%">
-            <input formControlName="lastName" matInput placeholder="Nachnamme*" [readonly]="formService.readonly">
-            <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
-          </mat-form-field>
-          <mat-form-field fxFlex="30%">
-            <input formControlName="birthday" matInput [matDatepicker]="birthday" placeholder="Geburtsdatum">
-            <mat-datepicker-toggle matSuffix [for]="birthday"></mat-datepicker-toggle>
-            <mat-datepicker #birthday></mat-datepicker>
-          </mat-form-field>
-        </div>
-        <mat-divider></mat-divider>
-        <mat-divider [vertical]="true"></mat-divider>
-        <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="1.5%" fxLayoutAlign="center">
-          <mat-form-field fxFlex="20%">
-            <input formControlName="street" matInput placeholder="Straße" [readonly]="formService.readonly">
-            <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
-          </mat-form-field>
-
-          <mat-form-field fxFlex="20%">
-            <input
-              formControlName="houseNumber" matInput placeholder="Hausnummer" [readonly]="formService.readonly">
-            <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
-          </mat-form-field>
-
-          <mat-form-field fxFlex="20%">
-            <input formControlName="postcode" matInput placeholder="Postleitzahl" [readonly]="formService.readonly">
-            <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
-          </mat-form-field>
-
-          <mat-form-field fxFlex="20%">
-            <input formControlName="location" matInput placeholder="Stadt/Ort" [readonly]="formService.readonly">
-            <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
-          </mat-form-field>
-        </div>
+  <form [formGroup]='formService.form' class='normal-form' (submit)="closeDialog('submit')">
+    <div class='container' fxLayout='column' fxLayout.sm='row' fxLayoutGap='1.5%' fxLayoutAlign='center'>
+      <div class='container' fxLayout='row' fxLayout.xs='column' fxLayout.sm='column' fxLayoutGap='1.5%'
+           fxLayoutAlign='center'>
+        <mat-form-field fxFlex='30%'>
+          <input formControlName='firstName' matInput placeholder='Vorname*' [readonly]='formService.readonly'>
+          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex='30%'>
+          <input formControlName='lastName' matInput placeholder='Nachnamme*' [readonly]='formService.readonly'>
+          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+        </mat-form-field>
+        <mat-form-field fxFlex='30%'>
+          <input formControlName='birthday' matInput [matDatepicker]='birthday' placeholder='Geburtsdatum'>
+          <mat-datepicker-toggle matSuffix [for]='birthday'></mat-datepicker-toggle>
+          <mat-datepicker #birthday></mat-datepicker>
+        </mat-form-field>
       </div>
-
-    <div class="container" fxLayout="column" fxLayout.sm="row" fxLayoutGap="1.5%" fxLayoutAlign="center">
       <mat-divider></mat-divider>
-      <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="1.5%" fxLayoutAlign="center">
-          <mat-form-field fxFlex="20%">
-            <input formControlName="entryDate" matInput [matDatepicker]="picker" placeholder="Eintrittsdatum">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
+      <mat-divider [vertical]='true'></mat-divider>
+      <div class='container' fxLayout='row' fxLayout.xs='column' fxLayout.sm='column' fxLayoutGap='1.5%'
+           fxLayoutAlign='center'>
+        <mat-form-field fxFlex='20%'>
+          <input formControlName='street' matInput placeholder='Straße' [readonly]='formService.readonly'>
+          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+        </mat-form-field>
 
-          <mat-form-field fxFlex="20%">
-            <input formControlName="cancellationDate" matInput [matDatepicker]="cancellationDate" (dateChange)="onDateChange($event)" placeholder="Kündigungsdatum">
-            <mat-datepicker-toggle matSuffix [for]="cancellationDate"></mat-datepicker-toggle>
-            <mat-datepicker #cancellationDate></mat-datepicker>
-          </mat-form-field>
+        <mat-form-field fxFlex='20%'>
+          <input
+            formControlName='houseNumber' matInput placeholder='Hausnummer' [readonly]='formService.readonly'>
+          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+        </mat-form-field>
 
-          <mat-form-field fxFlex="20%">
-            <input matInput formControlName="leavingDate" [value]="leavingDate" placeholder="Austrittsdatum">
-          </mat-form-field>
+        <mat-form-field fxFlex='20%'>
+          <input formControlName='postcode' matInput placeholder='Postleitzahl' [readonly]='formService.readonly'>
+          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+        </mat-form-field>
 
-          <mat-form-field fxFlex="20%">
-            <input formControlName="familyId" matInput placeholder="Familienmitglieds ID" [readonly]="formService.readonly">
-          </mat-form-field>
-        </div>
-      <mat-divider [vertical]="true"></mat-divider>
+        <mat-form-field fxFlex='20%'>
+          <input formControlName='location' matInput placeholder='Stadt/Ort' [readonly]='formService.readonly'>
+          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class='container' fxLayout='column' fxLayout.sm='row' fxLayoutGap='1.5%' fxLayoutAlign='center'>
       <mat-divider></mat-divider>
-      <div class="container" fxLayout="row" fxLayout.xs="column" fxLayout.sm="column" fxLayoutGap="1.5%" fxLayoutAlign="center">
-        <mat-form-field fxFlex="30%">
+      <div class='container' fxLayout='row' fxLayout.xs='column' fxLayout.sm='column' fxLayoutGap='1.5%'
+           fxLayoutAlign='center'>
+        <mat-form-field fxFlex='20%'>
+          <input formControlName='entryDate' matInput [matDatepicker]='picker' placeholder='Eintrittsdatum'>
+          <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field fxFlex='20%'>
+          <input formControlName='cancellationDate' matInput [matDatepicker]='cancellationDate'
+                 (dateChange)='onDateChange($event)' placeholder='Kündigungsdatum'>
+          <mat-datepicker-toggle matSuffix [for]='cancellationDate'></mat-datepicker-toggle>
+          <mat-datepicker #cancellationDate></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field fxFlex='20%'>
+          <input matInput formControlName='leavingDate' [value]='leavingDate' placeholder='Austrittsdatum'>
+        </mat-form-field>
+
+        <mat-form-field fxFlex='20%'>
+          <input formControlName='familyId' matInput placeholder='Familienmitglieds ID'
+                 [readonly]='formService.readonly'>
+        </mat-form-field>
+      </div>
+      <mat-divider [vertical]='true'></mat-divider>
+      <mat-divider></mat-divider>
+      <div class='container' fxLayout='row' fxLayout.xs='column' fxLayout.sm='column' fxLayoutGap='1.5%'
+           fxLayoutAlign='center'>
+        <mat-form-field fxFlex='30%'>
           <mat-label>Mitgliedsart</mat-label>
-          <mat-select formControlName="description">
-              <mat-option *ngFor=" let memberType of memberTypes" [value]="memberType.description">{{memberType.description}}</mat-option>
+          <mat-select formControlName='description'>
+            <mat-option *ngFor=' let memberType of memberTypes'
+                        [value]='memberType.description'>{{memberType.description}}</mat-option>
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field fxFlex="30%">
-          <input formControlName="amount" matInput placeholder="Jahresbeitrag">
+        <mat-form-field fxFlex='30%'>
+          <input formControlName='amount' matInput placeholder='Jahresbeitrag'>
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
-        <mat-form-field fxFlex="30%">
-<!--          <input formControlName="accountDetails" matInput placeholder="Kontoverbindung" [readonly]="formService.readonly">-->
-          <input matInput placeholder="Kontoverbindung" [readonly]="formService.readonly">
+        <mat-form-field fxFlex='30%'>
+          <!--          <input formControlName="accountDetails" matInput placeholder="Kontoverbindung"
+          [readonly]="formService.readonly">-->
+          <input matInput placeholder='Kontoverbindung' [readonly]='formService.readonly'>
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
 
-        <button mat-raised-button color="primary" type="submit"
-                *ngIf="!formService.readonly"
-                [disabled]="formService.form.invalid"
-                [mat-dialog-close]="data">Save
+        <button mat-raised-button color='primary' type='submit'
+                *ngIf='!formService.readonly'
+                [disabled]='formService.form.invalid'
+                [mat-dialog-close]='data'>Save
         </button>
 
-        <button mat-raised-button color="primary" *ngIf="formService.readonly"
-                (click)="formService.triggerAccessibility()">Edit</button>
+        <button mat-raised-button color='primary' *ngIf='formService.readonly'
+                (click)='formService.triggerAccessibility()'>Edit
+        </button>
       </div>
-      </div>
-</form>
+    </div>
+  </form>
 </mat-dialog-content>
