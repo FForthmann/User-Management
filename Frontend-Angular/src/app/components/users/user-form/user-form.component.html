@@ -1,8 +1,8 @@
 <mat-dialog-content>
   <p>
     <mat-toolbar fxLayout='row'>
-      <button mat-raised-button class='btn-dialog-close' color='warn' mat-stroked-button (click)="closeDialog('close')"
-              tabIndex='-1'>
+      <button mat-raised-button class='btn-dialog-close' color='warn' mat-stroked-button
+              (click)="closeDialog('close')" tabIndex='-1'>
         <mat-icon>clear</mat-icon>
       </button>
       <span class='example-spacer'></span>
@@ -97,7 +97,8 @@
         </mat-form-field>
 
         <mat-form-field fxFlex='30%'>
-          <!--          <input formControlName="accountDetails" matInput placeholder="Kontoverbindung" [readonly]="formService.readonly">-->
+          <!--          <input formControlName="accountDetails" matInput placeholder="Kontoverbindung"
+          [readonly]="formService.readonly">-->
           <input matInput placeholder='Kontoverbindung' [readonly]='formService.readonly'>
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
