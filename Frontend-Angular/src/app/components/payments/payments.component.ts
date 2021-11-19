@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Payment} from "../../model/payment";
-import {PaymentService} from "../../services/payments/payment.service";
-import {MatDialog} from "@angular/material/dialog";
-import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
-import {NotificationService} from "../../services/notifications/notification.service";
+import { Payment } from '../../model/payment';
+import { PaymentService } from '../../services/payments/payment.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { NotificationService } from '../../services/notifications/notification.service';
 
 @Component({
   selector: 'app-payments',
@@ -16,7 +16,8 @@ export class PaymentsComponent implements OnInit {
 
   constructor(private paymentService: PaymentService,
               private notificationService: NotificationService,
-              private dialog: MatDialog) { }
+              private dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
     this.reloadList();
@@ -36,7 +37,7 @@ export class PaymentsComponent implements OnInit {
         this.notificationService.warn('Keine Rechnungen gefunden!');
       }
       this.payments = payments;
-    },(message: string) => {
+    }, (message: string) => {
       this.notificationService.error(message);
     });
   }
@@ -51,7 +52,7 @@ export class PaymentsComponent implements OnInit {
    */
   onPaymentEdit(paymentId: number): void {
     this.paymentService.getPayment(paymentId).subscribe((payment: Payment) => {
-      if(payment) {
+      if (payment) {
         let paymentStatus: string = 'bezahlt';
         if (payment.countStatus) {
           paymentStatus = ' nicht bezahlt';
@@ -59,7 +60,7 @@ export class PaymentsComponent implements OnInit {
         } else {
           payment.countStatus = !payment.countStatus;
         }
-        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {disableClose: false});
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, { disableClose: false });
 
         dialogRef.componentInstance.confirmMessage = `Sind Sie sich sicher, dass Sie die Rechnung: ${payment.invoiceNumber}
         in einer Höhe von: ${payment.amount}€ als ${paymentStatus} setzen wollen?`;
@@ -72,7 +73,7 @@ export class PaymentsComponent implements OnInit {
       } else {
         this.notificationService.error(`Keinen Rechnung mit der Rechnungsnummer: ${paymentId} gefunden!`);
       }
-    })
+    });
   }
 
   /**
@@ -92,7 +93,7 @@ export class PaymentsComponent implements OnInit {
         "${payment.invoiceNumber}" wurde als nicht bezahlt markiert!`);
       }
       this.reloadList();
-    },(message: string) => {
+    }, (message: string) => {
       this.notificationService.error(message);
     });
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {MemberType} from "../../model/memberType";
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { MemberType } from '../../model/memberType';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,8 @@ import {MemberType} from "../../model/memberType";
  */
 export class MembertypeService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   /**
    * Function to send a get Request to API.

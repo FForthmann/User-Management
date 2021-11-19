@@ -6,18 +6,18 @@
  * @version 1.2
  */
 export interface User {
-  userId?: number
+  userId?: number;
   name: {
     firstName: string;
     lastName: string;
-  }
+  };
   // accountDetails: number
   address: {
     street: string;
     houseNumber: number;
     postcode: number;
     location: string;
-  }
+  };
   birthday: string;
   entryDate: string;
   cancellationDate?: string;

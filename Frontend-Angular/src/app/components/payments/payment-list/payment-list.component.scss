@@ -1,14 +1,19 @@
-table { width: 100%; }
-.hide{ display: none;}
+table {
+  width: 100%;
+}
+
+.hide {
+  display: none;
+}
 
 /* mat-table */
-mat-footer-row mat-footer-cell{
+mat-footer-row mat-footer-cell {
   justify-content: center;
   font-style: italic;
 }
 
 /* for dialog pop-up */
-.btn-dialog-close{
+.btn-dialog-close {
   min-width: 0px;
   padding: 0px;
   width: 45px;

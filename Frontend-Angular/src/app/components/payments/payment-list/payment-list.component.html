@@ -1,45 +1,50 @@
-<table mat-table [dataSource]="payments" class="mat-elevation-z8">
+<table mat-table [dataSource]='payments' class='mat-elevation-z8'>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <tr mat-header-row *matHeaderRowDef='displayedColumns'></tr>
+  <tr mat-row *matRowDef='let row; columns: displayedColumns;'></tr>
 
   <!-- paymentID Column -->
-  <ng-container matColumnDef="Rechnungsnummer">
+  <ng-container matColumnDef='Rechnungsnummer'>
     <th mat-header-cell *matHeaderCellDef>Rechnungsnummer</th>
-    <td mat-cell *matCellDef="let payment"> {{payment.invoiceNumber}} </td>
+    <td mat-cell *matCellDef='let payment'> {{payment.invoiceNumber}} </td>
   </ng-container>
 
   <!-- Years Column -->
-  <ng-container matColumnDef="Jahr">
+  <ng-container matColumnDef='Jahr'>
     <th mat-header-cell *matHeaderCellDef>Jahr</th>
-    <td mat-cell *matCellDef="let payment"> {{payment.year}} </td>
+    <td mat-cell *matCellDef='let payment'> {{payment.year}} </td>
   </ng-container>
 
   <!-- Name Column -->
-  <ng-container matColumnDef="Bankverbindung">
+  <ng-container matColumnDef='Bankverbindung'>
     <th mat-header-cell *matHeaderCellDef>Bankverbindung</th>
-    <td mat-cell *matCellDef="let payment"> {{payment.bankAccountDetails}}</td>
+    <td mat-cell *matCellDef='let payment'> {{payment.bankAccountDetails}}</td>
   </ng-container>
 
   <!-- Amount Column -->
-  <ng-container matColumnDef="Beitrag">
+  <ng-container matColumnDef='Beitrag'>
     <th mat-header-cell *matHeaderCellDef>Beitrag</th>
-    <td mat-cell *matCellDef="let payment"> {{payment.amount}} €</td>
+    <td mat-cell *matCellDef='let payment'> {{payment.amount}} €</td>
   </ng-container>
 
   <!-- Actions Column -->
-  <ng-container matColumnDef="Status">
+  <ng-container matColumnDef='Status'>
     <th mat-header-cell *matHeaderCellDef
-        matTooltip="✘ = nicht bezahlt | ✓ = bezahlt">Status</th>
-    <td mat-cell *matCellDef="let payment">
-      <button mat-icon-button color="primary"
-      *ngIf="payment.countStatus"
-              matTooltip="Als nicht bezahlt markieren!"
-      (click)="changePaymentStatus(payment.invoiceNumber)"><mat-icon>done_outline</mat-icon></button>
-      <button mat-icon-button color="warn"
-              *ngIf="!payment.countStatus"
-              matTooltip="Als bezahlt markieren!"
-              (click)="changePaymentStatus(payment.invoiceNumber)"><mat-icon>cancel</mat-icon></button>
+        matTooltip='✘ = nicht bezahlt | ✓ = bezahlt'>Status
+    </th>
+    <td mat-cell *matCellDef='let payment'>
+      <button mat-icon-button color='primary'
+              *ngIf='payment.countStatus'
+              matTooltip='Als nicht bezahlt markieren!'
+              (click)='changePaymentStatus(payment.invoiceNumber)'>
+        <mat-icon>done_outline</mat-icon>
+      </button>
+      <button mat-icon-button color='warn'
+              *ngIf='!payment.countStatus'
+              matTooltip='Als bezahlt markieren!'
+              (click)='changePaymentStatus(payment.invoiceNumber)'>
+        <mat-icon>cancel</mat-icon>
+      </button>
     </td>
   </ng-container>
 </table>

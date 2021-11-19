@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import {User} from '../../model/user';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError, retry} from "rxjs/operators";
+import { User } from '../../model/user';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 
 /**
@@ -16,7 +16,8 @@ import {catchError, retry} from "rxjs/operators";
  */
 export class UserService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   /**
    * Function to send a get Request to API.
@@ -72,12 +73,12 @@ export class UserService {
    * @returns {Observable<User>} - Observable with a Single User Object
    *
    */
-  editUser(editUser: User): Observable<User>{
+  editUser(editUser: User): Observable<User> {
     return this.http.put<User>(`/rest/user/${editUser.userId}`, editUser).pipe(
       retry(1),
       catchError(this.handleError)
     );
- }
+  }
 
   /**
    * Function to send a delete Request to API.
