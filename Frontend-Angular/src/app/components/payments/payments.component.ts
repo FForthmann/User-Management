@@ -11,6 +11,7 @@ import {NotificationService} from "../../services/notifications/notification.ser
   styleUrls: ['./payments.component.scss']
 })
 export class PaymentsComponent implements OnInit {
+  /** @type {Payment[]} */
   payments: Payment[] = [];
 
   constructor(private paymentService: PaymentService,
@@ -25,9 +26,9 @@ export class PaymentsComponent implements OnInit {
   /**
    * Helper-Function to reload PaymentData
    *
-   * @Author: Luca Ulrich
+   * @author Luca Ulrich
    * @private
-   * @returns: void
+   * @returns {void}
    */
   private reloadList(): void {
     this.paymentService.getPayments().subscribe((payments: Payment[]) => {
@@ -44,9 +45,9 @@ export class PaymentsComponent implements OnInit {
    * Function to react on Child Payment-Status-Change-Event
    * Checks for current Payment-Status and changes it to the opposite
    *
-   * @Author: Luca Ulrich
-   * @param paymentId: number - ID of Payment
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {number} paymentId - ID of Payment
+   * @returns {void}
    */
   onPaymentEdit(paymentId: number): void {
     this.paymentService.getPayment(paymentId).subscribe((payment: Payment) => {
@@ -77,9 +78,9 @@ export class PaymentsComponent implements OnInit {
   /**
    * Function to communicate with paymentService to edit Payment
    *
-   * @Author: Luca Ulrich
-   * @param payment: Payment - Payment to be edited
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {Payment} payment - Payment to be edited
+   * @returns {void}
    */
   editPayment(payment: Payment): void {
     this.paymentService.editPayment(payment).subscribe(() => {
