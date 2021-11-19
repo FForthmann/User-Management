@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Payment} from "../../../model/payment";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Payment } from '../../../model/payment';
 
 @Component({
   selector: 'app-payment-list',
@@ -9,7 +9,7 @@ import {Payment} from "../../../model/payment";
 export class PaymentListComponent {
 
   @Input() payments: Payment[] = [];
-  @Output() edit: EventEmitter<number> = new EventEmitter<number>()
+  @Output() edit: EventEmitter<number> = new EventEmitter<number>();
 
   /** @type {string[]} */
   displayedColumns: string[] = [
@@ -20,7 +20,8 @@ export class PaymentListComponent {
     'Status'
   ];
 
-  constructor() { }
+  constructor() {
+  }
 
   /**
    * Function to emit Payment-Status-Change to Parent Function

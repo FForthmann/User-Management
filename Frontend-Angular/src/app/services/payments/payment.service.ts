@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Observable, throwError} from "rxjs";
-import {Payment} from "../../model/payment";
-import {catchError, retry} from "rxjs/operators";
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { Payment } from '../../model/payment';
+import { catchError, retry } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,8 @@ import {catchError, retry} from "rxjs/operators";
  */
 export class PaymentService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   /**
    * Function to send a get Request to API.
@@ -55,7 +56,7 @@ export class PaymentService {
    * @returns {Observable<Payment[]>} - Observable with a single Object of Payments
    *
    */
-  editPayment(payment: Payment): Observable<Payment>{
+  editPayment(payment: Payment): Observable<Payment> {
     return this.http.put<Payment>(`/rest/payments/${payment.invoiceNumber}`, payment).pipe(
       retry(1),
       catchError(this.handleError)

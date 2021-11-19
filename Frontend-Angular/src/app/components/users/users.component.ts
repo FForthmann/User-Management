@@ -1,19 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from '../../model/user';
 import { UserService } from '../../services/users/user.service';
-import {NotificationService} from "../../services/notifications/notification.service";
-import {MatDialog, MatDialogConfig, MatDialogRef} from "@angular/material/dialog";
-import {UserFormComponent} from "./user-form/user-form.component";
-import {ActivatedRoute, Router} from "@angular/router";
-import {Subject} from "rxjs";
-import {takeUntil} from "rxjs/operators";
-import {FormService} from "../../services/form/form.service";
-import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-dialog.component";
+import { NotificationService } from '../../services/notifications/notification.service';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { UserFormComponent } from './user-form/user-form.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { FormService } from '../../services/form/form.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss'],
+  styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit, OnDestroy {
   /** @type {User[]} */
@@ -27,17 +27,18 @@ export class UsersComponent implements OnInit, OnDestroy {
               private dialog: MatDialog,
               private router: Router,
               private route: ActivatedRoute) {
-    this.formService.modal.pipe(takeUntil(this.ngUnsubscribe)).subscribe( (obj: {id: number |undefined, action:string}) => {
-      if (obj.id) {
-        if(obj.action === 'edit') {
-          this.onEditUser(obj.id);
-        } else if (obj.action === 'delete') {
-          this.onDeleteUser(obj.id);
+    this.formService.modal.pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((obj: { id: number | undefined, action: string }) => {
+        if (obj.id) {
+          if (obj.action === 'edit') {
+            this.onEditUser(obj.id);
+          } else if (obj.action === 'delete') {
+            this.onDeleteUser(obj.id);
+          }
+        } else {
+          this.onAddUser();
         }
-      } else {
-        this.onAddUser();
-      }
-    });
+      });
   }
 
   ngOnInit(): void {
@@ -59,9 +60,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   saveUser(user: User): void {
     this.userService.saveUser(user).subscribe(() => {
       this.notificationService.success(`Der Nutzer:
-        "${user.name.firstName + ' '+ user.name.lastName}" wurde erfolgreich angelegt!`)
+        "${user.name.firstName + ' ' + user.name.lastName}" wurde erfolgreich angelegt!`);
       this.reloadList();
-    },(message: string) => {
+    }, (message: string) => {
       this.notificationService.error(message);
     });
   }
@@ -76,9 +77,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   editUser(user: User): void {
     this.userService.editUser(user).subscribe(() => {
       this.notificationService.success(`Der Nutzer:
-        "${user.name.firstName + ' '+ user.name.lastName}" wurde erfolgreich editiert!`)
+        "${user.name.firstName + ' ' + user.name.lastName}" wurde erfolgreich editiert!`);
       this.reloadList();
-    },(message: string) => {
+    }, (message: string) => {
       this.notificationService.error(message);
     });
   }
@@ -93,11 +94,11 @@ export class UsersComponent implements OnInit, OnDestroy {
   deleteUser(user: User): void {
     this.userService.deleteUser(user.userId!).subscribe(() => {
       this.notificationService.success(`Der Nutzer:
-        "${user.name.firstName + ' '+ user.name.lastName}" wurde erfolgreich gelöscht!`)
+        "${user.name.firstName + ' ' + user.name.lastName}" wurde erfolgreich gelöscht!`);
       this.reloadList();
-    },(message: string) => {
+    }, (message: string) => {
       this.notificationService.error(message);
-    })
+    });
   }
 
   /**
@@ -114,10 +115,10 @@ export class UsersComponent implements OnInit, OnDestroy {
     const dialogRef = this.openFormModal();
     dialogRef.afterClosed().subscribe((result) => {
       this.router.navigate(['../'], { relativeTo: this.route });
-      if( result.event === 'submit') {
+      if (result.event === 'submit') {
         this.saveUser(result.data);
       }
-    })
+    });
   }
 
   /**
@@ -132,19 +133,20 @@ export class UsersComponent implements OnInit, OnDestroy {
   onEditUser(id: number): void {
     this.formService.triggerAccessibility(true);
     this.userService.getUser(id).subscribe((user: User) => {
-      if(user) {
-      this.formService.initializeFormGroup(user);
-      const dialogRef = this.openFormModal();
-      dialogRef.afterClosed().subscribe((result) => {
-        this.router.navigate(['../'], { relativeTo: this.route });
-        if (result.event === 'submit') {
-          result.data['userId'] = user.userId;
-          this.editUser(result.data);
-        }
-      })
-    } else {
+      if (user) {
+        this.formService.initializeFormGroup(user);
+        const dialogRef = this.openFormModal();
+        dialogRef.afterClosed().subscribe((result) => {
+          this.router.navigate(['../'], { relativeTo: this.route });
+          if (result.event === 'submit') {
+            result.data['userId'] = user.userId;
+            this.editUser(result.data);
+          }
+        });
+      } else {
         this.notificationService.error(`Keinen Nutzer mit der Mitgliedsnummer: ${id} gefunden!`);
-      }});
+      }
+    });
   }
 
   /**
@@ -158,8 +160,8 @@ export class UsersComponent implements OnInit, OnDestroy {
    */
   onDeleteUser(id: number): void {
     this.userService.getUser(id).subscribe((user: User) => {
-      if(user) {
-        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {disableClose: false});
+      if (user) {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, { disableClose: false });
 
         dialogRef.componentInstance.confirmMessage = `Sind Sie sich sicher, dass sie den Nutzer: ${user.name.firstName}
         ${user.name.lastName} mit der Mitgliedsnummer: ${user.userId} löschen wollen?`;
@@ -187,7 +189,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
+    dialogConfig.width = '60%';
 
     return this.dialog.open(UserFormComponent, dialogConfig);
   }
@@ -201,11 +203,11 @@ export class UsersComponent implements OnInit, OnDestroy {
    */
   private reloadList(): void {
     this.userService.getUsers().subscribe((users: User[]) => {
-      if(users.length < 1) {
+      if (users.length < 1) {
         this.notificationService.warn('Keine Nutzerdaten gefunden!');
       }
       this.users = users;
-    },(message: string) => {
+    }, (message: string) => {
       this.notificationService.error(message);
     });
   }

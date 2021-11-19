@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {MatSnackBar, MatSnackBarConfig} from "@angular/material/snack-bar";
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
@@ -11,14 +11,15 @@ import {MatSnackBar, MatSnackBarConfig} from "@angular/material/snack-bar";
  */
 export class NotificationService {
 
-  constructor(public snackBar: MatSnackBar) { }
+  constructor(public snackBar: MatSnackBar) {
+  }
 
   /** @type {MatSnackBarConfig} **/
   config: MatSnackBarConfig = {
     duration: 8000,
     horizontalPosition: 'right',
-    verticalPosition: 'top',
-  }
+    verticalPosition: 'top'
+  };
 
   /**
    * Function to open and configure success Notification-Event
@@ -29,7 +30,7 @@ export class NotificationService {
    */
   success(msg: string): void {
     this.config['panelClass'] = ['notification', 'success'];
-    this.snackBar.open(msg,'Schließen', this.config);
+    this.snackBar.open(msg, 'Schließen', this.config);
   }
 
   /**

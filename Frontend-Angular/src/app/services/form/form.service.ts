@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {Observable, Subject} from "rxjs";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {User} from "../../model/user";
-import {DatePipe} from "@angular/common";
+import { Observable, Subject } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { User } from '../../model/user';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -32,9 +32,10 @@ export class FormService {
    *    - undefined if id is missing
    *    - action - performed action event
    */
-  public modal: Observable<{ id: number | undefined; action: string; }> = this.openModalSubject.asObservable()
+  public modal: Observable<{ id: number | undefined; action: string; }> = this.openModalSubject.asObservable();
 
-  constructor(private datePipe: DatePipe) { }
+  constructor(private datePipe: DatePipe) {
+  }
 
   /** @type {FormGroup} **/
   form: FormGroup = new FormGroup({
@@ -42,17 +43,17 @@ export class FormService {
     lastName: new FormControl('', Validators.required),
     // accountDetails: new FormControl('', [Validators.required,
     //   Validators.pattern("^[0-9]*$"), Validators.minLength(8)]),
-    houseNumber: new FormControl('', [Validators.pattern("^[0-9]*$"), Validators.required]),
-    postcode: new FormControl('', [Validators.pattern("^[0-9]*$"), Validators.required]),
+    houseNumber: new FormControl('', [Validators.pattern('^[0-9]*$'), Validators.required]),
+    postcode: new FormControl('', [Validators.pattern('^[0-9]*$'), Validators.required]),
     street: new FormControl('', Validators.required),
     location: new FormControl('', Validators.required),
     birthday: new FormControl('', Validators.required),
     entryDate: new FormControl('', Validators.required),
     cancellationDate: new FormControl(''),
-    leavingDate: new FormControl({value: '',disabled: true}),
+    leavingDate: new FormControl({ value: '', disabled: true }),
     description: new FormControl('', Validators.required),
-    amount: new FormControl({value: '',disabled: true}, [Validators.pattern("^[0-9]")]),
-    familyId: new FormControl('',[Validators.pattern("^[0-9]*$")])
+    amount: new FormControl({ value: '', disabled: true }, [Validators.pattern('^[0-9]')]),
+    familyId: new FormControl('', [Validators.pattern('^[0-9]*$')])
   });
 
   /**
@@ -75,11 +76,11 @@ export class FormService {
         location: user.address.location,
         birthday: user.birthday,
         entryDate: user.entryDate,
-        cancellationDate: user.cancellationDate?user.cancellationDate:'',
-        leavingDate: user.leavingDate? this.datePipe.transform(user.leavingDate, 'dd/MM/yyyy') as string:'',
+        cancellationDate: user.cancellationDate ? user.cancellationDate : '',
+        leavingDate: user.leavingDate ? this.datePipe.transform(user.leavingDate, 'dd/MM/yyyy') as string : '',
         description: user.description,
-        amount: user.amount? user.amount:'',
-        familyId: user.familyId?.userId? user.familyId.userId:''
+        amount: user.amount ? user.amount : '',
+        familyId: user.familyId?.userId ? user.familyId.userId : ''
       });
     } else {
       this.form.setValue({
@@ -114,7 +115,7 @@ export class FormService {
     if (status) {
       this.readonly = status;
     } else {
-      this.readonly = !this.readonly
+      this.readonly = !this.readonly;
     }
     if (this.readonly) {
       this.form.get('birthday')!.disable();
@@ -139,7 +140,7 @@ export class FormService {
    * @returns {void}
    */
   openModal(action: string, id?: number): void {
-    const obj = {"id": id,"action": action}
+    const obj = { 'id': id, 'action': action };
     this.openModalSubject.next(obj);
   }
 }

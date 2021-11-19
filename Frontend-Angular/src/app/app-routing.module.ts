@@ -1,37 +1,37 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {UsersComponent} from "./components/users/users.component";
-import {ModalViewComponent} from "./components/modal-view/modal-view.component";
-import {PaymentsComponent} from "./components/payments/payments.component";
+import { UsersComponent } from './components/users/users.component';
+import { ModalViewComponent } from './components/modal-view/modal-view.component';
+import { PaymentsComponent } from './components/payments/payments.component';
 
 const routes: Routes = [
   {
-    path: "",
-    pathMatch: "full",
-    redirectTo: "users"
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'users'
   },
   {
-    path: "users",
+    path: 'users',
     component: UsersComponent,
     children: [
       {
-        path: "create",
+        path: 'create',
         component: ModalViewComponent
       },
       {
-        path: "edit/:id",
+        path: 'edit/:id',
         component: ModalViewComponent
       },
       {
-        path: "delete/:id",
+        path: 'delete/:id',
         component: ModalViewComponent
-      },
+      }
     ]
   },
   {
-    path: "payments",
+    path: 'payments',
     component: PaymentsComponent,
-    children:[]
+    children: []
   },
   { path: '**', redirectTo: 'users' }
 ];
@@ -40,4 +40,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

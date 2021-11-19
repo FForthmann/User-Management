@@ -1,11 +1,11 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {formUser, User} from "../../../model/user";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {DatePipe} from "@angular/common";
-import {FormService} from "../../../services/form/form.service";
-import {MemberType} from "../../../model/memberType";
-import {MembertypeService} from "../../../services/memberTypes/membertype.service";
-import {MatDatepickerInputEvent} from "@angular/material/datepicker";
+import { Component, Inject, OnInit } from '@angular/core';
+import { formUser, User } from '../../../model/user';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { DatePipe } from '@angular/common';
+import { FormService } from '../../../services/form/form.service';
+import { MemberType } from '../../../model/memberType';
+import { MembertypeService } from '../../../services/memberTypes/membertype.service';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-user-form',
@@ -13,7 +13,7 @@ import {MatDatepickerInputEvent} from "@angular/material/datepicker";
   styleUrls: ['./user-form.component.scss']
 })
 
-export class UserFormComponent implements OnInit{
+export class UserFormComponent implements OnInit {
 
   /** @type {number} */
   breakpoint: number = 1;
@@ -26,7 +26,8 @@ export class UserFormComponent implements OnInit{
               private memberTypeService: MembertypeService,
               public formService: FormService,
               public dialogRef: MatDialogRef<UserFormComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: User) {}
+              @Inject(MAT_DIALOG_DATA) public data: User) {
+  }
 
 
   ngOnInit() {
@@ -58,7 +59,7 @@ export class UserFormComponent implements OnInit{
    * @returns {void}
    */
   closeDialog(event: string): void {
-    this.dialogRef.close({ event: event, data:this.buildUser(this.formService.form.value)});
+    this.dialogRef.close({ event: event, data: this.buildUser(this.formService.form.value) });
     this.formService.form.reset();
     this.formService.initializeFormGroup();
   }
@@ -86,21 +87,23 @@ export class UserFormComponent implements OnInit{
       },
       birthday: (this.datePipe.transform(userData.birthday, 'yyyy-MM-dd') as string),
       entryDate: (this.datePipe.transform(userData.entryDate, 'yyyy-MM-dd') as string),
-      description: userData.description,
-    }
+      description: userData.description
+    };
 
 
     if (userData.cancellationDate) {
-      userObject['cancellationDate'] = this.datePipe.transform(userData.cancellationDate, 'yyyy-MM-dd') as string
+      userObject['cancellationDate'] = this.datePipe.transform(userData.cancellationDate, 'yyyy-MM-dd') as string;
       leavingDate = this.calculateLeavingDate(userData.cancellationDate);
       userObject['leavingDate'] = this.datePipe.transform(leavingDate, 'yyyy-MM-dd') as string;
     }
 
     if (userData.familyId) {
-      userObject = { ...userObject,
+      userObject = {
+        ...userObject,
         familyId: {
-        userId: parseInt(userData.familyId)
-      }}
+          userId: parseInt(userData.familyId)
+        }
+      };
     }
 
     return userObject;
@@ -140,7 +143,7 @@ export class UserFormComponent implements OnInit{
    * @returns {void}
    */
   onDateChange(event: MatDatepickerInputEvent<any>): void {
-    const leavingDate = this.calculateLeavingDate(event.value as string)
+    const leavingDate = this.calculateLeavingDate(event.value as string);
     this.leavingDate = this.datePipe.transform(leavingDate, 'dd/MM/yyyy') as string;
   }
 }
