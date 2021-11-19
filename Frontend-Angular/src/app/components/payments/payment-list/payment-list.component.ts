@@ -1,33 +1,32 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Payment } from '../../../model/payment';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-payment-list',
   templateUrl: './payment-list.component.html',
-  styleUrls: ['./payment-list.component.scss']
+  styleUrls: ['./payment-list.component.scss'],
 })
 export class PaymentListComponent {
-
   /** @type{MatTableDataSource<Payment>} */
-  dataSource: MatTableDataSource<Payment> = new MatTableDataSource<Payment>()
+  dataSource: MatTableDataSource<Payment> = new MatTableDataSource<Payment>();
+  /** @type {string[]} */
+  displayedColumns: string[] = ['invoiceNumber', 'year', 'bankAccountDetails', 'amount', 'countStatus'];
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   @Input() set tableSource(value: Payment[]) {
     this.dataSource = new MatTableDataSource(value);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
+
   @Output() edit: EventEmitter<number> = new EventEmitter<number>();
 
-  /** @type {string[]} */
-  displayedColumns: string[] = [
-    'Rechnungsnummer',
-    'Jahr',
-    'Bankverbindung',
-    'Beitrag',
-    'Status'
-  ];
-
-  constructor() {
-  }
+  constructor() {}
 
   /**
    * Function to emit Payment-Status-Change to Parent Function
