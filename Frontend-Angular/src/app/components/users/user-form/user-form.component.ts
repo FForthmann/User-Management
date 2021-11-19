@@ -15,8 +15,11 @@ import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 
 export class UserFormComponent implements OnInit{
 
+  /** @type {number} */
   breakpoint: number = 1;
+  /** @type {MemberType[]} */
   memberTypes: MemberType[] = [];
+  /** @type {string} */
   leavingDate: string = '';
 
   constructor(private datePipe: DatePipe,
@@ -37,9 +40,10 @@ export class UserFormComponent implements OnInit{
   /**
    * Function to trigger Flex-Box on Window-size
    *
-   * @Author: Jan Ram & Luca Ulrich
-   * @param event: UIEvent
-   * @returns: void
+   * @author Jan Ram
+   * @contributor Luca Ulrich
+   * @param {UIEvent} event
+   * @returns {void}
    */
   onResize(event: UIEvent): void {
     const target = event.target as Window;
@@ -49,9 +53,9 @@ export class UserFormComponent implements OnInit{
   /**
    * Function to close the Modal and send Data to Parent-Class
    *
-   * @Author: Luca Ulrich
-   * @param event: string
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {string} event
+   * @returns {void}
    */
   closeDialog(event: string): void {
     this.dialogRef.close({ event: event, data:this.buildUser(this.formService.form.value)});
@@ -62,9 +66,9 @@ export class UserFormComponent implements OnInit{
   /**
    * Helper-Function to build a User Object to pass to other functions
    *
-   * @Author: Luca Ulrich
-   * @param userData: formUser
-   * @returns: User Object
+   * @author Luca Ulrich
+   * @param {formUser} userData
+   * @returns {User}
    */
   private buildUser(userData: formUser): User {
     let leavingDate: Date = new Date();
@@ -108,10 +112,10 @@ export class UserFormComponent implements OnInit{
    * Memberships are always active until the last Day of a year (12-31)
    * Ex: cancel(2020-10-01) -> leaving (12-31-2021)
    *
-   * @Author: Luca Ulrich
-   * @param cancellationDate: Date - Date on which a User cancels his Membership
+   * @author Luca Ulrich
+   * @param {Date} cancellationDate - Date on which a User cancels his Membership
    * @private
-   * @returns: date
+   * @returns {Date}
    */
   private calculateLeavingDate(cancellationDate: string): Date {
     let leavingDate: Date;
@@ -131,9 +135,9 @@ export class UserFormComponent implements OnInit{
    * Function that gets triggered by a Change in users-form cancellation Date. It transforms the cancellationDate
    * to a string that gets displayed in the leavingDate field
    *
-   * @Author: Luca Ulrich
-   * @param event
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {MatDatepickerInputEvent<any>} event
+   * @returns {void}
    */
   onDateChange(event: MatDatepickerInputEvent<any>): void {
     const leavingDate = this.calculateLeavingDate(event.value as string)

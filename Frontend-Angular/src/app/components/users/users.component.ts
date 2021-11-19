@@ -16,7 +16,9 @@ import {ConfirmationDialogComponent} from "../confirmation-dialog/confirmation-d
   styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit, OnDestroy {
+  /** @type {User[]} */
   users: User[] = [];
+  /** @type {Subject<void>} */
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
   constructor(private userService: UserService,
@@ -50,9 +52,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   /**
    * Function to communicate with the userService to save a User.
    *
-   * @Author: Luca Ulrich
-   * @param user
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {User} user - User Objet to be saved
+   * @returns {void}
    */
   saveUser(user: User): void {
     this.userService.saveUser(user).subscribe(() => {
@@ -67,9 +69,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   /**
    * Function to communicate with the userService to edit a User.
    *
-   * @Author: Luca Ulrich
-   * @param user - User Object to edit user
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {User} user - User Object to edit user
+   * @returns {void}
    */
   editUser(user: User): void {
     this.userService.editUser(user).subscribe(() => {
@@ -84,9 +86,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   /**
    * Function to communicate with the userService to delete a User.
    *
-   * @Author: Luca Ulrich
-   * @param user - User Object to delete user
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {User} user - User Object to delete user
+   * @returns {void}
    */
   deleteUser(user: User): void {
     this.userService.deleteUser(user.userId!).subscribe(() => {
@@ -100,11 +102,11 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   /**
    * Function to save a User
-   * It initializes the Form and sets up the child-Modal. Also subscribes to the closing Dialog to do something with
+   * It initializes the Form and sets up the child-Modal. Also subscribes to the closing Dialog to perform actions on
    * the data.
    *
-   * @Author: Luca Ulrich
-   * @returns: void
+   * @author Luca Ulrich
+   * @returns {void}
    */
   onAddUser(): void {
     this.formService.triggerAccessibility(false);
@@ -120,12 +122,12 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   /**
    * Function to edit a User
-   * It initializes the Form and sets up the child-Modal. Also subscribes to the closing Dialog to do something with
+   * It initializes the Form and sets up the child-Modal. Also subscribes to the closing Dialog to perform actions with
    * the data.
    *
-   * @Author: Luca Ulrich
-   * @param id: number - ID to get the specific User
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {number} id - ID to get the specific User data
+   * @returns {void}
    */
   onEditUser(id: number): void {
     this.formService.triggerAccessibility(true);
@@ -146,11 +148,13 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Function to react to onDelete Event
+   * Function to react to onDelete Event.
+   * It opens a confirmation Dialog awaiting User-Input. If the User confirms the action a delete Event will be
+   * triggered. Otherwise the delete action will be canceled.
    *
-   * @Author: Luca Ulrich
-   * @param id: number - UserID to be deleted
-   * @returns: void
+   * @author Luca Ulrich
+   * @param {number} id - UserID to be deleted
+   * @returns {void}
    */
   onDeleteUser(id: number): void {
     this.userService.getUser(id).subscribe((user: User) => {
@@ -175,9 +179,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   /**
    * Helper-Function to open a Form-Modal with defined Settings
    *
-   * @Author: Luca Ulrich
+   * @author Luca Ulrich
    * @private
-   * @returns: MatDialogRef<UserFormComponent>
+   * @returns {MatDialogRef<UserFormComponent>}
    */
   private openFormModal(): MatDialogRef<UserFormComponent> {
     const dialogConfig = new MatDialogConfig();
@@ -191,9 +195,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   /**
    * Helper-Function to reload UserData
    *
-   * @Author: Luca Ulrich
+   * @author Luca Ulrich
    * @private
-   * @returns: void
+   * @returns {void}
    */
   private reloadList(): void {
     this.userService.getUsers().subscribe((users: User[]) => {

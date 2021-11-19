@@ -13,6 +13,7 @@ export class UserListComponent {
 
   @Input() users: User[] = [];
 
+  /** @type {string[]} */
   displayedColumns: string[] = [
     'Mitgliedsnummer',
     'Name',
