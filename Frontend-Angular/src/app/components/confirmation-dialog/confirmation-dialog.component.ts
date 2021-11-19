@@ -10,6 +10,7 @@ export class ConfirmationDialogComponent {
 
   constructor(public dialogRef: MatDialogRef<ConfirmationDialogComponent>) { }
 
+  /** @type {string} */
   public confirmMessage: string = "";
 
 }

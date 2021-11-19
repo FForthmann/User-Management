@@ -10,6 +10,7 @@ import {FormService} from "../../services/form/form.service";
 export class ModalViewComponent {
   constructor(private formService: FormService,
               private route: ActivatedRoute) {
+    // Checks the active url for active Route
     switch(route.snapshot.url[0].path) {
       case 'create':
         formService.openModal('create');
