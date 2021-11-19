@@ -11,18 +11,19 @@ import {catchError, retry} from "rxjs/operators";
 /**
  * Class to communicate with the API for Users/Members
  *
- * @Author: Luca Ulrich
- * @Version: 1.2
+ * @author Luca Ulrich
+ * @version 1.2
  */
 export class UserService {
 
   constructor(private http: HttpClient) {}
 
   /**
-   * Function to receive all Users/Members from the API
+   * Function to send a get Request to API.
+   * It receives all Users/Members from the API
    *
-   * @Author: Luca Ulrich
-   * @returns: Observable with an Array of Users
+   * @author Luca Ulrich
+   * @returns {Observable<User[]>} - Observable with an Array of Users
    */
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>('/rest/user').pipe(
@@ -32,11 +33,12 @@ export class UserService {
   }
 
   /**
-   * Function to get a single User from the API
+   * Function to send a get Request to API.
+   * It gets a single User from the API
    *
-   * @Author: Luca Ulrich
-   * @param id: number - UserID to get the User
-   * @returns: Observable with a Single User Object
+   * @author Luca Ulrich
+   * @param {number} id - UserID to get the User from the API
+   * @returns {Observable<User>} - Observable with a Single User Object
    */
   getUser(id: number): Observable<User> {
     return this.http.get<User>(`rest/user/${id}`).pipe(
@@ -46,11 +48,12 @@ export class UserService {
   }
 
   /**
-   * Function to send a saved User to API
+   * Function to send a post Request to API.
+   * It saves a User in the Database.
    *
-   * @Author: Luca Ulrich
-   * @param saveUser: User - a User to be saved
-   * @returns: Observable with an User
+   * @author Luca Ulrich
+   * @param {User} saveUser - a User to be saved to DB / API
+   * @returns {Observable<User>} - Observable with a Single User Object
    *
    */
   saveUser(saveUser: User): Observable<User> {
@@ -61,11 +64,12 @@ export class UserService {
   }
 
   /**
-   * Function to send a edited User to API
+   * Function to send a update Request to API
+   * It updates a saved User with new given Data.
    *
-   * @Author: Luca Ulrich
-   * @param editUser: User - a User to be edited
-   * @returns: Observable with an User
+   * @author Luca Ulrich
+   * @param {User} editUser - a User to be edited
+   * @returns {Observable<User>} - Observable with a Single User Object
    *
    */
   editUser(editUser: User): Observable<User>{
@@ -76,10 +80,11 @@ export class UserService {
  }
 
   /**
-   * Function to send a delete Request to API
+   * Function to send a delete Request to API.
+   * It deletes the User from the Database.
    *
-   * @Author: Luca Ulrich
-   * @param userId: number - a UserId to be deleted
+   * @author Luca Ulrich
+   * @param {number} userId - The UserID to be deleted.
    * @returns: void
    *
    */
@@ -93,9 +98,9 @@ export class UserService {
   /**
    * Function to handle Error-Events in Service. It throws the errorMessage back to the Component.
    *
-   * @Author: Luca Ulrich
-   * @param error: HttpErrorResponse - Errorevent passed to Function
-   * @returns: Observable<never>
+   * @author Luca Ulrich
+   * @param {HttpErrorResponse} error - Errorevent passed to Function
+   * @returns {Observable<never>}
    */
   handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage: string = '';
@@ -111,8 +116,6 @@ export class UserService {
         errorMessage = 'Es ist ein unbekannter Fehler aufgetreten!';
         break;
     }
-
     return throwError(errorMessage);
-
   }
 }
