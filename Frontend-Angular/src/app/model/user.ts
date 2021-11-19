@@ -1,8 +1,9 @@
 /**
  * Interface for a User-Model
  *
- * @Author: Luca Ulrich
- * @Version: 1.2
+ * @author Luca Ulrich
+ * @contributor Jan Ramm
+ * @version 1.2
  */
 export interface User {
   userId?: number
@@ -31,8 +32,8 @@ export interface User {
 /**
  * Interface for a formUser Model
  *
- * @Author: Luca Ulrich
- * @Version: 1.1
+ * @author Luca Ulrich
+ * @version 1.1
  */
 export interface formUser {
   firstName: string;

@@ -1,8 +1,8 @@
 /**
  * Interface for a MemberType-Model
  *
- * @Author: Luca Ulrich & Jan Ramm
- * @Version: 1.0
+ * @author Luca Ulrich & Jan Ramm
+ * @version 1.0
  */
 export interface MemberType {
   description: string;
