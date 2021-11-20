@@ -57,7 +57,7 @@ public class ApiExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             list.add(errorMessage);
         });
-        final ApiException apiException = new ApiException(list.get(0), null, null,
+        final ApiException apiException = new ApiException(list.get(0),  HttpStatus.BAD_REQUEST,
                 ZonedDateTime.now(ZoneId.of("Z")));
         return new ResponseEntity<>(apiException, HttpStatus.BAD_REQUEST);
     }

@@ -46,12 +46,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(User createUser) {
 
-        // Die Validierung beinhaltet, dass alle Pflichtfelder auch gefüllt sind
-        if (checkMandatoryAttributesAreNotNull(createUser)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_NULL);
-        }
+        if(checkHouseNumber(createUser)){
 
-        
+        }
 
         // Validation if MemberType exists in DB
         if (!existsMemberTypeInDB(createUser)) {
@@ -68,6 +65,10 @@ public class UserServiceImpl implements UserService {
         }
 
         return repository.save(createUser);
+    }
+
+    private boolean checkHouseNumber(User createUser) {
+        return false;
     }
 
     @Override

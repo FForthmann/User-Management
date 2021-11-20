@@ -5,6 +5,8 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+
+import de.nordakademie.exceptions.CreateFailedException;
 import org.springframework.stereotype.Service;
 import de.nordakademie.model.Postcode;
 import de.nordakademie.repository.PostcodeRepository;
@@ -29,12 +31,29 @@ public class PostcodeServiceImpl implements PostcodeService {
     @Override
     public Postcode createPostcode(Postcode postcode) {
 
-        // Check if JSON is filled correctly.
-        if (checkMandatoryAttributesAreNotNull(postcode)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_NULL);
+        // Standard validation is checked by JPA
+        // Technical requirements
+
+        // Postcode has the size of 5
+        if(checkPostcode(postcode)){
+            throw new IllegalArgumentException("Msg");
+        }
+
+        // Location contains only Letters
+        if (!checkLocation(postcode)){
+            throw new IllegalArgumentException("Msg");
         }
 
         return repository.save(postcode);
+    }
+
+    private boolean checkLocation(Postcode postcode) {
+            return postcode.getLocation().chars().allMatch(Character::isLetter);
+    }
+
+    private boolean checkPostcode(Postcode postcode) {
+        Long postcodeNumber = postcode.getPostcode();
+        return postcodeNumber.toString().length() != 5;
     }
 
     @Override
@@ -45,9 +64,17 @@ public class PostcodeServiceImpl implements PostcodeService {
     @Override
     public void updatePostcode(Long id, Postcode postcodeUpdate) {
 
-        // Check if JSON is filled correctly.
-        if (checkMandatoryAttributesAreNotNull(postcodeUpdate)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_NULL);
+        // Standard validation is checked by JPA
+        // Technical requirements
+
+        // Postcode has the size of 5
+        if(checkPostcode(postcodeUpdate)){
+            throw new IllegalArgumentException("Msg");
+        }
+
+        // Location contains only Letters
+        if (checkLocation(postcodeUpdate)){
+            throw new IllegalArgumentException("Msg");
         }
 
         Optional<Postcode> postcodePersistent = repository.findById(id);
@@ -74,17 +101,6 @@ public class PostcodeServiceImpl implements PostcodeService {
         return repository.findById(postcodeId);
     }
 
-    private boolean checkMandatoryAttributesAreNotNull(Postcode createPostcode) {
-        return isNull(createPostcode.getPostcode(), createPostcode.getLocation());
-    }
-
-    private boolean isNull(Object... strArr) {
-        for ( Object st : strArr ) {
-            if (st == null)
-                return true;
-        }
-        return false;
-    }
 
 
 }

@@ -69,9 +69,9 @@ public class PostcodeController {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .body(service.createPostcode(postcode));
-        } catch ( IllegalArgumentException ex ) {
+        } catch (IllegalArgumentException ex) {
             ex.printStackTrace();
-            throw new CreateFailedException(ExceptionMessages.POSTCODE_CREATION_FAILED, HttpStatus.BAD_REQUEST);
+            throw new CreateFailedException(ExceptionMessages.POSTCODE_CREATION_FAILED + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 

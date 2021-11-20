@@ -53,9 +53,10 @@ public class Payments {
 
     @Column(nullable = false)
     @NotNull(message = "Das Feld 'bankAccountDetails' darf nicht leer sein.")
-    private Integer bankAccountDetails;
+    @NotBlank(message = "Das Feld 'bankAccountDetails' darf nicht leer sein.")
+    private String bankAccountDetails;
 
-    public Payments(User userId, Long invoiceNumber, Boolean countStatus, Double amount, Integer year, Integer bankAccountDetails) {
+    public Payments(User userId, Long invoiceNumber, Boolean countStatus, Double amount, Integer year, String bankAccountDetails) {
         this.invoiceNumber = invoiceNumber;
         this.userId = userId;
         this.countStatus = countStatus;
@@ -120,11 +121,11 @@ public class Payments {
                 '}';
     }
 
-    public Integer getBankAccountDetails() {
+    public String getBankAccountDetails() {
         return bankAccountDetails;
     }
 
-    public void setBankAccountDetails(Integer bankAccountDetails) {
+    public void setBankAccountDetails(String bankAccountDetails) {
         this.bankAccountDetails = bankAccountDetails;
     }
 }
