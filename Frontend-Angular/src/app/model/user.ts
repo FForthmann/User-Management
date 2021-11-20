@@ -3,7 +3,7 @@
  *
  * @author Luca Ulrich
  * @contributor Jan Ramm
- * @version 1.2
+ * @version 1.3
  */
 export interface User {
   userId?: number;
@@ -23,6 +23,7 @@ export interface User {
   cancellationDate?: string;
   leavingDate?: string;
   description: string;
+  descriptionChange?: string;
   amount?: number;
   familyId?: {
     userId: number;
@@ -33,7 +34,7 @@ export interface User {
  * Interface for a formUser Model
  *
  * @author Luca Ulrich
- * @version 1.1
+ * @version 1.2
  */
 export interface formUser {
   firstName: string;
@@ -44,7 +45,7 @@ export interface formUser {
   street: string;
   houseNumber: string;
   postcode: string;
-  location: string,
+  location: string;
 
   birthday: string;
   entryDate: string;
@@ -52,6 +53,7 @@ export interface formUser {
   leavingDate?: string;
 
   description: string;
+  descriptionChange?: string;
   amount?: string;
 
   familyId?: string;
