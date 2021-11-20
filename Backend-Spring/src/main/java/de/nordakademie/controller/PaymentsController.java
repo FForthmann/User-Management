@@ -48,11 +48,11 @@ public class PaymentsController {
                     .build();
         } catch ( IllegalArgumentException ex ) {
             ex.printStackTrace();
-            throw new DeleteFailedException(ExceptionMessages.PAYMENT_DELETE_ILLEGAL_ARGUMENT, ex, HttpStatus.BAD_REQUEST);
+            throw new DeleteFailedException(ExceptionMessages.PAYMENT_DELETE_ILLEGAL_ARGUMENT, HttpStatus.BAD_REQUEST);
         } catch ( EmptyResultDataAccessException ex ) {
             // ToDo fafor: Der Text wird nicht in der Fehlermeldung angezeigt. Ggf. cause von "Exception" überschreiben?
             // Unterscheidung EntityNotFoundException und diese?
-            throw new DeleteFailedException(ExceptionMessages.PAYMENT_NOT_FOUND_WHEN_DELETE, ex, HttpStatus.NOT_FOUND);
+            throw new DeleteFailedException(ExceptionMessages.PAYMENT_NOT_FOUND_WHEN_DELETE, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -64,7 +64,7 @@ public class PaymentsController {
             return service.findPaymentsById(id);
         } catch ( EntityNotFoundException ex ) {
             ex.printStackTrace();
-            throw new ReadFailedException(ExceptionMessages.PAYMENT_READ_FAILED, ex, HttpStatus.NOT_FOUND);
+            throw new ReadFailedException(ExceptionMessages.PAYMENT_READ_FAILED, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -78,7 +78,7 @@ public class PaymentsController {
                     .body(service.createPayments(payments));
         } catch ( IllegalArgumentException ex ) {
             ex.printStackTrace();
-            throw new CreateFailedException(ExceptionMessages.PAYMENT_CREATION_FAILED, ex, HttpStatus.BAD_REQUEST);
+            throw new CreateFailedException(ExceptionMessages.PAYMENT_CREATION_FAILED, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -95,9 +95,9 @@ public class PaymentsController {
                     .ok()
                     .build();
         } catch ( IllegalArgumentException ex ) {
-            throw new UpdateFailedException(ExceptionMessages.PAYMENT_UPDATE_ILLEGAL_ARGUMENT, ex, HttpStatus.BAD_REQUEST);
+            throw new UpdateFailedException(ExceptionMessages.PAYMENT_UPDATE_ILLEGAL_ARGUMENT, HttpStatus.BAD_REQUEST);
         } catch ( EntityNotFoundException ex ) {
-            throw new UpdateFailedException(ExceptionMessages.PAYMENT_NOT_FOUND_WHEN_UPDATE, ex, HttpStatus.NOT_FOUND);
+            throw new UpdateFailedException(ExceptionMessages.PAYMENT_NOT_FOUND_WHEN_UPDATE, HttpStatus.NOT_FOUND);
         }
 
     }
