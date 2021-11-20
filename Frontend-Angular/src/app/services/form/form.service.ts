@@ -5,7 +5,7 @@ import { User } from '../../model/user';
 import { DatePipe } from '@angular/common';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 
 /**
@@ -24,7 +24,10 @@ export class FormService {
    *    - undefined if id is missing
    *    - action - performed action event
    */
-  private openModalSubject: Subject<{ id: number | undefined; action: string; }> = new Subject<{ id: number | undefined; action: string; }>();
+  private openModalSubject: Subject<{ id: number | undefined; action: string }> = new Subject<{
+    id: number | undefined;
+    action: string;
+  }>();
 
   /**
    * @type {Observable<{ id: number | undefined; action: string;}>}
@@ -32,10 +35,9 @@ export class FormService {
    *    - undefined if id is missing
    *    - action - performed action event
    */
-  public modal: Observable<{ id: number | undefined; action: string; }> = this.openModalSubject.asObservable();
+  public modal: Observable<{ id: number | undefined; action: string }> = this.openModalSubject.asObservable();
 
-  constructor(private datePipe: DatePipe) {
-  }
+  constructor(private datePipe: DatePipe) {}
 
   /** @type {FormGroup} **/
   form: FormGroup = new FormGroup({
@@ -53,7 +55,7 @@ export class FormService {
     leavingDate: new FormControl({ value: '', disabled: true }),
     description: new FormControl('', Validators.required),
     amount: new FormControl({ value: '', disabled: true }, [Validators.pattern('^[0-9]')]),
-    familyId: new FormControl('', [Validators.pattern('^[0-9]*$')])
+    familyId: new FormControl('', [Validators.pattern('^[0-9]*$')]),
   });
 
   /**
@@ -77,10 +79,10 @@ export class FormService {
         birthday: user.birthday,
         entryDate: user.entryDate,
         cancellationDate: user.cancellationDate ? user.cancellationDate : '',
-        leavingDate: user.leavingDate ? this.datePipe.transform(user.leavingDate, 'dd/MM/yyyy') as string : '',
+        leavingDate: user.leavingDate ? (this.datePipe.transform(user.leavingDate, 'dd/MM/yyyy') as string) : '',
         description: user.description,
         amount: user.amount ? user.amount : '',
-        familyId: user.familyId?.userId ? user.familyId.userId : ''
+        familyId: user.familyId?.userId ? user.familyId.userId : '',
       });
     } else {
       this.form.setValue({
@@ -97,7 +99,7 @@ export class FormService {
         leavingDate: '',
         description: '',
         amount: '',
-        familyId: ''
+        familyId: '',
       });
     }
   }
@@ -108,14 +110,14 @@ export class FormService {
    * @author Luca Ulrich
    * @param {boolean} status? - true if user can only view data (disabled access)
    *                         - false if user can edit data (enabled access)
-   *                         - undefined: Button is clicked to switch modes
+   *                         - undefined: Button is clicked to switch modes (enable access)
    * @returns {void}
    */
   triggerAccessibility(status?: boolean): void {
     if (status) {
       this.readonly = status;
     } else {
-      this.readonly = !this.readonly;
+      this.readonly = false;
     }
     if (this.readonly) {
       this.form.get('birthday')!.disable();
@@ -140,7 +142,7 @@ export class FormService {
    * @returns {void}
    */
   openModal(action: string, id?: number): void {
-    const obj = { 'id': id, 'action': action };
+    const obj = { id: id, action: action };
     this.openModalSubject.next(obj);
   }
 }
