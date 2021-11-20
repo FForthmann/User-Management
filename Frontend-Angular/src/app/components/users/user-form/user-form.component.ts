@@ -62,30 +62,16 @@ export class UserFormComponent implements OnInit {
   }
 
   /**
-   * Function to check if the Form contains the field descriptionChange and is not the empty string.
+   * Function to check if the Form contains the given field  and is not the empty string.
    * True if form contains field with valid value. False if no data is present.
+   * The function is used to display or hide form fields.
    *
    * @author Luca Ulrich
+   * @param {string} field
    * @returns {boolean}
    */
-  checkMemberTypeChange(): boolean {
-    const change = this.formService.form.get('descriptionChange')?.value;
-    if (change) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /**
-   * Function to check if the Form contains the field amount and is not the empty string.
-   * True if form contains field with valid value. False if no data is present.
-   *
-   * @author Luca Ulrich
-   * @returns {boolean}
-   */
-  checkAmount(): boolean {
-    const change = this.formService.form.get('amount')?.value;
+  checkIfFieldExists(field: string): boolean {
+    const change = this.formService.form.get(field)?.value;
     if (change) {
       return true;
     } else {

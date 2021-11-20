@@ -91,13 +91,13 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field fxFlex='20%' *ngIf='checkMemberTypeChange()'>
+        <mat-form-field fxFlex='20%' *ngIf="checkIfFieldExists('descriptionChange')">
           <input matInput formControlName='descriptionChange' placeholder='Mitgliedsart-Wechsel'>
           <mat-icon style='-webkit-text-fill-color: darkred'
             matTooltip="Der Wechsel der Mitgliedsart erfolgt zum Jahreswechsel.">warning</mat-icon>
         </mat-form-field>
 
-        <mat-form-field fxFlex='30%' *ngIf="checkAmount()">
+        <mat-form-field fxFlex='30%' *ngIf="checkIfFieldExists('amount')">
           <input formControlName='amount' matInput placeholder='Jahresbeitrag'>
         </mat-form-field>
 
