@@ -247,12 +247,12 @@ export class UsersComponent implements OnInit, OnDestroy {
           cell: (user: User) => `${user.userId}`,
         },
         {
-          columnDef: 'firstName',
+          columnDef: 'name.firstName',
           header: 'Vorname',
           cell: (user: User) => `${user.name.firstName}`,
         },
         {
-          columnDef: 'lastName',
+          columnDef: 'name.lastName',
           header: 'Nachname',
           cell: (user: User) => `${user.name.lastName}`,
         },

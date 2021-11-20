@@ -32,11 +32,14 @@ export class ListViewComponent {
       this.dataSource = new MatTableDataSource<User | Payment>(input);
       this.checkType(input[0]);
       this.dataSource.paginator = this.paginator;
+
       // Overrides the default Angular Filter, so it is able to reach deeper levels of nested Objects
-      this.dataSource.filterPredicate = (data: User | Payment, filter) => {
+      this.dataSource.filterPredicate = (data: User | Payment, filter: string) => {
         const dataStr = JSON.stringify(data).toLowerCase();
         return dataStr.indexOf(filter) != -1;
       };
+
+      this.dataSource.sortingDataAccessor = this.pathDataAccessor;
       this.dataSource.sort = this.sort;
     }
   }
@@ -87,5 +90,21 @@ export class ListViewComponent {
         this.type = 'User';
       }
     }
+  }
+
+  /**
+   * Helper-Function to make sorting able to reach deeper levels of nested Object.
+   *
+   * @author Luca Ulrich
+   * @reference: https://material.angular.io/components/table/api
+   * @param {User | Payment} item
+   * @param {string} path
+   * @private
+   * @returns {string}
+   */
+  private pathDataAccessor(item: User | Payment, path: string): string {
+    return path.split('.').reduce((accu: any, key: string) => {
+      return accu ? accu[key] : undefined;
+    }, item);
   }
 }
