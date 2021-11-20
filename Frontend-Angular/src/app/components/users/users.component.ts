@@ -9,33 +9,41 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormService } from '../../services/form/form.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { Column } from '../../model/column';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss']
+  styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit, OnDestroy {
   /** @type {User[]} */
   users: User[] = [];
+  /** @type {Column[]} */
+  columns: Column[] = [];
   /** @type {Subject<void>} */
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
-  constructor(private userService: UserService,
-              private formService: FormService,
-              private notificationService: NotificationService,
-              private dialog: MatDialog,
-              private router: Router,
-              private route: ActivatedRoute) {
-    this.formService.modal.pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((obj: { id: number | undefined, action: string }) => {
+  constructor(
+    private userService: UserService,
+    private formService: FormService,
+    private notificationService: NotificationService,
+    private dialog: MatDialog,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
+    this.formService.modal
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((obj: { id: number | undefined; action: string }) => {
         if (obj.id) {
           if (obj.action === 'edit') {
+            this.formService.triggerAccessibility(true);
             this.onEditUser(obj.id);
           } else if (obj.action === 'delete') {
             this.onDeleteUser(obj.id);
           }
         } else {
+          this.formService.triggerAccessibility(false);
           this.onAddUser();
         }
       });
@@ -43,6 +51,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.reloadList();
+    this.buildColumns();
   }
 
   ngOnDestroy() {
@@ -58,13 +67,16 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @returns {void}
    */
   saveUser(user: User): void {
-    this.userService.saveUser(user).subscribe(() => {
-      this.notificationService.success(`Der Nutzer:
+    this.userService.saveUser(user).subscribe(
+      () => {
+        this.notificationService.success(`Der Nutzer:
         "${user.name.firstName + ' ' + user.name.lastName}" wurde erfolgreich angelegt!`);
-      this.reloadList();
-    }, (message: string) => {
-      this.notificationService.error(message);
-    });
+        this.reloadList();
+      },
+      (message: string) => {
+        this.notificationService.error(message);
+      }
+    );
   }
 
   /**
@@ -75,13 +87,16 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @returns {void}
    */
   editUser(user: User): void {
-    this.userService.editUser(user).subscribe(() => {
-      this.notificationService.success(`Der Nutzer:
+    this.userService.editUser(user).subscribe(
+      () => {
+        this.notificationService.success(`Der Nutzer:
         "${user.name.firstName + ' ' + user.name.lastName}" wurde erfolgreich editiert!`);
-      this.reloadList();
-    }, (message: string) => {
-      this.notificationService.error(message);
-    });
+        this.reloadList();
+      },
+      (message: string) => {
+        this.notificationService.error(message);
+      }
+    );
   }
 
   /**
@@ -92,13 +107,16 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @returns {void}
    */
   deleteUser(user: User): void {
-    this.userService.deleteUser(user.userId!).subscribe(() => {
-      this.notificationService.success(`Der Nutzer:
+    this.userService.deleteUser(user.userId!).subscribe(
+      () => {
+        this.notificationService.success(`Der Nutzer:
         "${user.name.firstName + ' ' + user.name.lastName}" wurde erfolgreich gelöscht!`);
-      this.reloadList();
-    }, (message: string) => {
-      this.notificationService.error(message);
-    });
+        this.reloadList();
+      },
+      (message: string) => {
+        this.notificationService.error(message);
+      }
+    );
   }
 
   /**
@@ -110,7 +128,6 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @returns {void}
    */
   onAddUser(): void {
-    this.formService.triggerAccessibility(false);
     this.formService.initializeFormGroup();
     const dialogRef = this.openFormModal();
     dialogRef.afterClosed().subscribe((result) => {
@@ -131,7 +148,6 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @returns {void}
    */
   onEditUser(id: number): void {
-    this.formService.triggerAccessibility(true);
     this.userService.getUser(id).subscribe((user: User) => {
       if (user) {
         this.formService.initializeFormGroup(user);
@@ -202,13 +218,60 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @returns {void}
    */
   private reloadList(): void {
-    this.userService.getUsers().subscribe((users: User[]) => {
-      if (users.length < 1) {
-        this.notificationService.warn('Keine Nutzerdaten gefunden!');
+    this.userService.getUsers().subscribe(
+      (users: User[]) => {
+        if (users.length < 1) {
+          this.notificationService.warn('Keine Nutzerdaten gefunden!');
+        }
+        this.users = users;
+      },
+      (message: string) => {
+        this.notificationService.error(message);
       }
-      this.users = users;
-    }, (message: string) => {
-      this.notificationService.error(message);
-    });
+    );
+  }
+
+  /**
+   * Helper-Function to build Columns for the List-View Component
+   *
+   * @author Luca Ulrich
+   * @private
+   * @returns {void}
+   */
+  private buildColumns(): void {
+    if (this.users) {
+      this.columns = [
+        {
+          columnDef: 'userId',
+          header: 'Mitgliedsnummer',
+          cell: (user: User) => `${user.userId}`,
+        },
+        {
+          columnDef: 'name.firstName',
+          header: 'Vorname',
+          cell: (user: User) => `${user.name.firstName}`,
+        },
+        {
+          columnDef: 'name.lastName',
+          header: 'Nachname',
+          cell: (user: User) => `${user.name.lastName}`,
+        },
+        {
+          columnDef: 'entryDate',
+          header: 'Eintrittsdatum',
+          cell: (user: User) => `${user.entryDate}`,
+        },
+        {
+          columnDef: 'description',
+          header: 'Mitgliedsart',
+          cell: (user: User) => `${user.description}`,
+        },
+        {
+          columnDef: 'amount',
+          header: 'Beitrag',
+          cell: (user: User) => `${user.amount}`,
+        },
+      ];
+    }
   }
 }

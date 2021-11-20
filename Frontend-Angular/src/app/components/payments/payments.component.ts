@@ -4,25 +4,29 @@ import { PaymentService } from '../../services/payments/payment.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { NotificationService } from '../../services/notifications/notification.service';
+import { Column } from '../../model/column';
 
 @Component({
   selector: 'app-payments',
   templateUrl: './payments.component.html',
-  styleUrls: ['./payments.component.scss']
+  styleUrls: ['./payments.component.scss'],
 })
 export class PaymentsComponent implements OnInit {
   /** @type {Payment[]} */
   payments: Payment[] = [];
+  /** @type{Column[]} */
+  columns: Column[] = [];
 
-  constructor(private paymentService: PaymentService,
-              private notificationService: NotificationService,
-              private dialog: MatDialog) {
-  }
+  constructor(
+    private paymentService: PaymentService,
+    private notificationService: NotificationService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.reloadList();
+    this.buildColumns();
   }
-
 
   /**
    * Helper-Function to reload PaymentData
@@ -32,14 +36,17 @@ export class PaymentsComponent implements OnInit {
    * @returns {void}
    */
   private reloadList(): void {
-    this.paymentService.getPayments().subscribe((payments: Payment[]) => {
-      if (payments.length < 1) {
-        this.notificationService.warn('Keine Rechnungen gefunden!');
+    this.paymentService.getPayments().subscribe(
+      (payments: Payment[]) => {
+        if (payments.length < 1) {
+          this.notificationService.warn('Keine Rechnungen gefunden!');
+        }
+        this.payments = payments;
+      },
+      (message: string) => {
+        this.notificationService.error(message);
       }
-      this.payments = payments;
-    }, (message: string) => {
-      this.notificationService.error(message);
-    });
+    );
   }
 
   /**
@@ -84,17 +91,54 @@ export class PaymentsComponent implements OnInit {
    * @returns {void}
    */
   editPayment(payment: Payment): void {
-    this.paymentService.editPayment(payment).subscribe(() => {
-      if (payment.countStatus) {
-        this.notificationService.success(`Die Rechnung:
+    this.paymentService.editPayment(payment).subscribe(
+      () => {
+        if (payment.countStatus) {
+          this.notificationService.success(`Die Rechnung:
         "${payment.invoiceNumber}" wurde als bezahlt markiert!`);
-      } else {
-        this.notificationService.warn(`Die Rechnung:
+        } else {
+          this.notificationService.warn(`Die Rechnung:
         "${payment.invoiceNumber}" wurde als nicht bezahlt markiert!`);
+        }
+        this.reloadList();
+      },
+      (message: string) => {
+        this.notificationService.error(message);
       }
-      this.reloadList();
-    }, (message: string) => {
-      this.notificationService.error(message);
-    });
+    );
+  }
+
+  /**
+   * Helper-Function to build Columns for the List-View Component
+   *
+   * @author Luca Ulrich
+   * @private
+   * @returns {void}
+   */
+  private buildColumns(): void {
+    if (this.payments) {
+      this.columns = [
+        {
+          columnDef: 'invoiceNumber',
+          header: 'Rechnungsnummer',
+          cell: (payment: Payment) => `${payment.invoiceNumber}`,
+        },
+        {
+          columnDef: 'year',
+          header: 'Jahr',
+          cell: (payment: Payment) => `${payment.year}`,
+        },
+        {
+          columnDef: 'bankAccountDetails',
+          header: 'Bankverbindung',
+          cell: (payment: Payment) => `${payment.bankAccountDetails}`,
+        },
+        {
+          columnDef: 'amount',
+          header: 'Beitrag',
+          cell: (payment: Payment) => `${payment.amount}`,
+        },
+      ];
+    }
   }
 }
