@@ -46,8 +46,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(User createUser) {
 
-        if(checkHouseNumber(createUser)){
-
+        if (!isStreetOnlyText(createUser)) {
+            throw new IllegalArgumentException("Street");
         }
 
         // Validation if MemberType exists in DB
@@ -65,10 +65,6 @@ public class UserServiceImpl implements UserService {
         }
 
         return repository.save(createUser);
-    }
-
-    private boolean checkHouseNumber(User createUser) {
-        return false;
     }
 
     @Override
@@ -200,5 +196,11 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-
+    private boolean isStreetOnlyText(User user) {
+        return user
+                .getAddress()
+                .getStreet()
+                .chars()
+                .allMatch(Character::isLetter);
+    }
 }

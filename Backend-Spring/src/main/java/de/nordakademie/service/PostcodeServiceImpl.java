@@ -5,8 +5,6 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-
-import de.nordakademie.exceptions.CreateFailedException;
 import org.springframework.stereotype.Service;
 import de.nordakademie.model.Postcode;
 import de.nordakademie.repository.PostcodeRepository;
@@ -31,29 +29,24 @@ public class PostcodeServiceImpl implements PostcodeService {
     @Override
     public Postcode createPostcode(Postcode postcode) {
 
-        // Standard validation is checked by JPA
-        // Technical requirements
-
-        // Postcode has the size of 5
-        if(checkPostcode(postcode)){
-            throw new IllegalArgumentException("Msg");
+        if(!hasPostalCodeFiveDigits(postcode)){
+            throw new IllegalArgumentException("Postcode");
         }
 
-        // Location contains only Letters
-        if (!checkLocation(postcode)){
-            throw new IllegalArgumentException("Msg");
+        if (!isLocationOnlyText(postcode)){
+            throw new IllegalArgumentException("Location");
         }
 
         return repository.save(postcode);
     }
 
-    private boolean checkLocation(Postcode postcode) {
+    private boolean isLocationOnlyText(Postcode postcode) {
             return postcode.getLocation().chars().allMatch(Character::isLetter);
     }
 
-    private boolean checkPostcode(Postcode postcode) {
+    private boolean hasPostalCodeFiveDigits(Postcode postcode) {
         Long postcodeNumber = postcode.getPostcode();
-        return postcodeNumber.toString().length() != 5;
+        return postcodeNumber.toString().length() == 5;
     }
 
     @Override
@@ -68,12 +61,12 @@ public class PostcodeServiceImpl implements PostcodeService {
         // Technical requirements
 
         // Postcode has the size of 5
-        if(checkPostcode(postcodeUpdate)){
+        if(hasPostalCodeFiveDigits(postcodeUpdate)){
             throw new IllegalArgumentException("Msg");
         }
 
         // Location contains only Letters
-        if (checkLocation(postcodeUpdate)){
+        if (isLocationOnlyText(postcodeUpdate)){
             throw new IllegalArgumentException("Msg");
         }
 
