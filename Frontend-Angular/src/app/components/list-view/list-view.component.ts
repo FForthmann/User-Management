@@ -32,6 +32,11 @@ export class ListViewComponent {
       this.dataSource = new MatTableDataSource<User | Payment>(input);
       this.checkType(input[0]);
       this.dataSource.paginator = this.paginator;
+      // Overrides the default Angular Filter, so it is able to reach deeper levels of nested Objects
+      this.dataSource.filterPredicate = (data: User | Payment, filter) => {
+        const dataStr = JSON.stringify(data).toLowerCase();
+        return dataStr.indexOf(filter) != -1;
+      };
       this.dataSource.sort = this.sort;
     }
   }
