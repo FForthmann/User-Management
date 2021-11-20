@@ -47,14 +47,14 @@ public class PaymentsServiceImpl implements PaymentsService {
     public Payments createPayments(Payments payments) {
 
         // Check if JSON is filled correctly.
-        if (checkMandatoryAttributesAreNotNull(payments)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_NULL);
-        }
+       // if (checkMandatoryAttributesAreNotNull(payments)) {
+        //    throw new IllegalArgumentException(ApiMessages.MSG_NULL);
+       // }
 
         // Check if User exists in DB
-        if (!existsUserInDB(payments)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_USER_NOT_IN_DB);
-        }
+        //if (!existsUserInDB(payments)) {
+       //     throw new IllegalArgumentException(ApiMessages.MSG_USER_NOT_IN_DB);
+     //   }
 
         return repository.save(payments);
     }

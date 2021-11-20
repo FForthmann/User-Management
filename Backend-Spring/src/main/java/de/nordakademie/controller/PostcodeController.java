@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -61,7 +63,7 @@ public class PostcodeController {
 
     @PostMapping
     public ResponseEntity<Postcode> createPostcode(
-            @RequestBody
+            @Valid @RequestBody
                     Postcode postcode) throws CreateFailedException {
         try {
             return ResponseEntity
@@ -89,7 +91,7 @@ public class PostcodeController {
     public ResponseEntity<Postcode> updatePostcode(
             @PathVariable("id")
                     Long id,
-            @RequestBody
+            @Valid @RequestBody
                     Postcode postcode) throws UpdateFailedException {
         try {
             service.updatePostcode(id, postcode);

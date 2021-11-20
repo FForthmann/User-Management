@@ -51,6 +51,8 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException(ApiMessages.MSG_NULL);
         }
 
+        
+
         // Validation if MemberType exists in DB
         if (!existsMemberTypeInDB(createUser)) {
             throw new IllegalArgumentException(ApiMessages.MSG_MEMBERTYPE_NOT_IN_DB + createUser

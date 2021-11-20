@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
+
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,12 +35,12 @@ public class PaymentsController {
     }
 
     @GetMapping
-    public List<Payments> findAllAccounts() {
+    public List<Payments> findAllPayments() {
         return service.findAllPayments();
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Payments> deleteAccount(
+    public ResponseEntity<Payments> deletePayment(
             @PathVariable("id")
                     Long accountId) throws DeleteFailedException {
         try {
@@ -57,7 +59,7 @@ public class PaymentsController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Payments> findAccountById(
+    public Optional<Payments> findPaymentById(
             @PathVariable("id")
                     Long id) throws ReadFailedException {
         try {
@@ -69,8 +71,8 @@ public class PaymentsController {
     }
 
     @PostMapping
-    public ResponseEntity<Payments> createAccount(
-            @RequestBody
+    public ResponseEntity<Payments> createPayments(
+            @Valid @RequestBody
                     Payments payments) throws CreateFailedException {
         try {
             return ResponseEntity
@@ -83,10 +85,10 @@ public class PaymentsController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Payments> updateAccount(
+    public ResponseEntity<Payments> updatePayments(
             @PathVariable("id")
                     Long id,
-            @RequestBody
+            @Valid @RequestBody
                     Payments payments) throws UpdateFailedException {
 
         try {

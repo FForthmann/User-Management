@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -39,9 +41,7 @@ public class MemberTypeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<MemberType> deleteMemberType(
-            @PathVariable("id")
-                    String memberTypeId) throws DeleteFailedException {
+    public ResponseEntity<MemberType> deleteMemberType(@PathVariable("id") String memberTypeId) throws DeleteFailedException {
         try {
             service.deleteMemberTypeById(memberTypeId);
             return ResponseEntity
@@ -73,7 +73,7 @@ public class MemberTypeController {
 
     @PostMapping
     public ResponseEntity<MemberType> createMemberType(
-            @RequestBody
+            @Valid @RequestBody
                     MemberType memberType) throws CreateFailedException {
         try {
             return ResponseEntity
@@ -88,7 +88,7 @@ public class MemberTypeController {
     public ResponseEntity<MemberType> updateMemberType(
             @PathVariable("id")
                     String id,
-            @RequestBody
+            @Valid @RequestBody
                     MemberType memberType) throws UpdateFailedException {
         try {
             service.updateMemberType(id, memberType);

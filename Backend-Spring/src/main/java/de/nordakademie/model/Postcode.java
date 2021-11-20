@@ -3,12 +3,18 @@ package de.nordakademie.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 @Entity
 public class Postcode {
     @Id
+    @NotNull(message = "Die Postleitzahl darf nicht leer sein.")
     private Long postcode;
 
     @Column(nullable = false)
+    @NotNull(message = "Das Feld 'Location' darf nicht leer sein.")
+    @NotBlank(message = "Das Feld 'Location' darf nicht leer sein.")
     private String location;
 
     public Postcode(Long postcode, String location) {

@@ -1,15 +1,16 @@
 package de.nordakademie.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedNativeQueries;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 @NamedNativeQueries(value = {
         @NamedNativeQuery(name = "Payments.existsUserInPayments", query = "SELECT EXISTS (SELECT * FROM PAYMENTS WHERE USER_ID_USER_ID = :userId)"),
         @NamedNativeQuery(name = "Payments.deleteAllPaymentsByUserId",
@@ -34,19 +35,24 @@ public class Payments {
             nullable = false)
     private Long invoiceNumber;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
+    @JsonUnwrapped
     private User userId;
 
     @Column(nullable = false)
+    @NotNull(message = "Das Feld 'countStatus' darf nicht leer sein.")
     private Boolean countStatus;
 
     @Column(nullable = false)
+    @NotNull(message = "Das Feld 'amount' darf nicht leer sein.")
     private Double amount;
 
     @Column(nullable = false)
+    @NotNull(message = "Das Feld 'year' darf nicht leer sein.")
     private Integer year;
 
     @Column(nullable = false)
+    @NotNull(message = "Das Feld 'bankAccountDetails' darf nicht leer sein.")
     private Integer bankAccountDetails;
 
     public Payments(User userId, Long invoiceNumber, Boolean countStatus, Double amount, Integer year, Integer bankAccountDetails) {

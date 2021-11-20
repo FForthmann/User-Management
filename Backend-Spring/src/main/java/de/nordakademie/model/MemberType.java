@@ -4,14 +4,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "Member_Type")
 public class MemberType {
     @Id
+    @NotNull(message = "Das Feld 'Beschreibung' darf nicht leer sein.")
+    @NotEmpty(message = "Das Feld 'Beschreibung' darf nicht leer sein.")
     private String description;
 
     @Column
+    @NotNull(message = "Das Feld 'Betrag' darf nicht leer sein.")
     private Double amount;
 
     public MemberType(String description, Double amount) {

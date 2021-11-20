@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -68,7 +70,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<User> createUser(
-            @RequestBody
+            @Valid @RequestBody
                     User user) throws CreateFailedException {
         try {
             return ResponseEntity
@@ -81,10 +83,10 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateMemberType(
+    public ResponseEntity<User> updateUser(
             @PathVariable("id")
                     Long id,
-            @RequestBody
+            @Valid @RequestBody
                     User user) throws UpdateFailedException {
         try {
             service.updateUser(id, user);

@@ -2,12 +2,18 @@ package de.nordakademie.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
 @Embeddable
 public class Name {
     @Column(nullable = false)
+    @NotEmpty(message = "Das Feld 'Vorname' darf nicht leer sein")
     private String firstName;
 
     @Column(nullable = false)
+    @NotEmpty(message = "Das Feld 'Nachname' darf nicht leer sein.")
+    @NotBlank(message = "Das Feld 'Nachname' darf nicht leer sein.")
     private String lastName;
 
     public Name(String firstName, String secondName) {
@@ -16,7 +22,6 @@ public class Name {
     }
 
     public Name() {
-
     }
 
     public String getFirstName() {
