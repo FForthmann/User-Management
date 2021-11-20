@@ -49,13 +49,13 @@ public class MemberTypeController {
                     .build();
         } catch ( IllegalArgumentException ex ) {
             ex.printStackTrace();
-            throw new DeleteFailedException(ExceptionMessages.MEMBERTYPE_DELETE_ILLEGAL_ARGUMENT, ex, HttpStatus.BAD_REQUEST);
+            throw new DeleteFailedException(ExceptionMessages.MEMBERTYPE_DELETE_ILLEGAL_ARGUMENT, HttpStatus.BAD_REQUEST);
         } catch ( EmptyResultDataAccessException ex ) {
             // ToDo fafor: Beim Delete eines nicht vorhandenen Membertypes wird der gewollte Text nicht angezeigt. Der Fehlercode ist korrekt.
-            throw new DeleteFailedException(ExceptionMessages.MEMBERTYPE_NOT_FOUND_WHEN_DELETE, ex, HttpStatus.BAD_REQUEST);
+            throw new DeleteFailedException(ExceptionMessages.MEMBERTYPE_NOT_FOUND_WHEN_DELETE, HttpStatus.BAD_REQUEST);
         } catch ( ConstraintViolationException ex ) {
             // ToDo fafor: Falsche Exception, wird nicht getriggert und endet am Frontend mit 500 Internal Error
-            throw new DeleteFailedException(ExceptionMessages.MEMBERTYPE_DELETE_REFERENCE_VIOLATED, ex, HttpStatus.METHOD_NOT_ALLOWED);
+            throw new DeleteFailedException(ExceptionMessages.MEMBERTYPE_DELETE_REFERENCE_VIOLATED, HttpStatus.METHOD_NOT_ALLOWED);
         }
     }
 
@@ -67,7 +67,7 @@ public class MemberTypeController {
             return service.findMemberTypeById(id);
         } catch ( EntityNotFoundException ex ) {
             ex.printStackTrace();
-            throw new ReadFailedException(ExceptionMessages.MEMBERTYPE_READ_FAILED, ex, HttpStatus.NOT_FOUND);
+            throw new ReadFailedException(ExceptionMessages.MEMBERTYPE_READ_FAILED, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -80,7 +80,7 @@ public class MemberTypeController {
                     .status(HttpStatus.CREATED)
                     .body(service.createMemberType(memberType));
         } catch ( IllegalArgumentException ex ) {
-            throw new CreateFailedException(ExceptionMessages.MEMBERTYPE_CREATION_FAILED, ex, HttpStatus.BAD_REQUEST);
+            throw new CreateFailedException(ExceptionMessages.MEMBERTYPE_CREATION_FAILED, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -96,9 +96,9 @@ public class MemberTypeController {
                     .ok()
                     .build();
         } catch ( IllegalArgumentException ex ) {
-            throw new UpdateFailedException(ExceptionMessages.MEMBERTYPE_UPDATE_ILLEGAL_ARGUMENT, ex, HttpStatus.BAD_REQUEST);
+            throw new UpdateFailedException(ExceptionMessages.MEMBERTYPE_UPDATE_ILLEGAL_ARGUMENT, HttpStatus.BAD_REQUEST);
         } catch ( EntityNotFoundException ex ) {
-            throw new UpdateFailedException(ExceptionMessages.MEMBERTYPE_NOT_FOUND_WHEN_UPDATE, ex, HttpStatus.NOT_FOUND);
+            throw new UpdateFailedException(ExceptionMessages.MEMBERTYPE_NOT_FOUND_WHEN_UPDATE, HttpStatus.NOT_FOUND);
         }
     }
 

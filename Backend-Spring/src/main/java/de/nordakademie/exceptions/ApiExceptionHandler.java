@@ -10,7 +10,6 @@ public class ApiExceptionHandler {
     @ExceptionHandler(value = {CreateFailedException.class})
     public ResponseEntity<Object> handleCreateFailedException(CreateFailedException exception) {
         final ApiException apiException = new ApiException(exception.getMessage(),
-                                                           exception.getThrowable(),
                                                            exception.getHttpStatus(),
                                                            ZonedDateTime.now(ZoneId.of("Z")));
         return new ResponseEntity<>(apiException, exception.getHttpStatus());
@@ -19,7 +18,6 @@ public class ApiExceptionHandler {
     @ExceptionHandler(value = {DeleteFailedException.class})
     public ResponseEntity<Object> handleReadFailedException(DeleteFailedException exception) {
         final ApiException apiException = new ApiException(exception.getMessage(),
-                                                           exception.getThrowable(),
                                                            exception.getHttpStatus(),
                                                            ZonedDateTime.now(ZoneId.of("Z")));
         return new ResponseEntity<>(apiException, exception.getHttpStatus());
@@ -28,7 +26,6 @@ public class ApiExceptionHandler {
     @ExceptionHandler(value = {UpdateFailedException.class})
     public ResponseEntity<Object> handleReadFailedException(UpdateFailedException exception) {
         final ApiException apiException = new ApiException(exception.getMessage(),
-                                                           exception.getThrowable(),
                                                            exception.getHttpStatus(),
                                                            ZonedDateTime.now(ZoneId.of("Z")));
         return new ResponseEntity<>(apiException, exception.getHttpStatus());
@@ -37,7 +34,6 @@ public class ApiExceptionHandler {
     @ExceptionHandler(value = {ReadFailedException.class})
     public ResponseEntity<Object> handleReadFailedException(ReadFailedException exception) {
         final ApiException apiException = new ApiException(exception.getMessage(),
-                                                           exception.getThrowable(),
                                                            exception.getHttpStatus(),
                                                            ZonedDateTime.now(ZoneId.of("Z")));
         return new ResponseEntity<>(apiException, exception.getHttpStatus());
