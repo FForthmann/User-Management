@@ -81,12 +81,15 @@ export class ListViewComponent {
    */
   private checkType(input: User | Payment): void {
     if (input != null) {
-      if (!this.displayedColumns.includes('actions')) {
-        this.displayedColumns.push('actions');
-      }
       if ('invoiceNumber' in input) {
+        if (!this.displayedColumns.includes('countStatus')) {
+          this.displayedColumns.push('countStatus');
+        }
         this.type = 'Payment';
       } else if ('userId' in input) {
+        if (!this.displayedColumns.includes('actions')) {
+          this.displayedColumns.push('actions');
+        }
         this.type = 'User';
       }
     }
