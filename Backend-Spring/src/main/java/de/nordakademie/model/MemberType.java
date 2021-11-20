@@ -3,7 +3,10 @@ package de.nordakademie.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-@Entity(name = "MemberType")
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Member_Type")
 public class MemberType {
     @Id
     private String description;
