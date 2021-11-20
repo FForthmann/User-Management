@@ -78,6 +78,22 @@ export class UserFormComponent implements OnInit {
   }
 
   /**
+   * Function to check if the Form contains the field amount and is not the empty string.
+   * True if form contains field with valid value. False if no data is present.
+   *
+   * @author Luca Ulrich
+   * @returns {boolean}
+   */
+  checkAmount(): boolean {
+    const change = this.formService.form.get('amount')?.value;
+    if (change) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * Helper-Function to build a User Object to pass to other functions
    *
    * @author Luca Ulrich
