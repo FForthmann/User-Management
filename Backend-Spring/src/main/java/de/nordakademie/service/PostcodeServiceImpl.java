@@ -41,7 +41,7 @@ public class PostcodeServiceImpl implements PostcodeService {
     }
 
     private boolean isLocationOnlyText(Postcode postcode) {
-            return postcode.getLocation().chars().allMatch(Character::isLetter);
+            return postcode.getLocation().matches("[a-zA-Z\\s\'\"]+");
     }
 
     private boolean hasPostalCodeFiveDigits(Postcode postcode) {

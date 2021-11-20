@@ -71,7 +71,7 @@ public class PaymentsServiceImpl implements PaymentsService {
             return true;
         } else {
             for (int i = 2; i< array.length;i++){
-                if(!array[0].chars().allMatch(Character::isDigit)){
+                if(!array[i].matches("[0-9]")){
                     return true;
                 }
             }

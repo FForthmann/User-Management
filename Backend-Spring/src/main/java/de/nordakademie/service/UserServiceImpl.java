@@ -1,5 +1,6 @@
 package de.nordakademie.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
@@ -46,9 +47,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(User createUser) {
 
-        if (!isStreetOnlyText(createUser)) {
-            throw new IllegalArgumentException("Street");
-        }
+        validateInputUserForUpdateAndInsert(createUser);
 
         // Validation if MemberType exists in DB
         if (!existsMemberTypeInDB(createUser)) {
@@ -69,10 +68,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(Long id, User updateUser) {
-        // Validation
-        if (checkMandatoryAttributesAreNotNull(updateUser)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_NULL);
-        }
+
+        validateInputUserForUpdateAndInsert(updateUser);
 
         Optional<User> persistentUser = repository.findById(id);
         if (!persistentUser.isPresent()) {
@@ -168,39 +165,60 @@ public class UserServiceImpl implements UserService {
                                                           .getPostcode());
     }
 
-    private boolean checkMandatoryAttributesAreNotNull(User createUser) {
-        return isNull(createUser
-                              .getAddress()
-                              .getHouseNumber(), createUser
-                              .getAddress()
-                              .getStreet(), createUser
-                              .getAddress()
-                              .getPostalCode()
-                              .getPostcode(), createUser
-                              .getAddress()
-                              .getPostalCode()
-                              .getLocation(), createUser.getBirthday(), createUser.getEntryDate(), createUser
-                              .getMemberType()
-                              .getDescription(), createUser
-                              .getName()
-                              .getFirstName(), createUser
-                              .getName()
-                              .getLastName());
-    }
-
-    private boolean isNull(Object... strArr) {
-        for ( Object st : strArr ) {
-            if (st == null)
-                return true;
+    private void validateInputUserForUpdateAndInsert(User user) {
+        if (!isStreetOnlyText(user)) {
+            throw new IllegalArgumentException("Street");
         }
-        return false;
+
+        if (!isFirstNameOnlyText(user)){
+            throw new IllegalArgumentException("First Name");
+        }
+
+        if (!isLastNameOnlyText(user)){
+            throw new IllegalArgumentException("Last Name");
+        }
+
+        // Dates
+        if (!isBirthdayBeforeEntryDateAndNow(user)){
+            throw new IllegalArgumentException("Das Geburtsdatum ist entweder nicht vor dem Eintrittsdatum oder dem heutigen Datum.");
+        }
+
+        if (!isEntryDateBeforeCancellationDate(user)){
+            throw new IllegalArgumentException("Das Eintrittsdatum ist nicht vor dem Kündigungsdatum.");
+        }
     }
 
     private boolean isStreetOnlyText(User user) {
         return user
                 .getAddress()
                 .getStreet()
-                .chars()
-                .allMatch(Character::isLetter);
+                .matches("[a-zA-Z\\s\'\"]+");
     }
+
+    private boolean isFirstNameOnlyText(User user) {
+        return user.getName().getFirstName().matches("[a-zA-Z\\s\'\"]+");
+    }
+
+    private boolean isLastNameOnlyText(User user) {
+        return user.getName().getLastName().matches("[a-zA-Z\\s\'\"]+");
+    }
+
+    private boolean isBirthdayBeforeEntryDateAndNow(User user) {
+        return user.getBirthday().isBefore(user.getEntryDate()) && user.getBirthday().isBefore(LocalDate.now());
+    }
+
+    private boolean isEntryDateBeforeCancellationDate(User user) {
+        if(user.getCancellationDate() == null){
+            return true;
+        }
+        return user.getEntryDate().isBefore(user.getCancellationDate());
+    }
+
+
+
+
+
+
+
+
 }
