@@ -194,23 +194,6 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
   }
 
-  private buildColumns(): void {
-    if (this.users) {
-      this.columns = [
-        {
-          columnDef: 'userId',
-          header: 'Mitgliedsnummer',
-          cell: (user: User) => `${user.userId}`,
-        },
-        {
-          columnDef: 'description',
-          header: 'Mitgliedsart',
-          cell: (user: User) => `${user.description}`,
-        },
-      ];
-    }
-  }
-
   /**
    * Helper-Function to open a Form-Modal with defined Settings
    *
@@ -246,5 +229,49 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.notificationService.error(message);
       }
     );
+  }
+
+  /**
+   * Helper-Function to build Columns for the List-View Component
+   *
+   * @author Luca Ulrich
+   * @private
+   * @returns {void}
+   */
+  private buildColumns(): void {
+    if (this.users) {
+      this.columns = [
+        {
+          columnDef: 'userId',
+          header: 'Mitgliedsnummer',
+          cell: (user: User) => `${user.userId}`,
+        },
+        {
+          columnDef: 'firstName',
+          header: 'Vorname',
+          cell: (user: User) => `${user.name.firstName}`,
+        },
+        {
+          columnDef: 'lastName',
+          header: 'Nachname',
+          cell: (user: User) => `${user.name.lastName}`,
+        },
+        {
+          columnDef: 'entryDate',
+          header: 'Eintrittsdatum',
+          cell: (user: User) => `${user.entryDate}`,
+        },
+        {
+          columnDef: 'description',
+          header: 'Mitgliedsart',
+          cell: (user: User) => `${user.description}`,
+        },
+        {
+          columnDef: 'amount',
+          header: 'Beitrag',
+          cell: (user: User) => `${user.amount}`,
+        },
+      ];
+    }
   }
 }

@@ -15,6 +15,7 @@ import { Column } from '../../model/table';
 export class PaymentsComponent implements OnInit {
   /** @type {Payment[]} */
   payments: Payment[] = [];
+  /** @type{Column[]} */
   columns: Column[] = [];
 
   constructor(
@@ -108,6 +109,13 @@ export class PaymentsComponent implements OnInit {
     );
   }
 
+  /**
+   * Helper-Function to build Columns for the List-View Component
+   *
+   * @author Luca Ulrich
+   * @private
+   * @returns {void}
+   */
   private buildColumns(): void {
     if (this.payments) {
       this.columns = [
