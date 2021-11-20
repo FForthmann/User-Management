@@ -1,4 +1,5 @@
 <app-list-view [setInput]='payments'
-[setColumns]='columns'></app-list-view>
+               [setColumns]='columns'
+               (edit)='onPaymentEdit($event)'></app-list-view>
 <app-payment-list [payments]='payments'
                   (edit)='onPaymentEdit($event)'></app-payment-list>

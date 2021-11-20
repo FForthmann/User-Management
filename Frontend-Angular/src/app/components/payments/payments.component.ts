@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { NotificationService } from '../../services/notifications/notification.service';
 import { User } from '../../model/user';
+import { Column } from '../../model/table';
 
 @Component({
   selector: 'app-payments',
@@ -14,7 +15,7 @@ import { User } from '../../model/user';
 export class PaymentsComponent implements OnInit {
   /** @type {Payment[]} */
   payments: Payment[] = [];
-  columns: any = [];
+  columns: Column[] = [];
 
   constructor(
     private paymentService: PaymentService,
@@ -129,11 +130,6 @@ export class PaymentsComponent implements OnInit {
           columnDef: 'amount',
           header: 'Beitrag',
           cell: (payment: Payment) => `${payment.amount}`,
-        },
-        {
-          columnDef: 'countStatus',
-          header: 'Status',
-          cell: (payment: Payment) => `${payment.countStatus}`,
         },
       ];
     }

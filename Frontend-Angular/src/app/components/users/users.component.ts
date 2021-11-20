@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormService } from '../../services/form/form.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { Column } from '../../model/table';
 
 @Component({
   selector: 'app-users',
@@ -18,7 +19,8 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 export class UsersComponent implements OnInit, OnDestroy {
   /** @type {User[]} */
   users: User[] = [];
-  columns: any = [];
+  /** @type {Column[]} */
+  columns: Column[] = [];
   /** @type {Subject<void>} */
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
