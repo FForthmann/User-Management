@@ -28,9 +28,12 @@ export class ListViewComponent {
     this.displayedColumns = columns.map((column: Column) => column.columnDef);
   }
   @Input() set setInput(input: User[] | Payment[]) {
-    this.dataSource = new MatTableDataSource<User | Payment>(input);
-    this.checkType(input[0]);
-    this.dataSource.paginator = this.paginator;
+    if (input != null) {
+      this.dataSource = new MatTableDataSource<User | Payment>(input);
+      this.checkType(input[0]);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    }
   }
   @Output() edit: EventEmitter<number> = new EventEmitter<number>();
 
