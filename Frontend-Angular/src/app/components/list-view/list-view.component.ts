@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { User } from '../../model/user';
 import { MatTableDataSource } from '@angular/material/table';
 import { Payment } from '../../model/payment';
 import { Column } from '../../model/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-list-view',
@@ -19,6 +21,8 @@ export class ListViewComponent {
   /** @type {MatTableDataSource<User|Payment>} */
   dataSource: MatTableDataSource<User | Payment> = new MatTableDataSource<User | Payment>();
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
   @Input() set setColumns(columns: Column[]) {
     this.columns = columns;
     this.displayedColumns = columns.map((column: Column) => column.columnDef);
@@ -26,10 +30,23 @@ export class ListViewComponent {
   @Input() set setInput(input: User[] | Payment[]) {
     this.dataSource = new MatTableDataSource<User | Payment>(input);
     this.checkType(input[0]);
+    this.dataSource.paginator = this.paginator;
   }
   @Output() edit: EventEmitter<number> = new EventEmitter<number>();
 
   constructor() {}
+
+  /**
+   * Function to Apply Filter on Datatable Source
+   *
+   * @author Luca Ulrich
+   * @param {KeyboardEvent} event - event that gets emitted while writing in Table Search
+   * @returns {void}
+   */
+  applyFilter(event: KeyboardEvent): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   /**
    * Function to emit Payment-Status-Change to Parent Function

@@ -5,7 +5,7 @@
     Create
   </button>
   <mat-form-field class='search-form-field' floatLabel='never'>
-    <input matInput placeholder='Search' autocomplete='off'>
+    <input matInput placeholder='Suchen & Filtern' (keyup)="applyFilter($event)" #input>
     <button mat-button matSuffix mat-icon-button aria-label='Clear'>
       <mat-icon>close</mat-icon>
     </button>
@@ -60,4 +60,5 @@
   </div>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <mat-paginator [pageSizeOptions]='[5, 25, 50]'></mat-paginator>
 </table>

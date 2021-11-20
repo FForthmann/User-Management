@@ -33,6 +33,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ListViewComponent } from './components/list-view/list-view.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,7 @@ import { ListViewComponent } from './components/list-view/list-view.component';
     ConfirmationDialogComponent,
     PaymentsComponent,
     PaymentListComponent,
-    ListViewComponent
+    ListViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,14 +70,15 @@ import { ListViewComponent } from './components/list-view/list-view.component';
     MatSnackBarModule,
     MatDialogModule,
     MatTooltipModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MatPaginatorModule,
   ],
   providers: [
     DatePipe,
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
     { provide: MAT_DIALOG_DATA, useValue: {} },
-    { provide: MatDialogRef, useValue: {} }],
-  bootstrap: [AppComponent]
+    { provide: MatDialogRef, useValue: {} },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}
