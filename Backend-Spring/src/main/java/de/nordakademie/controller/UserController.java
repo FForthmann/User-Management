@@ -44,7 +44,7 @@ public class UserController {
             return service.findUserById(userId);
         } catch ( EntityNotFoundException ex ) {
             ex.printStackTrace();
-            throw new ReadFailedException(ExceptionMessages.USER_READ_FAILED, ex, HttpStatus.NOT_FOUND);
+            throw new ReadFailedException(ExceptionMessages.USER_READ_FAILED, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -59,9 +59,9 @@ public class UserController {
                     .build();
         } catch ( IllegalArgumentException ex ) {
             ex.printStackTrace();
-            throw new DeleteFailedException(ExceptionMessages.USER_DELETE_ILLEGAL_ARGUMENT, ex, HttpStatus.BAD_REQUEST);
+            throw new DeleteFailedException(ExceptionMessages.USER_DELETE_ILLEGAL_ARGUMENT, HttpStatus.BAD_REQUEST);
         } catch ( EntityNotFoundException ex ) {
-            throw new DeleteFailedException(ExceptionMessages.USER_NOT_FOUND_WHEN_DELETE, ex, HttpStatus.NOT_FOUND);
+            throw new DeleteFailedException(ExceptionMessages.USER_NOT_FOUND_WHEN_DELETE, HttpStatus.NOT_FOUND);
         }
 
     }
@@ -76,7 +76,7 @@ public class UserController {
                     .body(service.createUser(user));
         } catch ( IllegalArgumentException ex ) {
             ex.printStackTrace();
-            throw new CreateFailedException(ExceptionMessages.USER_CREATION_FAILED, ex, HttpStatus.BAD_REQUEST);
+            throw new CreateFailedException(ExceptionMessages.USER_CREATION_FAILED, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -92,9 +92,9 @@ public class UserController {
                     .ok()
                     .build();
         } catch ( IllegalArgumentException ex ) {
-            throw new UpdateFailedException(ExceptionMessages.USER_UPDATE_ILLEGAL_ARGUMENT, ex, HttpStatus.BAD_REQUEST);
+            throw new UpdateFailedException(ExceptionMessages.USER_UPDATE_ILLEGAL_ARGUMENT, HttpStatus.BAD_REQUEST);
         } catch ( EntityNotFoundException ex ) {
-            throw new UpdateFailedException(ExceptionMessages.USER_NOT_FOUND_WHEN_UPDATE, ex, HttpStatus.NOT_FOUND);
+            throw new UpdateFailedException(ExceptionMessages.USER_NOT_FOUND_WHEN_UPDATE, HttpStatus.NOT_FOUND);
         }
 
     }
