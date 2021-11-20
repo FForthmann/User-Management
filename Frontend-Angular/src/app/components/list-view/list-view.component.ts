@@ -20,6 +20,8 @@ export class ListViewComponent {
   displayedColumns: string[] = [];
   /** @type {MatTableDataSource<User|Payment>} */
   dataSource: MatTableDataSource<User | Payment> = new MatTableDataSource<User | Payment>();
+  /** @type{string} */
+  search: string = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -93,6 +95,17 @@ export class ListViewComponent {
         this.type = 'User';
       }
     }
+  }
+
+  /**
+   * Function to clear the Filter and reset input Field
+   *
+   * @author Luca Ulrich
+   * @returns {void}
+   */
+  clearFilter(): void {
+    this.search = '';
+    this.dataSource.filter = '';
   }
 
   /**

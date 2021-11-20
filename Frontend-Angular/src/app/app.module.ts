@@ -14,7 +14,7 @@ import { UsersComponent } from './components/users/users.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HttpClientModule } from '@angular/common/http';
 import { UserFormComponent } from './components/users/user-form/user-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatRadioModule } from '@angular/material/radio';
@@ -74,6 +74,7 @@ import { MatSortModule } from '@angular/material/sort';
     FlexLayoutModule,
     MatPaginatorModule,
     MatSortModule,
+    FormsModule,
   ],
   providers: [
     DatePipe,
