@@ -2,9 +2,9 @@ import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core
 import { User } from '../../model/user';
 import { MatTableDataSource } from '@angular/material/table';
 import { Payment } from '../../model/payment';
-import { Column } from '../../model/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
+import { Column } from '../../model/column';
 
 @Component({
   selector: 'app-list-view',

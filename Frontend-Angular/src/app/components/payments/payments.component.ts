@@ -4,8 +4,7 @@ import { PaymentService } from '../../services/payments/payment.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { NotificationService } from '../../services/notifications/notification.service';
-import { User } from '../../model/user';
-import { Column } from '../../model/table';
+import { Column } from '../../model/column';
 
 @Component({
   selector: 'app-payments',

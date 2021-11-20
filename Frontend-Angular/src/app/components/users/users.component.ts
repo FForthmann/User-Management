@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormService } from '../../services/form/form.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { Column } from '../../model/table';
+import { Column } from '../../model/column';
 
 @Component({
   selector: 'app-users',
