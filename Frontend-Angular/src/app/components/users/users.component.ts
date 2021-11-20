@@ -18,6 +18,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 export class UsersComponent implements OnInit, OnDestroy {
   /** @type {User[]} */
   users: User[] = [];
+  columns: any = [];
   /** @type {Subject<void>} */
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -48,6 +49,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.reloadList();
+    this.buildColumns();
   }
 
   ngOnDestroy() {
@@ -188,6 +190,23 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.notificationService.error(`Keinen Nutzer mit der Mitgliedsnummer: ${id} gefunden!`);
       }
     });
+  }
+
+  private buildColumns(): void {
+    if (this.users) {
+      this.columns = [
+        {
+          columnDef: 'userId',
+          header: 'Mitgliedsnummer',
+          cell: (user: User) => `${user.userId}`,
+        },
+        {
+          columnDef: 'description',
+          header: 'Mitgliedsart',
+          cell: (user: User) => `${user.description}`,
+        },
+      ];
+    }
   }
 
   /**

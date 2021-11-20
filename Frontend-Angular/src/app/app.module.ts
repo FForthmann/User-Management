@@ -32,6 +32,7 @@ import { PaymentListComponent } from './components/payments/payment-list/payment
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ListViewComponent } from './components/list-view/list-view.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ModalViewComponent,
     ConfirmationDialogComponent,
     PaymentsComponent,
-    PaymentListComponent
+    PaymentListComponent,
+    ListViewComponent
   ],
   imports: [
     BrowserModule,
