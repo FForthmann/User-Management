@@ -15,6 +15,10 @@ import { DatePipe } from '@angular/common';
  * @contributor Jan Ramm
  */
 export class FormService {
+  //initial values vor datepickers
+  minDate = new Date(1900, 0, 1);
+  maxDate = new Date(3000, 0, 1);
+  startDate = new Date(2021, 11, 21);
   getErrorMessage() {
     return 'Yeah!';
     //   if (this.form.get('firstName')?.hasError('required')) {
