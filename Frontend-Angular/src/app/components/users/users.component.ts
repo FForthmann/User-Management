@@ -133,6 +133,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       this.router.navigate(['../'], { relativeTo: this.route });
       if (result.event === 'submit') {
+        delete result.data['memberTypeChange']; //delete Key on creation
         this.saveUser(result.data);
       }
     });

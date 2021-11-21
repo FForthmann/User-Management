@@ -81,7 +81,7 @@ export class FormService {
         cancellationDate: user.cancellationDate ? user.cancellationDate : '',
         leavingDate: user.leavingDate ? (this.datePipe.transform(user.leavingDate, 'MM/dd/yyyy') as string) : '',
         description: user.description,
-        descriptionChange: user.memberTypeChange.description ? user.memberTypeChange.description : '',
+        descriptionChange: user.memberTypeChange ? user.memberTypeChange.description : '',
         amount: user.amount ? user.amount : '',
         familyId: user.familyId?.userId ? user.familyId.userId : '',
       });
