@@ -5,21 +5,21 @@ import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import de.nordakademie.util.ExceptionMessages;
 @Embeddable
 public class Address {
     @Column(nullable = false)
-    @NotEmpty(message = "Das Feld 'Straße' darf nicht leer sein.")
+    @NotEmpty(message = ExceptionMessages.USER_STREET_EMPTY)
     private String street;
 
     @Column(nullable = false)
-    @NotNull(message = "Das Feld 'Hausnummer' darf nicht leer sein.")
+    @NotNull(message = ExceptionMessages.USER_HOUSENUMBER_EMPTY)
     private Integer houseNumber;
 
     @ManyToOne
     @JsonUnwrapped
-    @NotNull(message = "Das Feld 'Postleitzahl' darf nicht leer sein.")
+    @NotNull(message = ExceptionMessages.USER_POSTCODE_EMPTY)
     private Postcode postalCode;
 
     public Address(String street, Integer houseNumber, Postcode postalCode) {

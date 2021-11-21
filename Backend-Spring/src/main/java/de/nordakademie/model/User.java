@@ -1,14 +1,22 @@
 package de.nordakademie.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
+import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.NotEmpty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import de.nordakademie.util.ExceptionMessages;
 @Entity(name = "User")
 @Table(name = "user")
 public class User {
@@ -23,7 +31,7 @@ public class User {
             generator = "user_sequence"
     )
 
-    @Column( name = "user_Id",
+    @Column(name = "user_Id",
             updatable = false,
             nullable = false)
     private Long userId;
@@ -37,11 +45,11 @@ public class User {
     private Address address;
 
     @Column(nullable = false)
-    @NotNull(message = "Das Feld 'Geburtstag' darf nicht leer sein.")
+    @NotNull(message = ExceptionMessages.USER_BIRTHDAY_EMPTY)
     private LocalDate birthday;
 
     @Column(nullable = false)
-    @NotNull(message = "Das Feld 'Eintrittsdatum' darf nicht leer sein.")
+    @NotNull(message = ExceptionMessages.USER_ENTRY_DATE_EMPTY)
     private LocalDate entryDate;
 
     @Column()
@@ -51,7 +59,7 @@ public class User {
     private LocalDate leavingDate;
 
     @ManyToOne(optional = false)
-    @NotNull(message = "Das Feld 'Mitgliedsart' darf nicht leer sein.")
+    @NotNull(message = ExceptionMessages.USER_MEMBER_TYPE_EMPTY)
     @JsonUnwrapped
     private MemberType memberType;
 

@@ -13,6 +13,7 @@ import de.nordakademie.repository.PaymentsRepository;
 import de.nordakademie.repository.PostcodeRepository;
 import de.nordakademie.repository.UserRepository;
 import de.nordakademie.util.ApiMessages;
+import de.nordakademie.util.ExceptionMessages;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -131,14 +132,10 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
         }
 
-        // Was gehört zum Löschen alles dazu
-        // Wenn User in Payments vorhanden, dann muss auch Payments gelöscht werden
+        // ToDo fafor: Change UserId in Payments to null
         if (paymentsRepository.existsUserInPayments(userId)) {
 
         }
-
-        // Darf dieser überhaupt gelöscht werden?
-
         repository.deleteById(userId);
     }
 
@@ -167,24 +164,23 @@ public class UserServiceImpl implements UserService {
 
     private void validateInputUserForUpdateAndInsert(User user) {
         if (!isStreetOnlyText(user)) {
-            throw new IllegalArgumentException("Street");
+            throw new IllegalArgumentException(ExceptionMessages.USER_STREET_NOT_TEXT);
         }
 
-        if (!isFirstNameOnlyText(user)){
-            throw new IllegalArgumentException("First Name");
+        if (!isFirstNameOnlyText(user)) {
+            throw new IllegalArgumentException(ExceptionMessages.USER_FIRST_NAME_NOT_TEXT);
         }
 
-        if (!isLastNameOnlyText(user)){
-            throw new IllegalArgumentException("Last Name");
+        if (!isLastNameOnlyText(user)) {
+            throw new IllegalArgumentException(ExceptionMessages.USER_LAST_NAME_NOT_TEXT);
         }
 
-        // Dates
-        if (!isBirthdayBeforeEntryDateAndNow(user)){
-            throw new IllegalArgumentException("Das Geburtsdatum ist entweder nicht vor dem Eintrittsdatum oder dem heutigen Datum.");
+        if (!isBirthdayBeforeEntryDateAndNow(user)) {
+            throw new IllegalArgumentException(ExceptionMessages.USER_BIRTHDAY_BEFORE_ENTRY_DATE_OR_IN_FUTURE);
         }
 
-        if (!isEntryDateBeforeCancellationDate(user)){
-            throw new IllegalArgumentException("Das Eintrittsdatum ist nicht vor dem Kündigungsdatum.");
+        if (!isEntryDateBeforeCancellationDate(user)) {
+            throw new IllegalArgumentException(ExceptionMessages.USER_ENTRY_DATE_BEFORE_CANCELLATION_DATE);
         }
     }
 
@@ -192,33 +188,37 @@ public class UserServiceImpl implements UserService {
         return user
                 .getAddress()
                 .getStreet()
-                .matches("[a-zA-Z\\s\'\"]+");
+                .matches("[a-zA-Z\\s'\"]+");
     }
 
     private boolean isFirstNameOnlyText(User user) {
-        return user.getName().getFirstName().matches("[a-zA-Z\\s\'\"]+");
+        return user
+                .getName()
+                .getFirstName()
+                .matches("[a-zA-Z\\s'\"]+");
     }
 
     private boolean isLastNameOnlyText(User user) {
-        return user.getName().getLastName().matches("[a-zA-Z\\s\'\"]+");
+        return user
+                .getName()
+                .getLastName()
+                .matches("[a-zA-Z\\s'\"]+");
     }
 
     private boolean isBirthdayBeforeEntryDateAndNow(User user) {
-        return user.getBirthday().isBefore(user.getEntryDate()) && user.getBirthday().isBefore(LocalDate.now());
+        return user
+                .getBirthday()
+                .isBefore(user.getEntryDate()) && user
+                .getBirthday()
+                .isBefore(LocalDate.now());
     }
 
     private boolean isEntryDateBeforeCancellationDate(User user) {
-        if(user.getCancellationDate() == null){
+        if (user.getCancellationDate() == null) {
             return true;
         }
-        return user.getEntryDate().isBefore(user.getCancellationDate());
+        return user
+                .getEntryDate()
+                .isBefore(user.getCancellationDate());
     }
-
-
-
-
-
-
-
-
 }

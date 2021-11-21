@@ -5,7 +5,6 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -65,12 +64,12 @@ public class UserController {
         } catch ( EntityNotFoundException ex ) {
             throw new DeleteFailedException(ExceptionMessages.USER_NOT_FOUND_WHEN_DELETE, HttpStatus.NOT_FOUND);
         }
-
     }
 
     @PostMapping
     public ResponseEntity<User> createUser(
-            @Valid @RequestBody
+            @Valid
+            @RequestBody
                     User user) throws CreateFailedException {
         try {
             return ResponseEntity
@@ -78,7 +77,7 @@ public class UserController {
                     .body(service.createUser(user));
         } catch ( IllegalArgumentException ex ) {
             ex.printStackTrace();
-            throw new CreateFailedException(ExceptionMessages.USER_CREATION_FAILED, HttpStatus.BAD_REQUEST);
+            throw new CreateFailedException(ExceptionMessages.USER_CREATION_FAILED + " " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -86,7 +85,8 @@ public class UserController {
     public ResponseEntity<User> updateUser(
             @PathVariable("id")
                     Long id,
-            @Valid @RequestBody
+            @Valid
+            @RequestBody
                     User user) throws UpdateFailedException {
         try {
             service.updateUser(id, user);
@@ -94,7 +94,7 @@ public class UserController {
                     .ok()
                     .build();
         } catch ( IllegalArgumentException ex ) {
-            throw new UpdateFailedException(ExceptionMessages.USER_UPDATE_ILLEGAL_ARGUMENT, HttpStatus.BAD_REQUEST);
+            throw new UpdateFailedException(ExceptionMessages.USER_UPDATE_ILLEGAL_ARGUMENT + " " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch ( EntityNotFoundException ex ) {
             throw new UpdateFailedException(ExceptionMessages.USER_NOT_FOUND_WHEN_UPDATE, HttpStatus.NOT_FOUND);
         }
