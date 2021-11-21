@@ -80,7 +80,7 @@ public class UserServiceImpl implements UserService {
         }
 
         // create Payment for User
-        createPaymentByUser(createUser);
+      //  createPaymentByUser(createUser);
 
         return repository.save(createUser);
     }
@@ -121,13 +121,6 @@ public class UserServiceImpl implements UserService {
     public void updateUser(Long id, User updateUser) {
 
         validateInputUserForUpdateAndInsert(updateUser);
-
-        // check if Jugendlich auch wirklich Jugendlich
-        if(updateUser.getMemberType().getDescription().equals("Jugendlich") && check(updateUser)){
-            throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
-        }
-
-
 
         Optional<User> persistentUser = repository.findById(id);
         if (!persistentUser.isPresent()) {
