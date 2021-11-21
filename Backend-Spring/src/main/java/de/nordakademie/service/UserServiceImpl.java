@@ -58,9 +58,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(User createUser) {
 
+        createUser = setLeavingDate(createUser);
+
         validateInputUserForUpdateAndInsert(createUser);
 
-        // check if Jugendlich auch wirklich Jugendlich
+        // Check if Membertype Teenage is valid with the inserted age
         if (createUser
                 .getMemberType()
                 .getDescription()
@@ -82,7 +84,7 @@ public class UserServiceImpl implements UserService {
                                                         .getPostalCode());
         }
 
-        // create Payment for User
+        // Create Payment for User
         User savedUser = repository.save(createUser);
         createPaymentByUser(savedUser);
         return savedUser;
@@ -135,6 +137,8 @@ public class UserServiceImpl implements UserService {
         if (!persistentUser.isPresent()) {
             throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
         }
+
+        computeAndInsertLeavingDate(updateUser, persistentUser);
 
         persistentUser
                 .get()
@@ -197,7 +201,6 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
         }
 
-        // ToDo fafor: Change UserId in Payments to null
         if (paymentsRepository.existsUserInPayments(userId)) {
             paymentsRepository.updateUserIdToNull(userId);
         }
@@ -247,6 +250,55 @@ public class UserServiceImpl implements UserService {
         return repository.findById(userId);
     }
 
+    @Inject
+    public void setPaymentsService(PaymentsService paymentsService) {
+        this.paymentsService = paymentsService;
+    }
+
+    @Inject
+    public void setMemberTypeService(MemberTypeService memberTypeService) {
+        this.memberTypeService = memberTypeService;
+    }
+
+    @Inject
+    public void setPostcodeService(PostcodeService postcodeService) {
+        this.postcodeService = postcodeService;
+    }
+
+    private void createPaymentByUser(User savedUser) {
+        Payments payments = new Payments();
+        payments.setBankAccountDetails(savedUser.getBankAccountDetails());
+        payments.setUserId(savedUser);
+        payments.setYear(LocalDate
+                                 .now()
+                                 .getYear());
+        payments.setCountStatus(Boolean.FALSE);
+        payments.setAmount(evaluateAmountForUser(savedUser));
+        paymentsService.createPayments(payments);
+    }
+
+    private Double evaluateAmountForUser(User createUser) {
+        Double amountResult = 0.0;
+        Optional<MemberType> a = memberTypeService.findMemberTypeById(createUser
+                                                                              .getMemberType()
+                                                                              .getDescription());
+        if (a.isPresent()) {
+            if (createUser.getFamilyId() != null) {
+                amountResult -= 3;
+            } else {
+                amountResult += a
+                        .get()
+                        .getAmount();
+            }
+        }
+        return amountResult;
+    }
+
+    private boolean check(User createUser) {
+        Period period = Period.between(createUser.getBirthday(), LocalDate.now());
+        return period.getYears() >= 18;
+    }
+
     private boolean existsMemberTypeInDB(User createUser) {
         return this.memberTypeRepository.existsById(createUser
                                                             .getMemberType()
@@ -258,6 +310,52 @@ public class UserServiceImpl implements UserService {
                                                           .getAddress()
                                                           .getPostalCode()
                                                           .getPostcode());
+    }
+
+    private void computeAndInsertLeavingDate(final User updateUser, final Optional<User> persistentUser) {
+        if (updateUser.getCancellationDate() != null) {
+            LocalDate regularLeavingDate = LocalDate.of(updateUser
+                                                                .getCancellationDate()
+                                                                .plusYears(1)
+                                                                .getYear(), 1, 1);
+            if (updateUser
+                    .getCancellationDate()
+                    .plusMonths(3)
+                    .isBefore(regularLeavingDate)) {
+                persistentUser
+                        .get()
+                        .setLeavingDate(regularLeavingDate);
+                updateUser.setCancellationDate(null);
+            } else {
+                persistentUser
+                        .get()
+                        .setLeavingDate(regularLeavingDate.plusYears(1));
+                updateUser.setCancellationDate(null);
+            }
+        }
+    }
+
+    private User setLeavingDate(final User createUser) {
+        if (createUser.getCancellationDate() != null) {
+            LocalDate regularLeavingDate = LocalDate.of(createUser
+                                                                .getCancellationDate()
+                                                                .plusYears(1)
+                                                                .getYear(), 1, 1);
+            if (createUser
+                    .getCancellationDate()
+                    .plusMonths(3)
+                    .isBefore(regularLeavingDate)) {
+                createUser.setLeavingDate(regularLeavingDate);
+                createUser.setCancellationDate(null);
+                return createUser;
+            } else {
+                createUser.setLeavingDate(regularLeavingDate.plusYears(1));
+                createUser.setCancellationDate(null);
+                return createUser;
+            }
+        } else {
+            return createUser;
+        }
     }
 
     private void validateInputUserForUpdateAndInsert(User user) {
@@ -318,20 +416,5 @@ public class UserServiceImpl implements UserService {
         return user
                 .getEntryDate()
                 .isBefore(user.getCancellationDate());
-    }
-
-    @Inject
-    public void setPaymentsService(PaymentsService paymentsService) {
-        this.paymentsService = paymentsService;
-    }
-
-    @Inject
-    public void setMemberTypeService(MemberTypeService memberTypeService) {
-        this.memberTypeService = memberTypeService;
-    }
-
-    @Inject
-    public void setPostcodeService(PostcodeService postcodeService) {
-        this.postcodeService = postcodeService;
     }
 }
