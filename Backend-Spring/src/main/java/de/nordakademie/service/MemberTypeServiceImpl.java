@@ -1,36 +1,49 @@
 package de.nordakademie.service;
 
-import de.nordakademie.model.MemberType;
-import de.nordakademie.model.Postcode;
-import de.nordakademie.repository.MemberTypeRepository;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import java.lang.reflect.Member;
 import java.util.List;
 import java.util.Optional;
-
+import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+import org.springframework.stereotype.Service;
+import de.nordakademie.model.MemberType;
+import de.nordakademie.repository.MemberTypeRepository;
+import de.nordakademie.util.ApiMessages;
 @Service
 @Transactional
-public class MemberTypeServiceImpl implements MemberTypeService{
+public class MemberTypeServiceImpl implements MemberTypeService {
     private MemberTypeRepository repository;
+
+    @Inject
+    public void setRepository(MemberTypeRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public MemberType createMemberType(MemberType memberType) {
-        return repository.save(memberType);
+       return repository.save(memberType);
     }
 
     @Override
     public void deleteMemberTypeById(String memberTypeId) {
-repository.deleteById(memberTypeId);
+        repository.deleteById(memberTypeId);
     }
 
     @Override
     public void updateMemberType(String membertypeId, MemberType memberType) {
+
+
+
         Optional<MemberType> memberTypePersistent = repository.findById(membertypeId);
-        memberTypePersistent.get().setAmount(memberType.getAmount());
-        memberTypePersistent.get().setDescription(memberType.getDescription());
+        if (!memberTypePersistent.isPresent()) {
+            throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
+        }
+        memberTypePersistent
+                .get()
+                .setAmount(memberType.getAmount());
+        memberTypePersistent
+                .get()
+                .setDescription(memberType.getDescription());
     }
 
     @Override
@@ -43,8 +56,6 @@ repository.deleteById(memberTypeId);
         return repository.findById(memberTypeId);
     }
 
-    @Inject
-    public void setRepository(MemberTypeRepository repository) {
-        this.repository = repository;
-    }
+
+
 }
