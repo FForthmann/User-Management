@@ -302,12 +302,10 @@ public class UserServiceImpl implements UserService {
                 persistentUser
                         .get()
                         .setLeavingDate(regularLeavingDate);
-                updateUser.setCancellationDate(null);
             } else {
                 persistentUser
                         .get()
                         .setLeavingDate(regularLeavingDate.plusYears(1));
-                updateUser.setCancellationDate(null);
             }
         }
     }
@@ -323,11 +321,9 @@ public class UserServiceImpl implements UserService {
                     .plusMonths(3)
                     .isBefore(regularLeavingDate)) {
                 createUser.setLeavingDate(regularLeavingDate);
-                createUser.setCancellationDate(null);
                 return createUser;
             } else {
                 createUser.setLeavingDate(regularLeavingDate.plusYears(1));
-                createUser.setCancellationDate(null);
                 return createUser;
             }
         } else {
