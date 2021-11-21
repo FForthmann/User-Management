@@ -41,19 +41,24 @@ export class FormService {
 
   /** @type {FormGroup} **/
   form: FormGroup = new FormGroup({
-    firstName: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
+    firstName: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$")]),
+    lastName: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"), Validators.required]),
     // accountDetails: new FormControl('', [Validators.required,
     //   Validators.pattern("^[0-9]*$"), Validators.minLength(8)]),
     houseNumber: new FormControl('', [Validators.pattern('^[0-9]*$'), Validators.required]),
-    postcode: new FormControl('', [Validators.pattern('^[0-9]*$'), Validators.required]),
-    street: new FormControl('', Validators.required),
-    location: new FormControl('', Validators.required),
+    postcode: new FormControl('', [
+      Validators.pattern('^[0-9]*$'),
+      Validators.required,
+      Validators.maxLength(5),
+      Validators.minLength(5),
+    ]),
+    street: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"), Validators.required]),
+    location: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"), Validators.required]),
     birthday: new FormControl('', Validators.required),
     entryDate: new FormControl('', Validators.required),
     cancellationDate: new FormControl(''),
     leavingDate: new FormControl({ value: '', disabled: true }),
-    description: new FormControl('', Validators.required),
+    description: new FormControl('', [Validators.required, Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$")]),
     amount: new FormControl({ value: '', disabled: true }, [Validators.pattern('^[0-9]')]),
     familyId: new FormControl('', [Validators.pattern('^[0-9]*$')]),
   });
