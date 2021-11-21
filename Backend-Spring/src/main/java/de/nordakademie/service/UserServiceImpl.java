@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
         // Validation if MemberType exists in DB
         if (!existsMemberTypeInDB(createUser)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_MEMBERTYPE_NOT_IN_DB + createUser
+            throw new IllegalArgumentException(ApiMessages.MEMBERTYPE_NOT_IN_DB + createUser
                     .getMemberType()
                     .getDescription());
         }
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> persistentUser = repository.findById(id);
         if (!persistentUser.isPresent()) {
-            throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
+            throw new EntityNotFoundException(ApiMessages.ENTITY_NOT_EXISTS);
         }
 
         computeAndInsertLeavingDate(updateUser, persistentUser);
@@ -159,7 +159,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> user = repository.findById(userId);
         if (!user.isPresent()) {
-            throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
+            throw new EntityNotFoundException(ApiMessages.ENTITY_NOT_EXISTS);
         }
 
         if (paymentsRepository.existsUserInPayments(userId)) {

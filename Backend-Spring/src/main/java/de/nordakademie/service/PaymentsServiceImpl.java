@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import de.nordakademie.model.Payments;
 import de.nordakademie.repository.PaymentsRepository;
 import de.nordakademie.util.ApiMessages;
+import de.nordakademie.util.ExceptionMessages;
 /**
  * Payments Service Implementation
  */
@@ -46,13 +47,13 @@ public class PaymentsServiceImpl implements PaymentsService {
     @Override
     public Payments createPayments(Payments payments) {
 
-        if (checkBankAccountDetails(payments)) {
-            throw new IllegalArgumentException("Luca ist nen Noob");
+        if (!areBankAccountDetailsValid(payments)) {
+            throw new IllegalArgumentException(ExceptionMessages.IBAN_NOT_VALID);
         }
 
         // Check if User exists in DB
         if (payments.getUserId() == null || !existsUserInDB(payments)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_USER_NOT_IN_DB);
+            throw new IllegalArgumentException(ApiMessages.USER_NOT_IN_DB);
         }
 
         return repository.save(payments);
@@ -78,18 +79,18 @@ public class PaymentsServiceImpl implements PaymentsService {
     @Override
     public void updatePayments(Long id, Payments payments) {
 
-        if (checkBankAccountDetails(payments)) {
-            throw new IllegalArgumentException("Luca ist nen Noob");
+        if (!areBankAccountDetailsValid(payments)) {
+            throw new IllegalArgumentException(ExceptionMessages.IBAN_NOT_VALID);
         }
 
         // Check if User exists in DB
         if (!existsUserInDB(payments)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_USER_NOT_IN_DB);
+            throw new IllegalArgumentException(ApiMessages.USER_NOT_IN_DB);
         }
 
         Optional<Payments> accountPersistent = repository.findById(id);
         if (!accountPersistent.isPresent()) {
-            throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
+            throw new EntityNotFoundException(ApiMessages.ENTITY_NOT_EXISTS);
         }
 
         // Update Payments in DB
@@ -141,29 +142,29 @@ public class PaymentsServiceImpl implements PaymentsService {
 
         return repository.existsUserInPaymentsForThisYear(userId, year);
     }
-    
-    private boolean checkBankAccountDetails(Payments payments) {
+
+    private boolean areBankAccountDetailsValid(Payments payments) {
 
         String bankAccountDetails = payments.getBankAccountDetails();
 
         String[] array = bankAccountDetails.split("");
         if (array.length != 22) {
-            return true;
+            return false;
         }
         if (!array[0]
                 .chars()
                 .allMatch(Character::isLetter) && !array[1]
                 .chars()
                 .allMatch(Character::isLetter)) {
-            return true;
+            return false;
         } else {
             for ( int i = 2; i < array.length; i++ ) {
                 if (!array[i].matches("[0-9]")) {
-                    return true;
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     /**

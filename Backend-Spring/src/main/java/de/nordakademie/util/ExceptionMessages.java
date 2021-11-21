@@ -122,6 +122,8 @@ public final class ExceptionMessages {
 
     public static final String POSTCODE_IS_EMPTY = "Das Feld 'Postleitzahl' darf nicht leer sein.";
 
+    public static final String IBAN_NOT_VALID = "Das Feld 'IBAN' darf nur aus 22 Zeichen bestehen: zwei Buchstaben am Anfang und 20 Zahlen.";
+
     private ExceptionMessages() {
         // Constructor hiding the public one
     }

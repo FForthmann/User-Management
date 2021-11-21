@@ -47,7 +47,7 @@ public class PostcodeServiceImpl implements PostcodeService {
 
         Optional<Postcode> postcodePersistent = repository.findById(id);
         if (!postcodePersistent.isPresent()) {
-            throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
+            throw new EntityNotFoundException(ApiMessages.ENTITY_NOT_EXISTS);
         }
 
         // Update DB
