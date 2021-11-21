@@ -357,21 +357,21 @@ public class UserServiceImpl implements UserService {
         return user
                 .getAddress()
                 .getStreet()
-                .matches("[a-zA-Z\\s'\"]+");
+                .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
     }
 
     private boolean isFirstNameOnlyText(User user) {
         return user
                 .getName()
                 .getFirstName()
-                .matches("[a-zA-Z\\s'\"]+");
+                .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
     }
 
     private boolean isLastNameOnlyText(User user) {
         return user
                 .getName()
                 .getLastName()
-                .matches("[a-zA-Z\\s'\"]+");
+                .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
     }
 
     private boolean isBirthdayBeforeEntryDateAndNow(User user) {

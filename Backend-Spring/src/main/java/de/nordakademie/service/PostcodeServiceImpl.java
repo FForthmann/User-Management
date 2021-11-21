@@ -82,7 +82,7 @@ public class PostcodeServiceImpl implements PostcodeService {
     private boolean isLocationOnlyText(Postcode postcode) {
         return postcode
                 .getLocation()
-                .matches("[a-zA-Z\\s'\"]+");
+                .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
     }
 
     private boolean hasPostalCodeFiveDigits(Postcode postcode) {
