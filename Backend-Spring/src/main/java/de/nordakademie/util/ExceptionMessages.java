@@ -120,6 +120,8 @@ public final class ExceptionMessages {
 
     public static final String PAYMENT_IBAN_EMPTY = "Das Feld 'IBAN' darf nicht leer sein.";
 
+    public static final String POSTCODE_IS_EMPTY = "Das Feld 'Postleitzahl' darf nicht leer sein.";
+
     private ExceptionMessages() {
         // Constructor hiding the public one
     }
