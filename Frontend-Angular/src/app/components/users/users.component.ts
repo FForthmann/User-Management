@@ -133,6 +133,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       this.router.navigate(['../'], { relativeTo: this.route });
       if (result.event === 'submit') {
+        delete result.data['memberTypeChange']; //delete Key on creation
         this.saveUser(result.data);
       }
     });
@@ -156,6 +157,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           this.router.navigate(['../'], { relativeTo: this.route });
           if (result.event === 'submit') {
             result.data['userId'] = user.userId;
+            result.data['description'] = user.description; //reassign description, to save old description
             this.editUser(result.data);
           }
         });

@@ -43,8 +43,7 @@ export class FormService {
   form: FormGroup = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
-    // accountDetails: new FormControl('', [Validators.required,
-    //   Validators.pattern("^[0-9]*$"), Validators.minLength(8)]),
+    bankAccountDetails: new FormControl('', [Validators.required, Validators.minLength(8)]),
     houseNumber: new FormControl('', [Validators.pattern('^[0-9]*$'), Validators.required]),
     postcode: new FormControl('', [Validators.pattern('^[0-9]*$'), Validators.required]),
     street: new FormControl('', Validators.required),
@@ -54,6 +53,7 @@ export class FormService {
     cancellationDate: new FormControl(''),
     leavingDate: new FormControl({ value: '', disabled: true }),
     description: new FormControl('', Validators.required),
+    descriptionChange: new FormControl({ value: '', disabled: true }),
     amount: new FormControl({ value: '', disabled: true }, [Validators.pattern('^[0-9]')]),
     familyId: new FormControl('', [Validators.pattern('^[0-9]*$')]),
   });
@@ -71,7 +71,7 @@ export class FormService {
       this.form.setValue({
         firstName: user.name.firstName,
         lastName: user.name.lastName,
-        // accountDetails: user.accountDetails,
+        bankAccountDetails: user.bankAccountDetails,
         houseNumber: user.address.houseNumber,
         postcode: user.address.postcode,
         street: user.address.street,
@@ -81,6 +81,7 @@ export class FormService {
         cancellationDate: user.cancellationDate ? user.cancellationDate : '',
         leavingDate: user.leavingDate ? (this.datePipe.transform(user.leavingDate, 'MM/dd/yyyy') as string) : '',
         description: user.description,
+        descriptionChange: user.memberTypeChange ? user.memberTypeChange.description : '',
         amount: user.amount ? user.amount : '',
         familyId: user.familyId?.userId ? user.familyId.userId : '',
       });
@@ -88,7 +89,7 @@ export class FormService {
       this.form.setValue({
         firstName: '',
         lastName: '',
-        // accountDetails: '',
+        bankAccountDetails: '',
         houseNumber: '',
         postcode: '',
         street: '',
@@ -98,6 +99,7 @@ export class FormService {
         cancellationDate: '',
         leavingDate: '',
         description: '',
+        descriptionChange: '',
         amount: '',
         familyId: '',
       });

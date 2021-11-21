@@ -17,7 +17,7 @@
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex='30%'>
-          <input formControlName='lastName' matInput placeholder='Nachnamme*' [readonly]='formService.readonly'>
+          <input formControlName='lastName' matInput placeholder='Nachname*' [readonly]='formService.readonly'>
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex='30%'>
@@ -91,15 +91,19 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field fxFlex='30%'>
+        <mat-form-field fxFlex='20%' *ngIf="checkIfFieldExists('descriptionChange')">
+          <input matInput formControlName='descriptionChange' placeholder='Mitgliedsart-Wechsel'>
+          <mat-icon style='-webkit-text-fill-color: darkred'
+            matTooltip="Der Wechsel der Mitgliedsart erfolgt zum Jahreswechsel.">warning</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field fxFlex='30%' *ngIf="checkIfFieldExists('amount')">
           <input formControlName='amount' matInput placeholder='Jahresbeitrag'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
         <mat-form-field fxFlex='30%'>
-          <!--          <input formControlName="accountDetails" matInput placeholder="Kontoverbindung"
-          [readonly]="formService.readonly">-->
-          <input matInput placeholder='Kontoverbindung' [readonly]='formService.readonly'>
+          <input formControlName="bankAccountDetails" matInput placeholder="Kontoverbindung"
+          [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
