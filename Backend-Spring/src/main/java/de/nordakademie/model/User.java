@@ -3,6 +3,7 @@ package de.nordakademie.model;
 import java.time.LocalDate;
 import javax.persistence.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -63,6 +64,10 @@ public class User {
     @ManyToOne
     private User familyId;
 
+    @Column(nullable = false)
+    @NotBlank(message = "Das Feld 'Bankdaten' darf nicht leer sein.")
+    private String bankAccountDetails;
+
     public User(Long userId,
                 Name name,
                 Address address,
@@ -71,7 +76,7 @@ public class User {
                 LocalDate cancellationDate,
                 LocalDate leavingDate,
                 MemberType memberType,
-                MemberType memberTypeChange, User familyId) {
+                MemberType memberTypeChange, User familyId, String bankAccountDetails) {
         this.userId = userId;
         this.name = name;
         this.address = address;
@@ -82,6 +87,7 @@ public class User {
         this.memberType = memberType;
         this.memberTypeChange = memberTypeChange;
         this.familyId = familyId;
+        this.bankAccountDetails = bankAccountDetails;
     }
 
     public User() {
@@ -172,6 +178,7 @@ public class User {
                 ", memberType=" + memberType +
                 ", memberTypeChange=" + memberTypeChange +
                 ", familyId=" + familyId +
+                ", bankAccountDetails='" + bankAccountDetails + '\'' +
                 '}';
     }
 
@@ -181,5 +188,13 @@ public class User {
 
     public void setMemberTypeChange(MemberType memberTypeChange) {
         this.memberTypeChange = memberTypeChange;
+    }
+
+    public String getBankAccountDetails() {
+        return bankAccountDetails;
+    }
+
+    public void setBankAccountDetails(String bankAccountDetails) {
+        this.bankAccountDetails = bankAccountDetails;
     }
 }
