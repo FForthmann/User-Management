@@ -6,6 +6,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+
+@NamedNativeQueries(value = {
+        @NamedNativeQuery(name = "User.existsFamilyIdByUserId", query = "SELECT EXISTS (SELECT * FROM USER WHERE FAMILY_ID_USER_ID = :userId)")
+})
 @Entity(name = "User")
 @Table(name = "user")
 public class User {

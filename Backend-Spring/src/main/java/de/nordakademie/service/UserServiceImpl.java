@@ -135,10 +135,13 @@ public class UserServiceImpl implements UserService {
         // Was gehört zum Löschen alles dazu
         // Wenn User in Payments vorhanden, dann muss auch Payments gelöscht werden
         if (paymentsRepository.existsUserInPayments(userId)) {
-
+            paymentsRepository.updateUserIdToNull(userId);
         }
 
-        // Darf dieser überhaupt gelöscht werden?
+        // familyMember
+        if (repository.existsFamilyIdByUserId(userId)){
+            repository.updateFamilyIdToNullByUserId(userId);
+        }
 
         repository.deleteById(userId);
     }

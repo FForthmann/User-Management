@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -12,10 +14,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @NamedNativeQueries(value = {
-        @NamedNativeQuery(name = "Payments.existsUserInPayments", query = "SELECT EXISTS (SELECT * FROM PAYMENTS WHERE USER_ID_USER_ID = :userId)"),
-        @NamedNativeQuery(name = "Payments.deleteAllPaymentsByUserId",
-                          query = "DELETE FROM PAYMENTS WHERE INVOICE_NUMBER IN (SELECT INVOICE_NUMBER FROM PAYMENTS WHERE USER_ID_USER_ID = " +
-                                  ":userId)")
+        @NamedNativeQuery(name = "Payments.existsUserInPayments", query = "SELECT EXISTS (SELECT * FROM PAYMENTS WHERE USER_ID_USER_ID = :userId)")
 })
 @Table(name = "payments")
 @Entity(name = "Payments")
