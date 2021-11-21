@@ -171,4 +171,9 @@ public class PaymentsServiceImpl implements PaymentsService {
         return repository.existsUserInPayments(userId);
     }
 
+    @Override
+    public boolean existsUserInPaymentsForThisYear(long userId, long year) {
+        return repository.existsUserInPaymentsForThisYear(userId, year);
+    }
+
 }
