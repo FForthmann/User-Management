@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
         if (createUser
                 .getMemberType()
                 .getDescription()
-                .equals("Jugendlich") && check(createUser)) {
+                .equals("Jugendlich") && checkUserUnderEighteen(createUser)) {
             throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
         }
 
@@ -87,6 +88,44 @@ public class UserServiceImpl implements UserService {
         User savedUser = repository.save(createUser);
         createPaymentByUser(savedUser);
         return savedUser;
+    }
+
+    private void createPaymentByUser(User savedUser) {
+        Payments payments = new Payments();
+        payments.setBankAccountDetails(savedUser.getBankAccountDetails());
+        payments.setUserId(savedUser);
+        payments.setYear(LocalDate
+                                 .now()
+                                 .getYear());
+        payments.setCountStatus(Boolean.FALSE);
+        payments.setAmount(evaluateAmountForUser(savedUser));
+        paymentsService.createPayments(payments);
+    }
+
+    private Double evaluateAmountForUser(User createUser) {
+        Double amountResult = 0.0;
+        Optional<MemberType> a = memberTypeService.findMemberTypeById(createUser
+                                                                              .getMemberType()
+                                                                              .getDescription());
+        if (a.isPresent()) {
+            if (createUser.getFamilyId() != null) {
+                amountResult -= 3;
+            } else {
+                amountResult += a
+                        .get()
+                        .getAmount();
+            }
+        }
+        return amountResult;
+    }
+
+    private boolean checkUserUnderEighteen(User createUser) {
+        Period period = Period.between(createUser.getBirthday(), LocalDate.now());
+        if (period.getYears() >= 18) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -177,6 +216,32 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllUser() {
 
+        LocalDate lokalesDatum = LocalDate.now();
+        if (lokalesDatum.getMonth().getValue() == 01 && lokalesDatum.getDayOfMonth() == 01){
+            List<User> list = (List<User>) repository.findAll();
+            // Alle User gelöscht, die keine Mitglieder mehr sind
+            list.stream().filter(user -> user.getLeavingDate() != null && user.getLeavingDate().isEqual(lokalesDatum)).forEach(user -> deleteUserById(user.getUserId()));
+
+            List<User> listMitMitgliedern = (List<User>) repository.findAll();
+            for (User user :
+                    listMitMitgliedern) {
+                if (user.getMemberTypeChange() != null){
+                    user.setMemberType(user.getMemberTypeChange());
+                    user.setMemberTypeChange(null);
+                    updateUser(user.getUserId(), user);
+                }
+                // check if there is a payment for this year for this user
+                if (!paymentsService.existsUserInPaymentsForThisYear(user.getUserId(), lokalesDatum.getYear())){
+                    if (user
+                            .getMemberType()
+                            .getDescription()
+                            .equals("Jugendlich") && checkUserUnderEighteen(user)) {
+                        throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
+                    }
+                    createPaymentByUser(user);
+                }
+            }
+        }
         return (List<User>) repository.findAll();
     }
 

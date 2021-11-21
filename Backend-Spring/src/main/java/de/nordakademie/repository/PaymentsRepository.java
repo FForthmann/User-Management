@@ -16,4 +16,6 @@ public interface PaymentsRepository extends CrudRepository<Payments, Long> {
     @Modifying
     @Query("UPDATE Payments SET userId = NUll WHERE userId.userId = ?1")
     void updateUserIdToNull(long userId);
+
+    boolean existsUserInPaymentsForThisYear(@Param("userId") long userId, @Param("year") long year);
 }
