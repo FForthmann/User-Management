@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Payment } from '../../model/payment';
 import { catchError, retry } from 'rxjs/operators';
+import { ErrorService } from '../error/error.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 /**
  * Class to communicate with the API for Payments
@@ -14,9 +15,7 @@ import { catchError, retry } from 'rxjs/operators';
  * @version 1.2
  */
 export class PaymentService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient, private errorHandler: ErrorService) {}
 
   /**
    * Function to send a get Request to API.
@@ -26,10 +25,7 @@ export class PaymentService {
    * @returns {Observable<Payment[]>} - Observable with an Array of Payments
    */
   getPayments(): Observable<Payment[]> {
-    return this.http.get<Payment[]>('/rest/payments').pipe(
-      retry(1),
-      catchError(this.handleError)
-    );
+    return this.http.get<Payment[]>('/rest/payments').pipe(retry(1), catchError(this.errorHandler.handleError));
   }
 
   /**
@@ -41,10 +37,7 @@ export class PaymentService {
    * @returns {Observable<Payment[]>} - Observable with a single Object of Payments
    */
   getPayment(id: number): Observable<Payment> {
-    return this.http.get<Payment>(`/rest/payments/${id}`).pipe(
-      retry(1),
-      catchError(this.handleError)
-    );
+    return this.http.get<Payment>(`/rest/payments/${id}`).pipe(retry(1), catchError(this.errorHandler.handleError));
   }
 
   /**
@@ -57,33 +50,8 @@ export class PaymentService {
    *
    */
   editPayment(payment: Payment): Observable<Payment> {
-    return this.http.put<Payment>(`/rest/payments/${payment.invoiceNumber}`, payment).pipe(
-      retry(1),
-      catchError(this.handleError)
-    );
-  }
-
-  /**
-   * Function to handle Error-Events in Service. It throws the errorMessage back to the Component.
-   *
-   * @author Luca Ulrich
-   * @param {HttpErrorResponse} error - Errorevent passed to Function
-   * @returns {Observable<never>}
-   */
-  handleError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage: string = '';
-
-    switch (error.status) {
-      case 504:
-        errorMessage = 'Keine Verbindung zur Datenbank!';
-        break;
-      case 400:
-        errorMessage = error.error.localizedMessage;
-        break;
-      default:
-        errorMessage = 'Es ist ein unbekannter Fehler aufgetreten!';
-        break;
-    }
-    return throwError(errorMessage);
+    return this.http
+      .put<Payment>(`/rest/payments/${payment.invoiceNumber}`, payment)
+      .pipe(retry(1), catchError(this.errorHandler.handleError));
   }
 }
