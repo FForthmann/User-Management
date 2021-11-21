@@ -64,7 +64,6 @@ export class UserService {
    *
    */
   editUser(editUser: User): Observable<User> {
-    console.log(editUser);
     return this.http
       .put<User>(`/rest/user/${editUser.userId}`, editUser)
       .pipe(retry(1), catchError(this.errorHandler.handleError));
