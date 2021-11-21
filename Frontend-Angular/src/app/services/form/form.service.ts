@@ -19,12 +19,16 @@ export class FormService {
   minDate = new Date(1900, 0, 1);
   maxDate = new Date(3000, 0, 1);
   startDate = new Date(2021, 11, 21);
-  getErrorMessage() {
-    return 'Yeah!';
-    //   if (this.form.get('firstName')?.hasError('required')) {
-    //     return 'You must enter a value';
-    //   }
-    //   return this.form.hasError('pattern') ? 'Not a input format' : '';
+
+  getErrorMessage(controlName: string) {
+    if (this.form.get(controlName)?.hasError('required')) {
+      return 'Dieses Feld muss gesetzt sein!';
+    } else if (this.form.get(controlName)?.hasError('maxlength')) {
+      return 'Die Eingabe ist zu lang!';
+    } else if (this.form.get(controlName)?.hasError('minlength')) {
+      return 'Die Eingabe ist zu kurz!';
+    }
+    return this.form.get(controlName)?.hasError('pattern') ? 'Bitte verwende übliche Zeichen!' : '';
   }
   /** @type {boolean} **/
   readonly: boolean = false;
@@ -52,7 +56,7 @@ export class FormService {
 
   /** @type {FormGroup} **/
   form: FormGroup = new FormGroup({
-    firstName: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$")]),
+    firstName: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"), Validators.required]),
     lastName: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"), Validators.required]),
     // accountDetails: new FormControl('', [Validators.required,
     //   Validators.pattern("^[0-9]*$"), Validators.minLength(8)]),

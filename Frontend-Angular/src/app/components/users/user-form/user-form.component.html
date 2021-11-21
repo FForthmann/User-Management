@@ -14,11 +14,11 @@
            fxLayoutAlign='center'>
         <mat-form-field fxFlex='30%'>
           <input formControlName='firstName' matInput placeholder='Vorname*' [readonly]='formService.readonly'>
-          <mat-error *ngIf="formService.form.get('firstName')?.invalid">{{formService.getErrorMessage()}}</mat-error>
+          <mat-error *ngIf="formService.form.get('firstName')?.invalid">{{formService.getErrorMessage('firstName')}}</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex='30%'>
           <input formControlName='lastName' matInput placeholder='Nachnamme*' [readonly]='formService.readonly'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('lastName')?.invalid">{{formService.getErrorMessage('lastName')}}</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex='30%'>
           <input formControlName='birthday' matInput [min]="formService.minDate" [max]="formService.maxDate"  [matDatepicker]='birthday' placeholder='Geburtsdatum'>
@@ -32,23 +32,23 @@
            fxLayoutAlign='center'>
         <mat-form-field fxFlex='20%'>
           <input formControlName='street' matInput placeholder='Straße' [readonly]='formService.readonly'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('street')?.invalid">{{formService.getErrorMessage('street')}}</mat-error>
         </mat-form-field>
 
         <mat-form-field fxFlex='20%'>
           <input
             formControlName='houseNumber' matInput placeholder='Hausnummer' [readonly]='formService.readonly'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('houseNumber')?.invalid">{{formService.getErrorMessage('houseNumber')}}</mat-error>
         </mat-form-field>
 
         <mat-form-field fxFlex='20%'>
           <input formControlName='postcode' matInput placeholder='Postleitzahl' [readonly]='formService.readonly'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('postcode')?.invalid">{{formService.getErrorMessage('postcode')}}</mat-error>
         </mat-form-field>
 
         <mat-form-field fxFlex='20%'>
           <input formControlName='location' matInput placeholder='Stadt/Ort' [readonly]='formService.readonly'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('location')?.invalid">{{formService.getErrorMessage('location')}}</mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -77,6 +77,7 @@
         <mat-form-field fxFlex='20%'>
           <input formControlName='familyId' matInput placeholder='Familienmitglieds ID'
                  [readonly]='formService.readonly'>
+          <mat-error *ngIf="formService.form.get('familyId')?.invalid">{{formService.getErrorMessage('familyId')}}</mat-error>
         </mat-form-field>
       </div>
       <mat-divider [vertical]='true'></mat-divider>
@@ -93,14 +94,14 @@
 
         <mat-form-field fxFlex='30%'>
           <input formControlName='amount' matInput placeholder='Jahresbeitrag'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('amount')?.invalid">{{formService.getErrorMessage('amount')}}</mat-error>
         </mat-form-field>
 
         <mat-form-field fxFlex='30%'>
           <!--          <input formControlName="accountDetails" matInput placeholder="Kontoverbindung"
           [readonly]="formService.readonly">-->
           <input matInput placeholder='Kontoverbindung' [readonly]='formService.readonly'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('accountDetails')?.invalid">{{formService.getErrorMessage('accountDetails')}}</mat-error>
         </mat-form-field>
 
 
