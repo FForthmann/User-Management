@@ -156,6 +156,7 @@ export class UsersComponent implements OnInit, OnDestroy {
           this.router.navigate(['../'], { relativeTo: this.route });
           if (result.event === 'submit') {
             result.data['userId'] = user.userId;
+            result.data['description'] = user.description; //reassign description, to save old description
             this.editUser(result.data);
           }
         });

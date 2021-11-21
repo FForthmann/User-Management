@@ -102,8 +102,8 @@ export class UserFormComponent implements OnInit {
       },
       birthday: this.datePipe.transform(userData.birthday, 'yyyy-MM-dd') as string,
       entryDate: this.datePipe.transform(userData.entryDate, 'yyyy-MM-dd') as string,
-      description: userData.description,
-      descriptionChange: userData.descriptionChange,
+      description: userData.description, // will be reassigned in users.component
+      descriptionChange: userData.description,
     };
 
     if (userData.cancellationDate) {
