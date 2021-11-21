@@ -1,13 +1,23 @@
 package de.nordakademie.model;
 
 import java.time.LocalDate;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-
+import de.nordakademie.util.ExceptionMessages;
 @NamedNativeQueries(value = {
         @NamedNativeQuery(name = "User.existsFamilyIdByUserId", query = "SELECT EXISTS (SELECT * FROM USER WHERE FAMILY_ID_USER_ID = :userId)")
 })
@@ -25,7 +35,7 @@ public class User {
             generator = "user_sequence"
     )
 
-    @Column( name = "user_Id",
+    @Column(name = "user_Id",
             updatable = false,
             nullable = false)
     private Long userId;
@@ -39,11 +49,11 @@ public class User {
     private Address address;
 
     @Column(nullable = false)
-    @NotNull(message = "Das Feld 'Geburtstag' darf nicht leer sein.")
+    @NotNull(message = ExceptionMessages.USER_BIRTHDAY_EMPTY)
     private LocalDate birthday;
 
     @Column(nullable = false)
-    @NotNull(message = "Das Feld 'Eintrittsdatum' darf nicht leer sein.")
+    @NotNull(message = ExceptionMessages.USER_ENTRY_DATE_EMPTY)
     private LocalDate entryDate;
 
     @Column()
@@ -53,7 +63,7 @@ public class User {
     private LocalDate leavingDate;
 
     @ManyToOne(optional = false)
-    @NotNull(message = "Das Feld 'Mitgliedsart' darf nicht leer sein.")
+    @NotNull(message = ExceptionMessages.USER_MEMBER_TYPE_EMPTY)
     @JsonUnwrapped
     private MemberType memberType;
 

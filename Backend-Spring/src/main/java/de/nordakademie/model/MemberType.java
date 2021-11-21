@@ -6,17 +6,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
+import de.nordakademie.util.ExceptionMessages;
 @Entity
 @Table(name = "Member_Type")
 public class MemberType {
     @Id
-    @NotNull(message = "Das Feld 'Beschreibung' darf nicht leer sein.")
-    @NotEmpty(message = "Das Feld 'Beschreibung' darf nicht leer sein.")
+    @NotNull(message = ExceptionMessages.USER_MEMBER_TYPE_EMPTY)
+    @NotEmpty(message = ExceptionMessages.USER_MEMBER_TYPE_EMPTY)
     private String description;
 
     @Column
-    @NotNull(message = "Das Feld 'Betrag' darf nicht leer sein.")
+    @NotNull(message = ExceptionMessages.MEMBER_TYPE_AMOUNT_EMPTY)
     private Double amount;
 
     public MemberType(String description, Double amount) {

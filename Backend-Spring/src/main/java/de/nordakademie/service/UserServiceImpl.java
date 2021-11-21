@@ -7,16 +7,16 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-
+import org.springframework.stereotype.Service;
 import de.nordakademie.model.MemberType;
 import de.nordakademie.model.Payments;
-import org.springframework.stereotype.Service;
 import de.nordakademie.model.User;
 import de.nordakademie.repository.MemberTypeRepository;
 import de.nordakademie.repository.PaymentsRepository;
 import de.nordakademie.repository.PostcodeRepository;
 import de.nordakademie.repository.UserRepository;
 import de.nordakademie.util.ApiMessages;
+import de.nordakademie.util.ExceptionMessages;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -33,9 +33,6 @@ public class UserServiceImpl implements UserService {
     private MemberTypeService memberTypeService;
 
     private PostcodeService postcodeService;
-
-
-
 
     @Inject
     public void setPaymentsRepository(PaymentsRepository paymentsRepository) {
@@ -63,7 +60,10 @@ public class UserServiceImpl implements UserService {
         validateInputUserForUpdateAndInsert(createUser);
 
         // check if Jugendlich auch wirklich Jugendlich
-        if(createUser.getMemberType().getDescription().equals("Jugendlich") && check(createUser)){
+        if (createUser
+                .getMemberType()
+                .getDescription()
+                .equals("Jugendlich") && check(createUser)) {
             throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
         }
 
@@ -77,8 +77,8 @@ public class UserServiceImpl implements UserService {
         // If Postal Code doesn't exist in DB, here it will be created
         if (!existsPostalCodeInDB(createUser)) {
             this.postcodeService.createPostcode(createUser
-                                                 .getAddress()
-                                                 .getPostalCode());
+                                                        .getAddress()
+                                                        .getPostalCode());
         }
 
         // create Payment for User
@@ -91,7 +91,9 @@ public class UserServiceImpl implements UserService {
         Payments payments = new Payments();
         payments.setBankAccountDetails(savedUser.getBankAccountDetails());
         payments.setUserId(savedUser);
-        payments.setYear(LocalDate.now().getYear());
+        payments.setYear(LocalDate
+                                 .now()
+                                 .getYear());
         payments.setCountStatus(Boolean.FALSE);
         payments.setAmount(evaluateAmountForUser(savedUser));
         paymentsService.createPayments(payments);
@@ -99,12 +101,16 @@ public class UserServiceImpl implements UserService {
 
     private Double evaluateAmountForUser(User createUser) {
         Double amountResult = 0.0;
-        Optional<MemberType> a =memberTypeService.findMemberTypeById(createUser.getMemberType().getDescription());
-        if(a.isPresent()){
-            if (createUser.getFamilyId() != null){
+        Optional<MemberType> a = memberTypeService.findMemberTypeById(createUser
+                                                                              .getMemberType()
+                                                                              .getDescription());
+        if (a.isPresent()) {
+            if (createUser.getFamilyId() != null) {
                 amountResult -= 3;
             } else {
-                amountResult += a.get().getAmount();
+                amountResult += a
+                        .get()
+                        .getAmount();
             }
         }
         return amountResult;
@@ -112,9 +118,9 @@ public class UserServiceImpl implements UserService {
 
     private boolean check(User createUser) {
         Period period = Period.between(createUser.getBirthday(), LocalDate.now());
-        if (period.getYears() >= 18){
+        if (period.getYears() >= 18) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -129,18 +135,57 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
         }
 
-        persistentUser.get().setBirthday(updateUser.getBirthday());
-        persistentUser.get().setCancellationDate(updateUser.getCancellationDate());
-        persistentUser.get().setEntryDate(updateUser.getEntryDate());
-        persistentUser.get().setFamilyId(updateUser.getFamilyId());
-        persistentUser.get().getName().setFirstName(updateUser.getName().getFirstName());
-        persistentUser.get().getAddress().setHouseNumber(updateUser.getAddress().getHouseNumber());
-        persistentUser.get().setMemberType(updateUser.getMemberType());
-        persistentUser.get().getAddress().setPostalCode(updateUser.getAddress().getPostalCode());
-        persistentUser.get().getName().setLastName(updateUser.getName().getLastName());
-        persistentUser.get().getAddress().setStreet(updateUser.getAddress().getStreet());
-        persistentUser.get().setMemberTypeChange(updateUser.getMemberTypeChange());
-        persistentUser.get().setBankAccountDetails(updateUser.getBankAccountDetails());
+        persistentUser
+                .get()
+                .setBirthday(updateUser.getBirthday());
+        persistentUser
+                .get()
+                .setCancellationDate(updateUser.getCancellationDate());
+        persistentUser
+                .get()
+                .setEntryDate(updateUser.getEntryDate());
+        persistentUser
+                .get()
+                .setFamilyId(updateUser.getFamilyId());
+        persistentUser
+                .get()
+                .getName()
+                .setFirstName(updateUser
+                                      .getName()
+                                      .getFirstName());
+        persistentUser
+                .get()
+                .getAddress()
+                .setHouseNumber(updateUser
+                                        .getAddress()
+                                        .getHouseNumber());
+        persistentUser
+                .get()
+                .setMemberType(updateUser.getMemberType());
+        persistentUser
+                .get()
+                .getAddress()
+                .setPostalCode(updateUser
+                                       .getAddress()
+                                       .getPostalCode());
+        persistentUser
+                .get()
+                .getName()
+                .setLastName(updateUser
+                                     .getName()
+                                     .getLastName());
+        persistentUser
+                .get()
+                .getAddress()
+                .setStreet(updateUser
+                                   .getAddress()
+                                   .getStreet());
+        persistentUser
+                .get()
+                .setMemberTypeChange(updateUser.getMemberTypeChange());
+        persistentUser
+                .get()
+                .setBankAccountDetails(updateUser.getBankAccountDetails());
     }
 
     @Override
@@ -151,14 +196,13 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
         }
 
-        // Was gehört zum Löschen alles dazu
-        // Wenn User in Payments vorhanden, dann muss auch Payments gelöscht werden
+        // ToDo fafor: Change UserId in Payments to null
         if (paymentsRepository.existsUserInPayments(userId)) {
             paymentsRepository.updateUserIdToNull(userId);
         }
 
         // familyMember
-        if (repository.existsFamilyIdByUserId(userId)){
+        if (repository.existsFamilyIdByUserId(userId)) {
             repository.updateFamilyIdToNullByUserId(userId);
         }
 
@@ -167,9 +211,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAllUser() {
-
-
-
 
         return (List<User>) repository.findAll();
     }
@@ -194,24 +235,23 @@ public class UserServiceImpl implements UserService {
 
     private void validateInputUserForUpdateAndInsert(User user) {
         if (!isStreetOnlyText(user)) {
-            throw new IllegalArgumentException("Street");
+            throw new IllegalArgumentException(ExceptionMessages.USER_STREET_NOT_TEXT);
         }
 
-        if (!isFirstNameOnlyText(user)){
-            throw new IllegalArgumentException("First Name");
+        if (!isFirstNameOnlyText(user)) {
+            throw new IllegalArgumentException(ExceptionMessages.USER_FIRST_NAME_NOT_TEXT);
         }
 
-        if (!isLastNameOnlyText(user)){
-            throw new IllegalArgumentException("Last Name");
+        if (!isLastNameOnlyText(user)) {
+            throw new IllegalArgumentException(ExceptionMessages.USER_LAST_NAME_NOT_TEXT);
         }
 
-        // Dates
-        if (!isBirthdayBeforeEntryDateAndNow(user)){
-            throw new IllegalArgumentException("Das Geburtsdatum ist entweder nicht vor dem Eintrittsdatum oder dem heutigen Datum.");
+        if (!isBirthdayBeforeEntryDateAndNow(user)) {
+            throw new IllegalArgumentException(ExceptionMessages.USER_BIRTHDAY_BEFORE_ENTRY_DATE_OR_IN_FUTURE);
         }
 
-        if (!isEntryDateBeforeCancellationDate(user)){
-            throw new IllegalArgumentException("Das Eintrittsdatum ist nicht vor dem Kündigungsdatum.");
+        if (!isEntryDateBeforeCancellationDate(user)) {
+            throw new IllegalArgumentException(ExceptionMessages.USER_ENTRY_DATE_BEFORE_CANCELLATION_DATE);
         }
     }
 
@@ -219,34 +259,46 @@ public class UserServiceImpl implements UserService {
         return user
                 .getAddress()
                 .getStreet()
-                .matches("[a-zA-Z\\s\'\"]+");
+                .matches("[a-zA-Z\\s'\"]+");
     }
 
     private boolean isFirstNameOnlyText(User user) {
-        return user.getName().getFirstName().matches("[a-zA-Z\\s\'\"]+");
+        return user
+                .getName()
+                .getFirstName()
+                .matches("[a-zA-Z\\s'\"]+");
     }
 
     private boolean isLastNameOnlyText(User user) {
-        return user.getName().getLastName().matches("[a-zA-Z\\s\'\"]+");
+        return user
+                .getName()
+                .getLastName()
+                .matches("[a-zA-Z\\s'\"]+");
     }
 
     private boolean isBirthdayBeforeEntryDateAndNow(User user) {
-        return user.getBirthday().isBefore(user.getEntryDate()) && user.getBirthday().isBefore(LocalDate.now());
+        return user
+                .getBirthday()
+                .isBefore(user.getEntryDate()) && user
+                .getBirthday()
+                .isBefore(LocalDate.now());
     }
 
     private boolean isEntryDateBeforeCancellationDate(User user) {
-        if(user.getCancellationDate() == null){
+        if (user.getCancellationDate() == null) {
             return true;
         }
-        return user.getEntryDate().isBefore(user.getCancellationDate());
+        return user
+                .getEntryDate()
+                .isBefore(user.getCancellationDate());
     }
 
-@Inject
+    @Inject
     public void setPaymentsService(PaymentsService paymentsService) {
         this.paymentsService = paymentsService;
     }
 
-@Inject
+    @Inject
     public void setMemberTypeService(MemberTypeService memberTypeService) {
         this.memberTypeService = memberTypeService;
     }
