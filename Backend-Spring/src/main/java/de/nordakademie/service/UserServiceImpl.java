@@ -121,6 +121,7 @@ public class UserServiceImpl implements UserService {
                 .setStreet(updateUser
                                    .getAddress()
                                    .getStreet());
+        persistentUser.get().setMemberTypeChange(updateUser.getMemberTypeChange());
     }
 
     @Override

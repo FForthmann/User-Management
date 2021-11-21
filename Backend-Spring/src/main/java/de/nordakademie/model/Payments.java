@@ -36,7 +36,7 @@ public class Payments {
     private Long invoiceNumber;
 
     @ManyToOne
-    @JsonUnwrapped
+    @JoinColumn(nullable = true)
     private User userId;
 
     @Column(nullable = false)

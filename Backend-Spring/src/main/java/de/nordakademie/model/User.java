@@ -1,11 +1,8 @@
 package de.nordakademie.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
@@ -55,6 +52,10 @@ public class User {
     @JsonUnwrapped
     private MemberType memberType;
 
+    @ManyToOne()
+    @JoinColumn(nullable = true)
+    private MemberType memberTypeChange;
+
     @ManyToOne
     private User familyId;
 
@@ -66,7 +67,7 @@ public class User {
                 LocalDate cancellationDate,
                 LocalDate leavingDate,
                 MemberType memberType,
-                User familyId) {
+                MemberType memberTypeChange, User familyId) {
         this.userId = userId;
         this.name = name;
         this.address = address;
@@ -75,6 +76,7 @@ public class User {
         this.cancellationDate = cancellationDate;
         this.leavingDate = leavingDate;
         this.memberType = memberType;
+        this.memberTypeChange = memberTypeChange;
         this.familyId = familyId;
     }
 
@@ -163,8 +165,17 @@ public class User {
                 ", entryDate=" + entryDate +
                 ", cancellationDate=" + cancellationDate +
                 ", leavingDate=" + leavingDate +
-                ", memberType='" + memberType + '\'' +
+                ", memberType=" + memberType +
+                ", memberTypeChange=" + memberTypeChange +
                 ", familyId=" + familyId +
                 '}';
+    }
+
+    public MemberType getMemberTypeChange() {
+        return memberTypeChange;
+    }
+
+    public void setMemberTypeChange(MemberType memberTypeChange) {
+        this.memberTypeChange = memberTypeChange;
     }
 }
