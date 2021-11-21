@@ -52,8 +52,8 @@ public class PaymentsServiceImpl implements PaymentsService {
        }
 
         // Check if User exists in DB
-        if (!existsUserInDB(payments)) {
-           throw new IllegalArgumentException(ApiMessages.MSG_USER_NOT_IN_DB);
+       if (payments.getUserId() == null || !existsUserInDB(payments)) {
+          throw new IllegalArgumentException(ApiMessages.MSG_USER_NOT_IN_DB);
         }
 
         return repository.save(payments);

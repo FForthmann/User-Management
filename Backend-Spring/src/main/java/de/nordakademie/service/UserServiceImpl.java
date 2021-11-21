@@ -1,12 +1,15 @@
 package de.nordakademie.service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import de.nordakademie.model.MemberType;
+import de.nordakademie.model.Payments;
 import de.nordakademie.model.User;
 import de.nordakademie.repository.MemberTypeRepository;
 import de.nordakademie.repository.PaymentsRepository;
@@ -24,6 +27,12 @@ public class UserServiceImpl implements UserService {
     private PaymentsRepository paymentsRepository;
 
     private UserRepository repository;
+
+    private PaymentsService paymentsService;
+
+    private MemberTypeService memberTypeService;
+
+    private PostcodeService postcodeService;
 
     @Inject
     public void setPaymentsRepository(PaymentsRepository paymentsRepository) {
@@ -50,6 +59,14 @@ public class UserServiceImpl implements UserService {
 
         validateInputUserForUpdateAndInsert(createUser);
 
+        // check if Jugendlich auch wirklich Jugendlich
+        if (createUser
+                .getMemberType()
+                .getDescription()
+                .equals("Jugendlich") && check(createUser)) {
+            throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
+        }
+
         // Validation if MemberType exists in DB
         if (!existsMemberTypeInDB(createUser)) {
             throw new IllegalArgumentException(ApiMessages.MSG_MEMBERTYPE_NOT_IN_DB + createUser
@@ -59,12 +76,53 @@ public class UserServiceImpl implements UserService {
 
         // If Postal Code doesn't exist in DB, here it will be created
         if (!existsPostalCodeInDB(createUser)) {
-            this.postcodeRepository.save(createUser
-                                                 .getAddress()
-                                                 .getPostalCode());
+            this.postcodeService.createPostcode(createUser
+                                                        .getAddress()
+                                                        .getPostalCode());
         }
 
-        return repository.save(createUser);
+        // create Payment for User
+        User savedUser = repository.save(createUser);
+        createPaymentByUser(savedUser);
+        return savedUser;
+    }
+
+    private void createPaymentByUser(User savedUser) {
+        Payments payments = new Payments();
+        payments.setBankAccountDetails(savedUser.getBankAccountDetails());
+        payments.setUserId(savedUser);
+        payments.setYear(LocalDate
+                                 .now()
+                                 .getYear());
+        payments.setCountStatus(Boolean.FALSE);
+        payments.setAmount(evaluateAmountForUser(savedUser));
+        paymentsService.createPayments(payments);
+    }
+
+    private Double evaluateAmountForUser(User createUser) {
+        Double amountResult = 0.0;
+        Optional<MemberType> a = memberTypeService.findMemberTypeById(createUser
+                                                                              .getMemberType()
+                                                                              .getDescription());
+        if (a.isPresent()) {
+            if (createUser.getFamilyId() != null) {
+                amountResult -= 3;
+            } else {
+                amountResult += a
+                        .get()
+                        .getAmount();
+            }
+        }
+        return amountResult;
+    }
+
+    private boolean check(User createUser) {
+        Period period = Period.between(createUser.getBirthday(), LocalDate.now());
+        if (period.getYears() >= 18) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -122,6 +180,12 @@ public class UserServiceImpl implements UserService {
                 .setStreet(updateUser
                                    .getAddress()
                                    .getStreet());
+        persistentUser
+                .get()
+                .setMemberTypeChange(updateUser.getMemberTypeChange());
+        persistentUser
+                .get()
+                .setBankAccountDetails(updateUser.getBankAccountDetails());
     }
 
     @Override
@@ -134,13 +198,20 @@ public class UserServiceImpl implements UserService {
 
         // ToDo fafor: Change UserId in Payments to null
         if (paymentsRepository.existsUserInPayments(userId)) {
-
+            paymentsRepository.updateUserIdToNull(userId);
         }
+
+        // familyMember
+        if (repository.existsFamilyIdByUserId(userId)) {
+            repository.updateFamilyIdToNullByUserId(userId);
+        }
+
         repository.deleteById(userId);
     }
 
     @Override
     public List<User> findAllUser() {
+
         return (List<User>) repository.findAll();
     }
 
@@ -220,5 +291,20 @@ public class UserServiceImpl implements UserService {
         return user
                 .getEntryDate()
                 .isBefore(user.getCancellationDate());
+    }
+
+    @Inject
+    public void setPaymentsService(PaymentsService paymentsService) {
+        this.paymentsService = paymentsService;
+    }
+
+    @Inject
+    public void setMemberTypeService(MemberTypeService memberTypeService) {
+        this.memberTypeService = memberTypeService;
+    }
+
+    @Inject
+    public void setPostcodeService(PostcodeService postcodeService) {
+        this.postcodeService = postcodeService;
     }
 }
