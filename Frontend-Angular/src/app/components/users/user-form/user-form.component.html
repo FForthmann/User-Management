@@ -14,7 +14,7 @@
            fxLayoutAlign='center'>
         <mat-form-field fxFlex='30%'>
           <input formControlName='firstName' matInput placeholder='Vorname*' [readonly]='formService.readonly'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('firstName')?.invalid">{{formService.getErrorMessage()}}</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex='30%'>
           <input formControlName='lastName' matInput placeholder='Nachnamme*' [readonly]='formService.readonly'>

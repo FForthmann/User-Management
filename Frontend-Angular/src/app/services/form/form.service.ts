@@ -15,6 +15,13 @@ import { DatePipe } from '@angular/common';
  * @contributor Jan Ramm
  */
 export class FormService {
+  getErrorMessage() {
+    return 'Yeah!';
+    //   if (this.form.get('firstName')?.hasError('required')) {
+    //     return 'You must enter a value';
+    //   }
+    //   return this.form.hasError('pattern') ? 'Not a input format' : '';
+  }
   /** @type {boolean} **/
   readonly: boolean = false;
 
