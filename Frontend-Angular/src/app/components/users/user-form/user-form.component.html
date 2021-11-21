@@ -102,9 +102,8 @@
         </mat-form-field>
 
         <mat-form-field fxFlex='30%'>
-          <!--          <input formControlName="accountDetails" matInput placeholder="Kontoverbindung"
-          [readonly]="formService.readonly">-->
-          <input matInput placeholder='Kontoverbindung' [readonly]='formService.readonly'>
+          <input formControlName="bankAccountDetails" matInput placeholder="Kontoverbindung"
+          [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 

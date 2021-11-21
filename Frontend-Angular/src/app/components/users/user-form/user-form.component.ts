@@ -93,7 +93,7 @@ export class UserFormComponent implements OnInit {
         firstName: userData.firstName,
         lastName: userData.lastName,
       },
-      // accountDetails: userData.accountDetails,
+      bankAccountDetails: userData.bankAccountDetails,
       address: {
         street: userData.street,
         houseNumber: parseInt(userData.houseNumber),
@@ -103,7 +103,9 @@ export class UserFormComponent implements OnInit {
       birthday: this.datePipe.transform(userData.birthday, 'yyyy-MM-dd') as string,
       entryDate: this.datePipe.transform(userData.entryDate, 'yyyy-MM-dd') as string,
       description: userData.description, // will be reassigned in users.component
-      descriptionChange: userData.description,
+      memberTypeChange: {
+        description: userData.description,
+      },
     };
 
     if (userData.cancellationDate) {
