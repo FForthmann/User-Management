@@ -23,14 +23,16 @@ export class ErrorService {
    * @returns {Observable<never>}
    */
   handleError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage: string = '';
+    let errorMessage: string = 'Es ist ein unbekannter Fehler aufgetreten!';
 
     switch (error.status) {
       case 504:
         errorMessage = 'Keine Verbindung zur Datenbank!';
         break;
       case 400:
-        errorMessage = error.error.message;
+        if (error.error.message) {
+          errorMessage = error.error.message;
+        }
         break;
       default:
         errorMessage = 'Es ist ein unbekannter Fehler aufgetreten!';
