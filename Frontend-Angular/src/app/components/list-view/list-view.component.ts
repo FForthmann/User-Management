@@ -5,6 +5,7 @@ import { Payment } from '../../model/payment';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { Column } from '../../model/column';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-list-view',
@@ -28,11 +29,11 @@ export class ListViewComponent {
   @Input() set setColumns(columns: Column[]) {
     this.columns = columns;
     this.displayedColumns = columns.map((column: Column) => column.columnDef);
+    this.setType(this.route.snapshot.url[0].path);
   }
   @Input() set setInput(input: User[] | Payment[]) {
     if (input != null) {
       this.dataSource = new MatTableDataSource<User | Payment>(input);
-      this.checkType(input[0]);
       this.dataSource.paginator = this.paginator;
 
       // Overrides the default Angular Filter, so it is able to reach deeper levels of nested Objects
@@ -47,7 +48,7 @@ export class ListViewComponent {
   }
   @Output() edit: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor() {}
+  constructor(private route: ActivatedRoute) {}
 
   /**
    * Function to Apply Filter on Datatable Source
@@ -75,25 +76,24 @@ export class ListViewComponent {
   /**
    * Helper-Function that checks whether the 'this.input' variable has the Type <User> or <Payment>.
    * Depending on the type, actions regarding to the type are displayed.
+   * The Check is performed on the active Route.
    *
    * @author Luca Ulrich
-   * @param {User | Payment} input - input Variable that gets passed into the Function
+   * @param {string} input - Route as string that gets passed into the Function
    * @private
    * @returns {void}
    */
-  private checkType(input: User | Payment): void {
-    if (input != null) {
-      if ('invoiceNumber' in input) {
-        if (!this.displayedColumns.includes('countStatus')) {
-          this.displayedColumns.push('countStatus');
-        }
-        this.type = 'Payment';
-      } else if ('userId' in input) {
-        if (!this.displayedColumns.includes('actions')) {
-          this.displayedColumns.push('actions');
-        }
-        this.type = 'User';
+  private setType(input: string): void {
+    if (input === 'payments') {
+      if (!this.displayedColumns.includes('countStatus')) {
+        this.displayedColumns.push('countStatus');
       }
+      this.type = 'Payment';
+    } else if (input === 'users') {
+      if (!this.displayedColumns.includes('actions')) {
+        this.displayedColumns.push('actions');
+      }
+      this.type = 'User';
     }
   }
 
