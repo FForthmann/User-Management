@@ -21,13 +21,7 @@ public class MemberTypeServiceImpl implements MemberTypeService {
 
     @Override
     public MemberType createMemberType(MemberType memberType) {
-
-        // Check if JSON is filled correctly.
-        if (checkMandatoryAttributesAreNotNull(memberType)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_NULL);
-        }
-
-        return repository.save(memberType);
+       return repository.save(memberType);
     }
 
     @Override
@@ -38,10 +32,7 @@ public class MemberTypeServiceImpl implements MemberTypeService {
     @Override
     public void updateMemberType(String membertypeId, MemberType memberType) {
 
-        // Check if JSON is filled correctly.
-        if (checkMandatoryAttributesAreNotNull(memberType)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_NULL);
-        }
+
 
         Optional<MemberType> memberTypePersistent = repository.findById(membertypeId);
         if (!memberTypePersistent.isPresent()) {
@@ -65,17 +56,6 @@ public class MemberTypeServiceImpl implements MemberTypeService {
         return repository.findById(memberTypeId);
     }
 
-    private boolean checkMandatoryAttributesAreNotNull(MemberType createMemberType) {
-        return isNull(createMemberType.getDescription(), createMemberType.getAmount());
-    }
-
-    private boolean isNull(Object... strArr) {
-        for ( Object st : strArr ) {
-            if (st == null)
-                return true;
-        }
-        return false;
-    }
 
 
 }

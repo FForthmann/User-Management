@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import de.nordakademie.model.Postcode;
 import de.nordakademie.repository.PostcodeRepository;
 import de.nordakademie.util.ApiMessages;
+import de.nordakademie.util.ExceptionMessages;
 @Service
 @Transactional
 public class PostcodeServiceImpl implements PostcodeService {
@@ -29,10 +30,7 @@ public class PostcodeServiceImpl implements PostcodeService {
     @Override
     public Postcode createPostcode(Postcode postcode) {
 
-        // Check if JSON is filled correctly.
-        if (checkMandatoryAttributesAreNotNull(postcode)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_NULL);
-        }
+        validateInputPostcodeForUpdateAndInsert(postcode);
 
         return repository.save(postcode);
     }
@@ -45,10 +43,7 @@ public class PostcodeServiceImpl implements PostcodeService {
     @Override
     public void updatePostcode(Long id, Postcode postcodeUpdate) {
 
-        // Check if JSON is filled correctly.
-        if (checkMandatoryAttributesAreNotNull(postcodeUpdate)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_NULL);
-        }
+        validateInputPostcodeForUpdateAndInsert(postcodeUpdate);
 
         Optional<Postcode> postcodePersistent = repository.findById(id);
         if (!postcodePersistent.isPresent()) {
@@ -74,17 +69,27 @@ public class PostcodeServiceImpl implements PostcodeService {
         return repository.findById(postcodeId);
     }
 
-    private boolean checkMandatoryAttributesAreNotNull(Postcode createPostcode) {
-        return isNull(createPostcode.getPostcode(), createPostcode.getLocation());
-    }
-
-    private boolean isNull(Object... strArr) {
-        for ( Object st : strArr ) {
-            if (st == null)
-                return true;
+    private void validateInputPostcodeForUpdateAndInsert(final Postcode postcode) {
+        if (!hasPostalCodeFiveDigits(postcode)) {
+            throw new IllegalArgumentException(ExceptionMessages.USER_POSTCODE_NOT_FIVE_DIGITS);
         }
-        return false;
+
+        if (!isLocationOnlyText(postcode)) {
+            throw new IllegalArgumentException(ExceptionMessages.USER_LOCATION_ONLY_TEXT);
+        }
     }
 
+    private boolean isLocationOnlyText(Postcode postcode) {
+        return postcode
+                .getLocation()
+                .matches("[a-zA-Z\\s'\"]+");
+    }
+
+    private boolean hasPostalCodeFiveDigits(Postcode postcode) {
+        Long postcodeNumber = postcode.getPostcode();
+        return postcodeNumber
+                .toString()
+                .length() == 5;
+    }
 
 }

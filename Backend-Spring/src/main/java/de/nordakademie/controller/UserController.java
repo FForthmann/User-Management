@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -63,11 +64,11 @@ public class UserController {
         } catch ( EntityNotFoundException ex ) {
             throw new DeleteFailedException(ExceptionMessages.USER_NOT_FOUND_WHEN_DELETE, HttpStatus.NOT_FOUND);
         }
-
     }
 
     @PostMapping
     public ResponseEntity<User> createUser(
+            @Valid
             @RequestBody
                     User user) throws CreateFailedException {
         try {
@@ -76,14 +77,15 @@ public class UserController {
                     .body(service.createUser(user));
         } catch ( IllegalArgumentException ex ) {
             ex.printStackTrace();
-            throw new CreateFailedException(ExceptionMessages.USER_CREATION_FAILED, HttpStatus.BAD_REQUEST);
+            throw new CreateFailedException(ExceptionMessages.USER_CREATION_FAILED + " " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateMemberType(
+    public ResponseEntity<User> updateUser(
             @PathVariable("id")
                     Long id,
+            @Valid
             @RequestBody
                     User user) throws UpdateFailedException {
         try {
@@ -92,7 +94,7 @@ public class UserController {
                     .ok()
                     .build();
         } catch ( IllegalArgumentException ex ) {
-            throw new UpdateFailedException(ExceptionMessages.USER_UPDATE_ILLEGAL_ARGUMENT, HttpStatus.BAD_REQUEST);
+            throw new UpdateFailedException(ExceptionMessages.USER_UPDATE_ILLEGAL_ARGUMENT + " " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch ( EntityNotFoundException ex ) {
             throw new UpdateFailedException(ExceptionMessages.USER_NOT_FOUND_WHEN_UPDATE, HttpStatus.NOT_FOUND);
         }

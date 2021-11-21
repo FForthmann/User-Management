@@ -1,5 +1,6 @@
 package de.nordakademie.service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
@@ -46,17 +47,36 @@ public class PaymentsServiceImpl implements PaymentsService {
     @Override
     public Payments createPayments(Payments payments) {
 
-        // Check if JSON is filled correctly.
-        if (checkMandatoryAttributesAreNotNull(payments)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_NULL);
-        }
+       if (checkBankAccountDetails(payments)){
+            throw new IllegalArgumentException("Luca ist nen Noob");
+       }
 
         // Check if User exists in DB
-        if (!existsUserInDB(payments)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_USER_NOT_IN_DB);
+       if (payments.getUserId() == null || !existsUserInDB(payments)) {
+          throw new IllegalArgumentException(ApiMessages.MSG_USER_NOT_IN_DB);
         }
 
         return repository.save(payments);
+    }
+
+    private boolean checkBankAccountDetails(Payments payments) {
+
+        String bankAccountDetails = payments.getBankAccountDetails();
+
+        String[] array = bankAccountDetails.split("");
+        if(array.length!= 22){
+            return true;
+        }
+        if(!array[0].chars().allMatch(Character::isLetter) && !array[1].chars().allMatch(Character::isLetter)){
+            return true;
+        } else {
+            for (int i = 2; i< array.length;i++){
+                if(!array[i].matches("[0-9]")){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**
@@ -93,9 +113,8 @@ public class PaymentsServiceImpl implements PaymentsService {
     @Override
     public void updatePayments(Long id, Payments payments) {
 
-        // Check if JSON is filled correctly.
-        if (checkMandatoryAttributesAreNotNull(payments)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_NULL);
+        if (checkBankAccountDetails(payments)){
+            throw new IllegalArgumentException("Luca ist nen Noob");
         }
 
         // Check if User exists in DB
@@ -150,31 +169,6 @@ public class PaymentsServiceImpl implements PaymentsService {
     @Override
     public boolean existsUserInPayments(long userId) {
         return repository.existsUserInPayments(userId);
-    }
-
-    /**
-     * Checks all mandatory attributes are not null
-     *
-     * @param createPayments Payments Object
-     * @return Boolean-Value if the mandatory attributes are not null
-     */
-    private boolean checkMandatoryAttributesAreNotNull(Payments createPayments) {
-        return isNull(createPayments.getAmount(), createPayments.getCountStatus(), createPayments.getYear(), createPayments.getUserId(),
-                      createPayments.getBankAccountDetails());
-    }
-
-    /**
-     * Checks if Strings are null or not null
-     *
-     * @param strArr Values of Strings
-     * @return Boolean-Value if Strings are null or not
-     */
-    private boolean isNull(Object... strArr) {
-        for ( Object st : strArr ) {
-            if (st == null)
-                return true;
-        }
-        return false;
     }
 
 }

@@ -5,16 +5,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import de.nordakademie.util.ExceptionMessages;
 @NamedNativeQueries(value = {
-        @NamedNativeQuery(name = "Payments.existsUserInPayments", query = "SELECT EXISTS (SELECT * FROM PAYMENTS WHERE USER_ID_USER_ID = :userId)"),
-        @NamedNativeQuery(name = "Payments.deleteAllPaymentsByUserId",
-                          query = "DELETE FROM PAYMENTS WHERE INVOICE_NUMBER IN (SELECT INVOICE_NUMBER FROM PAYMENTS WHERE USER_ID_USER_ID = " +
-                                  ":userId)")
+        @NamedNativeQuery(name = "Payments.existsUserInPayments", query = "SELECT EXISTS (SELECT * FROM PAYMENTS WHERE USER_ID_USER_ID = :userId)")
 })
 @Table(name = "payments")
 @Entity(name = "Payments")
@@ -34,22 +35,28 @@ public class Payments {
             nullable = false)
     private Long invoiceNumber;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
+    @JoinColumn(nullable = true)
     private User userId;
 
     @Column(nullable = false)
+    @NotNull(message = ExceptionMessages.PAYMENT_COUNT_STATUS_EMPTY)
     private Boolean countStatus;
 
     @Column(nullable = false)
+    @NotNull(message = ExceptionMessages.PAYMENT_AMOUNT_EMPTY)
     private Double amount;
 
     @Column(nullable = false)
+    @NotNull(message = ExceptionMessages.PAYMENT_YEAR_EMPTY)
     private Integer year;
 
     @Column(nullable = false)
-    private Integer bankAccountDetails;
+    @NotNull(message = ExceptionMessages.PAYMENT_IBAN_EMPTY)
+    @NotBlank(message = ExceptionMessages.PAYMENT_IBAN_EMPTY)
+    private String bankAccountDetails;
 
-    public Payments(User userId, Long invoiceNumber, Boolean countStatus, Double amount, Integer year, Integer bankAccountDetails) {
+    public Payments(User userId, Long invoiceNumber, Boolean countStatus, Double amount, Integer year, String bankAccountDetails) {
         this.invoiceNumber = invoiceNumber;
         this.userId = userId;
         this.countStatus = countStatus;
@@ -114,11 +121,11 @@ public class Payments {
                 '}';
     }
 
-    public Integer getBankAccountDetails() {
+    public String getBankAccountDetails() {
         return bankAccountDetails;
     }
 
-    public void setBankAccountDetails(Integer bankAccountDetails) {
+    public void setBankAccountDetails(String bankAccountDetails) {
         this.bankAccountDetails = bankAccountDetails;
     }
 }

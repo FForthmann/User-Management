@@ -7,10 +7,20 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import de.nordakademie.util.ExceptionMessages;
+@NamedNativeQueries(value = {
+        @NamedNativeQuery(name = "User.existsFamilyIdByUserId", query = "SELECT EXISTS (SELECT * FROM USER WHERE FAMILY_ID_USER_ID = :userId)")
+})
 @Entity(name = "User")
 @Table(name = "user")
 public class User {
@@ -25,21 +35,25 @@ public class User {
             generator = "user_sequence"
     )
 
-    @Column(
+    @Column(name = "user_Id",
             updatable = false,
             nullable = false)
     private Long userId;
 
+    @Valid
     @Embedded
     private Name name;
 
+    @Valid
     @Embedded
     private Address address;
 
     @Column(nullable = false)
+    @NotNull(message = ExceptionMessages.USER_BIRTHDAY_EMPTY)
     private LocalDate birthday;
 
     @Column(nullable = false)
+    @NotNull(message = ExceptionMessages.USER_ENTRY_DATE_EMPTY)
     private LocalDate entryDate;
 
     @Column()
@@ -49,11 +63,20 @@ public class User {
     private LocalDate leavingDate;
 
     @ManyToOne(optional = false)
+    @NotNull(message = ExceptionMessages.USER_MEMBER_TYPE_EMPTY)
     @JsonUnwrapped
     private MemberType memberType;
 
+    @ManyToOne()
+    @JoinColumn(nullable = true)
+    private MemberType memberTypeChange;
+
     @ManyToOne
     private User familyId;
+
+    @Column(nullable = false)
+    @NotBlank(message = "Das Feld 'Bankdaten' darf nicht leer sein.")
+    private String bankAccountDetails;
 
     public User(Long userId,
                 Name name,
@@ -63,7 +86,7 @@ public class User {
                 LocalDate cancellationDate,
                 LocalDate leavingDate,
                 MemberType memberType,
-                User familyId) {
+                MemberType memberTypeChange, User familyId, String bankAccountDetails) {
         this.userId = userId;
         this.name = name;
         this.address = address;
@@ -72,7 +95,9 @@ public class User {
         this.cancellationDate = cancellationDate;
         this.leavingDate = leavingDate;
         this.memberType = memberType;
+        this.memberTypeChange = memberTypeChange;
         this.familyId = familyId;
+        this.bankAccountDetails = bankAccountDetails;
     }
 
     public User() {
@@ -160,8 +185,26 @@ public class User {
                 ", entryDate=" + entryDate +
                 ", cancellationDate=" + cancellationDate +
                 ", leavingDate=" + leavingDate +
-                ", memberType='" + memberType + '\'' +
+                ", memberType=" + memberType +
+                ", memberTypeChange=" + memberTypeChange +
                 ", familyId=" + familyId +
+                ", bankAccountDetails='" + bankAccountDetails + '\'' +
                 '}';
+    }
+
+    public MemberType getMemberTypeChange() {
+        return memberTypeChange;
+    }
+
+    public void setMemberTypeChange(MemberType memberTypeChange) {
+        this.memberTypeChange = memberTypeChange;
+    }
+
+    public String getBankAccountDetails() {
+        return bankAccountDetails;
+    }
+
+    public void setBankAccountDetails(String bankAccountDetails) {
+        this.bankAccountDetails = bankAccountDetails;
     }
 }

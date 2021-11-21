@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.inject.Inject;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -61,6 +62,7 @@ public class PostcodeController {
 
     @PostMapping
     public ResponseEntity<Postcode> createPostcode(
+            @Valid
             @RequestBody
                     Postcode postcode) throws CreateFailedException {
         try {
@@ -69,7 +71,7 @@ public class PostcodeController {
                     .body(service.createPostcode(postcode));
         } catch ( IllegalArgumentException ex ) {
             ex.printStackTrace();
-            throw new CreateFailedException(ExceptionMessages.POSTCODE_CREATION_FAILED, HttpStatus.BAD_REQUEST);
+            throw new CreateFailedException(ExceptionMessages.POSTCODE_CREATION_FAILED + " " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -89,6 +91,7 @@ public class PostcodeController {
     public ResponseEntity<Postcode> updatePostcode(
             @PathVariable("id")
                     Long id,
+            @Valid
             @RequestBody
                     Postcode postcode) throws UpdateFailedException {
         try {
@@ -97,7 +100,7 @@ public class PostcodeController {
                     .ok()
                     .build();
         } catch ( IllegalArgumentException ex ) {
-            throw new UpdateFailedException(ExceptionMessages.POSTCODE_UPDATE_ILLEGAL_ARGUMENT, HttpStatus.BAD_REQUEST);
+            throw new UpdateFailedException(ExceptionMessages.POSTCODE_UPDATE_ILLEGAL_ARGUMENT + " " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         } catch ( EntityNotFoundException ex ) {
             throw new UpdateFailedException(ExceptionMessages.POSTCODE_NOT_FOUND_WHEN_UPDATE, HttpStatus.NOT_FOUND);
         }
