@@ -75,6 +75,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       },
       (message: string) => {
         this.notificationService.error(message);
+        this.onAddUser(user);
       }
     );
   }
@@ -95,6 +96,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       },
       (message: string) => {
         this.notificationService.error(message);
+        this.onEditUser(user.userId);
       }
     );
   }
@@ -127,8 +129,9 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @author Luca Ulrich
    * @returns {void}
    */
-  onAddUser(): void {
-    this.formService.initializeFormGroup();
+  onAddUser(user?: User): void {
+    user ? this.formService.initializeFormGroup(user) : this.formService.initializeFormGroup();
+
     const dialogRef = this.openFormModal();
     dialogRef.afterClosed().subscribe((result) => {
       this.router.navigate(['../'], { relativeTo: this.route });
@@ -148,23 +151,27 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @param {number} id - ID to get the specific User data
    * @returns {void}
    */
-  onEditUser(id: number): void {
-    this.userService.getUser(id).subscribe((user: User) => {
-      if (user) {
-        this.formService.initializeFormGroup(user);
-        const dialogRef = this.openFormModal();
-        dialogRef.afterClosed().subscribe((result) => {
-          this.router.navigate(['../'], { relativeTo: this.route });
-          if (result.event === 'submit') {
-            result.data['userId'] = user.userId;
-            result.data['description'] = user.description; //reassign description, to save old description
-            this.editUser(result.data);
-          }
-        });
-      } else {
-        this.notificationService.error(`Keinen Nutzer mit der Mitgliedsnummer: ${id} gefunden!`);
-      }
-    });
+  onEditUser(id: number | undefined): void {
+    if (id) {
+      this.userService.getUser(id).subscribe((user: User) => {
+        if (user) {
+          this.formService.initializeFormGroup(user);
+          const dialogRef = this.openFormModal();
+          dialogRef.afterClosed().subscribe((result) => {
+            this.router.navigate(['../'], { relativeTo: this.route });
+            if (result.event === 'submit') {
+              result.data['userId'] = user.userId;
+              result.data['description'] = user.description; //reassign description, to save old description
+              this.editUser(result.data);
+            }
+          });
+        } else {
+          this.notificationService.error(`Keinen Nutzer mit der Mitgliedsnummer: ${id} gefunden!`);
+        }
+      });
+    } else {
+      this.notificationService.error('Es ist ein unbekannter Fehler aufgetreten!');
+    }
   }
 
   /**
