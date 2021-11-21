@@ -79,7 +79,7 @@ export class FormService {
         birthday: user.birthday,
         entryDate: user.entryDate,
         cancellationDate: user.cancellationDate ? user.cancellationDate : '',
-        leavingDate: user.leavingDate ? (this.datePipe.transform(user.leavingDate, 'dd/MM/yyyy') as string) : '',
+        leavingDate: user.leavingDate ? (this.datePipe.transform(user.leavingDate, 'MM/dd/yyyy') as string) : '',
         description: user.description,
         amount: user.amount ? user.amount : '',
         familyId: user.familyId?.userId ? user.familyId.userId : '',

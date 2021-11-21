@@ -1,2 +1,4 @@
-<app-payment-list [payments]='payments'
-                  (edit)='onPaymentEdit($event)'></app-payment-list>
+<app-list-view [setInput]='payments'
+               [setColumns]='columns'
+               (edit)='onPaymentEdit($event)'></app-list-view>
+<router-outlet></router-outlet>
