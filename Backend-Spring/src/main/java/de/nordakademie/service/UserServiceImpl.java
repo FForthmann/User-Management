@@ -32,6 +32,8 @@ public class UserServiceImpl implements UserService {
 
     private MemberTypeService memberTypeService;
 
+    private PostcodeService postcodeService;
+
 
 
 
@@ -74,24 +76,24 @@ public class UserServiceImpl implements UserService {
 
         // If Postal Code doesn't exist in DB, here it will be created
         if (!existsPostalCodeInDB(createUser)) {
-            this.postcodeRepository.save(createUser
+            this.postcodeService.createPostcode(createUser
                                                  .getAddress()
                                                  .getPostalCode());
         }
 
         // create Payment for User
-      //  createPaymentByUser(createUser);
-
-        return repository.save(createUser);
+        User savedUser = repository.save(createUser);
+        createPaymentByUser(savedUser);
+        return savedUser;
     }
 
-    private void createPaymentByUser(User createUser) {
+    private void createPaymentByUser(User savedUser) {
         Payments payments = new Payments();
-        payments.setBankAccountDetails(createUser.getBankAccountDetails());
-        payments.getUserId().setUserId(createUser.getUserId());
+        payments.setBankAccountDetails(savedUser.getBankAccountDetails());
+        payments.setUserId(savedUser);
         payments.setYear(LocalDate.now().getYear());
         payments.setCountStatus(Boolean.FALSE);
-        payments.setAmount(evaluateAmountForUser(createUser));
+        payments.setAmount(evaluateAmountForUser(savedUser));
         paymentsService.createPayments(payments);
     }
 
@@ -99,10 +101,10 @@ public class UserServiceImpl implements UserService {
         Double amountResult = 0.0;
         Optional<MemberType> a =memberTypeService.findMemberTypeById(createUser.getMemberType().getDescription());
         if(a.isPresent()){
-            if (createUser.getFamilyId().getUserId() != null){
+            if (createUser.getFamilyId() != null){
                 amountResult -= 3;
             } else {
-                amountResult += createUser.getMemberType().getAmount();
+                amountResult += a.get().getAmount();
             }
         }
         return amountResult;
@@ -127,51 +129,16 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
         }
 
-        persistentUser
-                .get()
-                .setBirthday(updateUser.getBirthday());
-        persistentUser
-                .get()
-                .setCancellationDate(updateUser.getCancellationDate());
-        persistentUser
-                .get()
-                .setEntryDate(updateUser.getEntryDate());
-        persistentUser
-                .get()
-                .setFamilyId(updateUser.getFamilyId());
-        persistentUser
-                .get()
-                .getName()
-                .setFirstName(updateUser
-                                      .getName()
-                                      .getFirstName());
-        persistentUser
-                .get()
-                .getAddress()
-                .setHouseNumber(updateUser
-                                        .getAddress()
-                                        .getHouseNumber());
-        persistentUser
-                .get()
-                .setMemberType(updateUser.getMemberType());
-        persistentUser
-                .get()
-                .getAddress()
-                .setPostalCode(updateUser
-                                       .getAddress()
-                                       .getPostalCode());
-        persistentUser
-                .get()
-                .getName()
-                .setLastName(updateUser
-                                     .getName()
-                                     .getLastName());
-        persistentUser
-                .get()
-                .getAddress()
-                .setStreet(updateUser
-                                   .getAddress()
-                                   .getStreet());
+        persistentUser.get().setBirthday(updateUser.getBirthday());
+        persistentUser.get().setCancellationDate(updateUser.getCancellationDate());
+        persistentUser.get().setEntryDate(updateUser.getEntryDate());
+        persistentUser.get().setFamilyId(updateUser.getFamilyId());
+        persistentUser.get().getName().setFirstName(updateUser.getName().getFirstName());
+        persistentUser.get().getAddress().setHouseNumber(updateUser.getAddress().getHouseNumber());
+        persistentUser.get().setMemberType(updateUser.getMemberType());
+        persistentUser.get().getAddress().setPostalCode(updateUser.getAddress().getPostalCode());
+        persistentUser.get().getName().setLastName(updateUser.getName().getLastName());
+        persistentUser.get().getAddress().setStreet(updateUser.getAddress().getStreet());
         persistentUser.get().setMemberTypeChange(updateUser.getMemberTypeChange());
         persistentUser.get().setBankAccountDetails(updateUser.getBankAccountDetails());
     }
@@ -200,6 +167,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAllUser() {
+
+
+
+
         return (List<User>) repository.findAll();
     }
 
@@ -278,5 +249,10 @@ public class UserServiceImpl implements UserService {
 @Inject
     public void setMemberTypeService(MemberTypeService memberTypeService) {
         this.memberTypeService = memberTypeService;
+    }
+
+    @Inject
+    public void setPostcodeService(PostcodeService postcodeService) {
+        this.postcodeService = postcodeService;
     }
 }
