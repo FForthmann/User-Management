@@ -1,12 +1,14 @@
 package de.nordakademie.model;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import de.nordakademie.util.ExceptionMessages;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import de.nordakademie.util.ExceptionMessages;
+
 @Embeddable
 public class Address {
     @Column(nullable = false)

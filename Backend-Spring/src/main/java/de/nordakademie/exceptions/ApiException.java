@@ -1,7 +1,9 @@
 package de.nordakademie.exceptions;
 
-import java.time.ZonedDateTime;
 import org.springframework.http.HttpStatus;
+
+import java.time.ZonedDateTime;
+
 public class ApiException {
     private final String message;
 

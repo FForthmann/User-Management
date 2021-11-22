@@ -1,11 +1,13 @@
 package de.nordakademie.model;
 
+import de.nordakademie.util.ExceptionMessages;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import de.nordakademie.util.ExceptionMessages;
+
 @Entity
 public class Postcode {
     @Id

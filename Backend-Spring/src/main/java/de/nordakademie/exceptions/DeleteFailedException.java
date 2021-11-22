@@ -1,6 +1,7 @@
 package de.nordakademie.exceptions;
 
 import org.springframework.http.HttpStatus;
+
 public class DeleteFailedException extends Exception {
     private final String message;
 
