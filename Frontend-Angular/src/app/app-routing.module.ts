@@ -31,6 +31,10 @@ const routes: Routes = [
         path: 'print',
         component: PrintViewComponent,
       },
+      {
+        path: 'print/:year',
+        component: PrintViewComponent,
+      },
     ],
   },
   {
@@ -39,6 +43,10 @@ const routes: Routes = [
     children: [
       {
         path: 'print',
+        component: PrintViewComponent,
+      },
+      {
+        path: 'print/:year',
         component: PrintViewComponent,
       },
     ],
