@@ -17,7 +17,7 @@
           <mat-error *ngIf="formService.form.get('firstName')?.invalid">{{formService.getErrorMessage('firstName')}}</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex='30%'>
-          <input formControlName='lastName' matInput placeholder='Nachnamme*' [readonly]='formService.readonly'>
+          <input formControlName='lastName' matInput placeholder='Nachname*' [readonly]='formService.readonly'>
           <mat-error *ngIf="formService.form.get('lastName')?.invalid">{{formService.getErrorMessage('lastName')}}</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex='30%'>
