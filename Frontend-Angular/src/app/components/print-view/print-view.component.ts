@@ -32,7 +32,15 @@ export class PrintViewComponent {
     }
   }
 
-  private buildUserPDF(user: User[]) {
+  /**
+   * Function to build a PDF for Users
+   *
+   * @author Luca Ulrich
+   * @contributor Jan Ramm
+   * @param {User[]} user
+   * @private
+   */
+  private buildUserPDF(user: User[]): void {
     let buildUserData: Array<Array<string | number>> = [];
     user.forEach((res: User) => {
       let tempData: Array<string | number> = [];
@@ -41,17 +49,25 @@ export class PrintViewComponent {
       tempData.push(res.name.lastName);
       tempData.push(res.entryDate);
       tempData.push(res.description);
+      // res.actualAmount ? tempData.push(res.actualAmount) : '';
       buildUserData.push(tempData);
     });
 
     this.doc.autoTable({
-      head: [['MitgliedsID', 'Name', 'Nachname', 'Eintrittsdatum', 'Mitgliedsart']],
+      head: [['MitgliedsID', 'Name', 'Nachname', 'Eintrittsdatum', 'Mitgliedsart', 'Aktueller Beitrag']],
       body: buildUserData,
     });
-    this.doc.save('table.pdf');
+    this.doc.save('user.pdf');
   }
 
-  private buildPaymentPDF(payments: Payment[]) {
+  /**
+   * Function to build a PDF for Payments
+   *
+   * @author Luca Ulrich & Jan Ramm
+   * @param {Payment[]} payments
+   * @private
+   */
+  private buildPaymentPDF(payments: Payment[]): void {
     let buildPaymentData: Array<Array<string | number>> = [];
     payments.forEach((res: Payment) => {
       let tempData: Array<string | number> = [];
@@ -67,9 +83,17 @@ export class PrintViewComponent {
       head: [['Rechnungsnummer', 'Jahr', 'Bankdaten', 'Rechnungsbetrag', 'Zahlstatus']],
       body: buildPaymentData,
     });
-    this.doc.save('table.pdf');
+    this.doc.save('payment.pdf');
   }
 
+  /**
+   * Function to get the Data from the Services. It checks whether the active route is /users/print or /payments/print
+   *
+   * @author Luca Ulrich
+   * @param {string} type - users or payments
+   * @private
+   * @returns {void}
+   */
   private getData(type: string): void {
     if (type === 'users') {
       this.userService.getUsers().subscribe((users: User[]) => {
