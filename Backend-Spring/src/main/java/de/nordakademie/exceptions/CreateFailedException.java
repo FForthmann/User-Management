@@ -3,24 +3,26 @@ package de.nordakademie.exceptions;
 import org.springframework.http.HttpStatus;
 
 /**
- * The type Create failed exception.
+ * Exception class for failed creation attempts.
+ *
+ * @author Ridvan Cetin, Fabian Forthmann
  */
 public class CreateFailedException extends Exception {
     /**
-     * The Message.
+     * The error message.
      */
     private final String message;
 
     /**
-     * The Http status.
+     * The HTTPS status of the error.
      */
     private final HttpStatus httpStatus;
 
     /**
-     * Instantiates a new Create failed exception.
+     * Instantiates a new CreateFailed exception.
      *
-     * @param message    the message
-     * @param httpStatus the http status
+     * @param message    the error message
+     * @param httpStatus the HTTP status of the error
      */
     public CreateFailedException(final String message, final HttpStatus httpStatus) {
         this.message = message;
@@ -33,9 +35,9 @@ public class CreateFailedException extends Exception {
     }
 
     /**
-     * Gets http status.
+     * Gets the HTTP status.
      *
-     * @return the http status
+     * @return the HTTP status of the error
      */
     public HttpStatus getHttpStatus() {
         return httpStatus;

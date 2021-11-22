@@ -1,26 +1,27 @@
 package de.nordakademie.exceptions;
 
 import org.springframework.http.HttpStatus;
-
 /**
- * The type Delete failed exception.
+ * Exception class for failed deletion attempts.
+ *
+ * @author Ridvan Cetin, Fabian Forthmann
  */
 public class DeleteFailedException extends Exception {
     /**
-     * The Message.
+     * The error message.
      */
     private final String message;
 
     /**
-     * The Http status.
+     * The HTTP status of the error.
      */
     private final HttpStatus httpStatus;
 
     /**
-     * Instantiates a new Delete failed exception.
+     * Instantiates a new DeleteFailed exception.
      *
-     * @param message    the message
-     * @param httpStatus the http status
+     * @param message    the error message
+     * @param httpStatus the HTTP status of the error
      */
     public DeleteFailedException(final String message, final HttpStatus httpStatus) {
         this.message = message;
@@ -28,9 +29,9 @@ public class DeleteFailedException extends Exception {
     }
 
     /**
-     * Gets http status.
+     * Gets the HTTP status.
      *
-     * @return the http status
+     * @return the HTTP status of the error
      */
     public HttpStatus getHttpStatus() {
         return httpStatus;

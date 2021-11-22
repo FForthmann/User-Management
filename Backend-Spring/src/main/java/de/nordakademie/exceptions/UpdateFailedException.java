@@ -3,24 +3,26 @@ package de.nordakademie.exceptions;
 import org.springframework.http.HttpStatus;
 
 /**
- * The type Update failed exception.
+ * Exception class for failed update attempts.
+ *
+ * @author Ridvan Cetin, Fabian Forthmann
  */
 public class UpdateFailedException extends Exception {
     /**
-     * The Message.
+     * The error message.
      */
     private final String message;
 
     /**
-     * The Http status.
+     * The HTTP status of the error.
      */
     private final HttpStatus httpStatus;
 
     /**
-     * Instantiates a new Update failed exception.
+     * Instantiates a new UpdateFailed exception.
      *
-     * @param message    the message
-     * @param httpStatus the http status
+     * @param message    the error message
+     * @param httpStatus the HTTP status of the error
      */
     public UpdateFailedException(final String message, final HttpStatus httpStatus) {
         this.message = message;
@@ -28,9 +30,9 @@ public class UpdateFailedException extends Exception {
     }
 
     /**
-     * Gets http status.
+     * Gets the HTTP status.
      *
-     * @return the http status
+     * @return the HTTP status of the error
      */
     public HttpStatus getHttpStatus() {
         return httpStatus;
