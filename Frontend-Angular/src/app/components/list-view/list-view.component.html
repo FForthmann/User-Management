@@ -74,9 +74,14 @@
         </button>
       </td>
     </ng-container>
-
   </div>
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" colspan="9999">
+      Keine Daten gefunden
+    </td>
+  </tr>
   <tr mat-header-row *matHeaderRowDef='displayedColumns'></tr>
   <tr mat-row *matRowDef='let row; columns: displayedColumns;'></tr>
+
 </table>
 <mat-paginator [pageSizeOptions]='[25, 50, 75]'></mat-paginator>

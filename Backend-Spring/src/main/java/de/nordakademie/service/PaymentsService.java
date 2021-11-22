@@ -1,8 +1,10 @@
 package de.nordakademie.service;
 
+import de.nordakademie.model.Payments;
+
 import java.util.List;
 import java.util.Optional;
-import de.nordakademie.model.Payments;
+
 public interface PaymentsService {
     Payments createPayments(Payments payments);
 
@@ -18,6 +20,6 @@ public interface PaymentsService {
 
     boolean existsUserInPaymentsForThisYear(long userId, long year);
 
-    long findPaymentsByUserId(long userId, long year);
+    Long findPaymentsByUserId(long userId, long year);
 
 }

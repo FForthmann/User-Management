@@ -1,10 +1,12 @@
 package de.nordakademie.model;
 
+import de.nordakademie.util.ExceptionMessages;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
-import de.nordakademie.util.ExceptionMessages;
+
 @Embeddable
 public class Name {
     @Column(nullable = false)

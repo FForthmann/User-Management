@@ -1,6 +1,7 @@
 package de.nordakademie.exceptions;
 
 import org.springframework.http.HttpStatus;
+
 public class ReadFailedException extends Exception {
     private final String message;
 

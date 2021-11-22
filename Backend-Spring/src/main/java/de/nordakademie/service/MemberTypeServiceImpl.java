@@ -1,14 +1,16 @@
 package de.nordakademie.service;
 
-import java.util.List;
-import java.util.Optional;
-import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
-import org.springframework.stereotype.Service;
 import de.nordakademie.model.MemberType;
 import de.nordakademie.repository.MemberTypeRepository;
 import de.nordakademie.util.ApiMessages;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 public class MemberTypeServiceImpl implements MemberTypeService {
@@ -21,7 +23,7 @@ public class MemberTypeServiceImpl implements MemberTypeService {
 
     @Override
     public MemberType createMemberType(MemberType memberType) {
-       return repository.save(memberType);
+        return repository.save(memberType);
     }
 
     @Override
@@ -31,7 +33,6 @@ public class MemberTypeServiceImpl implements MemberTypeService {
 
     @Override
     public void updateMemberType(String membertypeId, MemberType memberType) {
-
 
 
         Optional<MemberType> memberTypePersistent = repository.findById(membertypeId);
@@ -55,7 +56,6 @@ public class MemberTypeServiceImpl implements MemberTypeService {
     public Optional<MemberType> findMemberTypeById(String memberTypeId) {
         return repository.findById(memberTypeId);
     }
-
 
 
 }
