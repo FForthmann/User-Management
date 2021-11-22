@@ -9,15 +9,15 @@
       <a mat-button routerLink='/users'>Nutzerverwaltung</a>
       <a mat-button routerLink='/payments'>Rechnungen</a>
     </div>
-    <div fxFlex fxLayout="row" fxLayoutAlign="flex-end" fxHide.gt-xs>
-    <a class="valign-center" mat-icon-button [matMenuTriggerFor]="menu" aria-label="additional links">
-      <mat-icon>more_vert</mat-icon>
-    </a>
-    <mat-menu #menu="matMenu">
-      <a mat-button routerLink='/users'>Nutzerverwaltung</a>
-      <a mat-button routerLink='/payments'>Rechnungen</a>
-    </mat-menu>
-</div>
+    <div fxFlex fxLayout='row' fxLayoutAlign='flex-end' fxHide.gt-xs>
+      <a class='valign-center' mat-icon-button [matMenuTriggerFor]='menu' aria-label='additional links'>
+        <mat-icon>more_vert</mat-icon>
+      </a>
+      <mat-menu #menu='matMenu'>
+        <a mat-button routerLink='/users'>Nutzerverwaltung</a>
+        <a mat-button routerLink='/payments'>Rechnungen</a>
+      </mat-menu>
+    </div>
   </mat-toolbar>
 </div>
 <router-outlet></router-outlet>

@@ -1,10 +1,10 @@
 <!-- Search, Filter and Create -->
 <div class='container' fxLayout='row' fxLayoutGap='1.5%'>
-  <div fxFlex='10%' fxLayoutAlign="center center">
-  <button mat-raised-button routerLink='create' *ngIf="type === 'User'" >
-    <mat-icon>add</mat-icon>
-    Create
-  </button>
+  <div fxFlex='10%' fxLayoutAlign='center center'>
+    <button mat-raised-button routerLink='create' *ngIf="type === 'User'">
+      <mat-icon>add</mat-icon>
+      Create
+    </button>
   </div>
 
   <mat-form-field class='search-form-field' floatLabel='never' fxFlex='60%'>
@@ -21,11 +21,11 @@
                   [value]='year'>{{year}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <div fxFlex='15%' fxLayoutAlign="center center">
-  <button mat-raised-button [routerLink]="'print/'+selectedYear" *ngIf='years.length >= 1' >
-    <mat-icon>print</mat-icon>
-    Download PDF
-  </button>
+  <div fxFlex='15%' fxLayoutAlign='center center'>
+    <button mat-raised-button [routerLink]="'print/'+selectedYear" *ngIf='years.length >= 1'>
+      <mat-icon>print</mat-icon>
+      Download PDF
+    </button>
   </div>
 </div>
 
@@ -75,8 +75,8 @@
       </td>
     </ng-container>
   </div>
-  <tr class="mat-row" *matNoDataRow>
-    <td class="mat-cell" colspan="9999">
+  <tr class='mat-row' *matNoDataRow>
+    <td class='mat-cell' colspan='9999'>
       Keine Daten gefunden
     </td>
   </tr>

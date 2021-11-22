@@ -109,7 +109,10 @@ export class UserFormComponent implements OnInit {
     };
 
     if (userData.cancellationDate) {
-      userObject['cancellationDate'] = this.datePipe.transform(userData.cancellationDate, 'yyyy-MM-dd') as string;
+      userObject['cancellationDate'] = this.datePipe.transform(
+        userData.cancellationDate,
+        'yyyy-MM-dd'
+      ) as string;
       leavingDate = this.calculateLeavingDate(userData.cancellationDate);
       userObject['leavingDate'] = this.datePipe.transform(leavingDate, 'yyyy-MM-dd') as string;
     }

@@ -27,11 +27,13 @@ export class ListViewComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+
   @Input() set setColumns(columns: Column[]) {
     this.columns = columns;
     this.displayedColumns = columns.map((column: Column) => column.columnDef);
     this.setType(this.route.snapshot.url[0].path);
   }
+
   @Input() set setInput(input: User[] | Payment[]) {
     if (input != null) {
       this.searchYears(input);
@@ -48,6 +50,7 @@ export class ListViewComponent {
       this.dataSource.sort = this.sort;
     }
   }
+
   @Output() edit: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private route: ActivatedRoute) {}

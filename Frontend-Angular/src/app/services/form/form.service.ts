@@ -30,6 +30,7 @@ export class FormService {
     }
     return this.form.get(controlName)?.hasError('pattern') ? 'Bitte verwende übliche Zeichen!' : '';
   }
+
   /** @type {boolean} **/
   readonly: boolean = false;
 
@@ -56,8 +57,14 @@ export class FormService {
 
   /** @type {FormGroup} **/
   form: FormGroup = new FormGroup({
-    firstName: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"), Validators.required]),
-    lastName: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"), Validators.required]),
+    firstName: new FormControl('', [
+      Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"),
+      Validators.required,
+    ]),
+    lastName: new FormControl('', [
+      Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"),
+      Validators.required,
+    ]),
     bankAccountDetails: new FormControl('', [Validators.required, Validators.minLength(8)]),
     houseNumber: new FormControl('', [Validators.pattern('^[0-9]*$'), Validators.required]),
     postcode: new FormControl('', [
@@ -67,12 +74,18 @@ export class FormService {
       Validators.minLength(5),
     ]),
     street: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"), Validators.required]),
-    location: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"), Validators.required]),
+    location: new FormControl('', [
+      Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"),
+      Validators.required,
+    ]),
     birthday: new FormControl('', Validators.required),
     entryDate: new FormControl('', Validators.required),
     cancellationDate: new FormControl(''),
     leavingDate: new FormControl({ value: '', disabled: true }),
-    description: new FormControl('', [Validators.required, Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$")]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"),
+    ]),
     descriptionChange: new FormControl({ value: '', disabled: true }),
     actualAmount: new FormControl({ value: '', disabled: true }, [Validators.pattern('^[0-9]')]),
     familyId: new FormControl('', [Validators.pattern('^[0-9]*$')]),
@@ -99,7 +112,9 @@ export class FormService {
         birthday: user.birthday,
         entryDate: user.entryDate,
         cancellationDate: user.cancellationDate ? user.cancellationDate : '',
-        leavingDate: user.leavingDate ? (this.datePipe.transform(user.leavingDate, 'MM/dd/yyyy') as string) : '',
+        leavingDate: user.leavingDate
+          ? (this.datePipe.transform(user.leavingDate, 'MM/dd/yyyy') as string)
+          : '',
         description: user.description,
         descriptionChange: user.memberTypeChange ? user.memberTypeChange.description : '',
         actualAmount: user.actualAmount ? user.actualAmount : '',
