@@ -10,6 +10,11 @@
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
+  <button mat-raised-button [routerLink]="'print'">
+    <mat-icon>print</mat-icon>
+    Download PDF
+  </button>
+
 </div>
 
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table" matSort>

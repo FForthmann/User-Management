@@ -3,12 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { UsersComponent } from './components/users/users.component';
 import { ModalViewComponent } from './components/modal-view/modal-view.component';
 import { PaymentsComponent } from './components/payments/payments.component';
+import { PrintViewComponent } from './components/print-view/print-view.component';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'users'
+    redirectTo: 'users',
   },
   {
     path: 'users',
@@ -16,29 +17,37 @@ const routes: Routes = [
     children: [
       {
         path: 'create',
-        component: ModalViewComponent
+        component: ModalViewComponent,
       },
       {
         path: 'edit/:id',
-        component: ModalViewComponent
+        component: ModalViewComponent,
       },
       {
         path: 'delete/:id',
-        component: ModalViewComponent
-      }
-    ]
+        component: ModalViewComponent,
+      },
+      {
+        path: 'print',
+        component: PrintViewComponent,
+      },
+    ],
   },
   {
     path: 'payments',
     component: PaymentsComponent,
-    children: []
+    children: [
+      {
+        path: 'print',
+        component: PrintViewComponent,
+      },
+    ],
   },
-  { path: '**', redirectTo: 'users' }
+  { path: '**', redirectTo: 'users' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
