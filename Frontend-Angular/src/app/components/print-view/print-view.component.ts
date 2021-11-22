@@ -63,13 +63,14 @@ export class PrintViewComponent {
       res.userId ? tempData.push(res.userId) : '';
       tempData.push(res.name.firstName);
       tempData.push(res.name.lastName);
+      tempData.push(res.bankAccountDetails);
       tempData.push(res.entryDate);
       tempData.push(res.description);
-      // res.actualAmount ? tempData.push(res.actualAmount) : '';
+      res.actualAmount ? tempData.push(res.actualAmount) : '';
       buildUserData.push(tempData);
     });
     this.doc.autoTable({
-      head: [['MitgliedsID', 'Name', 'Nachname', 'Eintrittsdatum', 'Mitgliedsart', 'Aktueller Beitrag']],
+      head: [['MitgliedsID', 'Name', 'Nachname', 'Bankverbindung', 'Eintrittsdatum', 'Mitgliedsart', 'Beitrag']],
       body: buildUserData,
     });
     this.doc.save(`jahresabschluss_mitglieder_${this.year}.pdf`);
