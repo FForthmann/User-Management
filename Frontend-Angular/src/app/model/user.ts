@@ -3,7 +3,7 @@
  *
  * @author Luca Ulrich
  * @contributor Jan Ramm
- * @version 1.4
+ * @version 1.5
  */
 export interface User {
   userId?: number;
@@ -23,12 +23,13 @@ export interface User {
   cancellationDate?: string;
   leavingDate?: string;
 
-  description: string;
+  description: string; // memberType
+  amount?: number; // not needed but send anyway
   memberTypeChange: {
     description: string;
   };
+  actualAmount?: number; // what the user needs to pay
 
-  amount?: number;
   familyId?: {
     userId: number;
   };
@@ -58,7 +59,7 @@ export interface formUser {
 
   description: string;
   descriptionChange?: string;
-  amount?: string;
+  actualAmount?: string;
 
   familyId?: string;
 }
