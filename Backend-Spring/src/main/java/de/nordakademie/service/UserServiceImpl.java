@@ -83,6 +83,9 @@ public class UserServiceImpl implements UserService {
                                                         .getPostalCode());
         }
 
+        // Evaluate ActualAmount
+        createUser.setActualAmount(evaluateAmountForUser(createUser));
+
         // Create Payment for User
         User savedUser = repository.save(createUser);
         createPaymentByUser(savedUser);
@@ -152,6 +155,7 @@ public class UserServiceImpl implements UserService {
         persistentUser
                 .get()
                 .setBankAccountDetails(updateUser.getBankAccountDetails());
+        persistentUser.get().setActualAmount(evaluateAmountForUser(updateUser));
 
         this.postcodeService.updatePostcode(updateUser.getAddress().getPostalCode().getPostcode(), updateUser.getAddress().getPostalCode());
 
@@ -221,6 +225,7 @@ public class UserServiceImpl implements UserService {
                             .equals("Jugendlich") && checkUserUnderEighteen(user)) {
                         throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
                     }
+                    user.setActualAmount(evaluateAmountForUser(user));
                     createPaymentByUser(user);
                 }
             }
