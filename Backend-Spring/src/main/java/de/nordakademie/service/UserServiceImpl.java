@@ -394,15 +394,22 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
         }
 
-        if (!user
+        if ((user
                 .getMemberType()
                 .getDescription()
-                .equals("Jugendlich") && checkUserUnderEighteen(user)){
-            throw new IllegalArgumentException("Der Benutzer ist jünger als 18 und daher muss ein Jugendkonto her.");
+                .equals("Vollmitglied") || user
+                .getMemberType()
+                .getDescription()
+                .equals("Ermäßigt"))&& checkUserUnderEighteen(user)){
+            throw new IllegalArgumentException("Der Benutzer ist jünger als 18 und daher kann ein Fördermitglied und Jugendkonto erstellt werden.");
         }
 
         if(user.getMemberTypeChange() != null && user.getMemberTypeChange().getDescription().equals(user.getMemberType().getDescription())){
             throw new IllegalArgumentException("Die Mitgliedsart kann nicht auf die gleiche Mitgliedsart gewechselt werden.");
+        }
+
+        if (user.getFamilyId() != null && !repository.existsById(user.getFamilyId().getUserId())){
+            throw new IllegalArgumentException("Der Familienangehörige existiert nicht.");
         }
     }
 
