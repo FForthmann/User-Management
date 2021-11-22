@@ -19,21 +19,44 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Postcode controller.
+ */
 @RestController
 @RequestMapping(path = "/rest/postcode")
 public class PostcodeController {
+    /**
+     * The Service.
+     */
     private PostcodeService service;
 
+    /**
+     * Sets service.
+     *
+     * @param service the service
+     */
     @Inject
     public void setService(PostcodeService service) {
         this.service = service;
     }
 
+    /**
+     * Find all postcodes list.
+     *
+     * @return the list
+     */
     @GetMapping
     public List<Postcode> findAllPostcodes() {
         return service.findAllPostcodes();
     }
 
+    /**
+     * Delete postcode response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     * @throws DeleteFailedException the delete failed exception
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Postcode> deletePostcode(
             @PathVariable("id")
@@ -55,6 +78,13 @@ public class PostcodeController {
         }
     }
 
+    /**
+     * Create postcode response entity.
+     *
+     * @param postcode the postcode
+     * @return the response entity
+     * @throws CreateFailedException the create failed exception
+     */
     @PostMapping
     public ResponseEntity<Postcode> createPostcode(
             @Valid
@@ -70,6 +100,13 @@ public class PostcodeController {
         }
     }
 
+    /**
+     * Find postcode by id optional.
+     *
+     * @param id the id
+     * @return the optional
+     * @throws ReadFailedException the read failed exception
+     */
     @GetMapping("/{id}")
     public Optional<Postcode> findPostcodeById(
             @PathVariable("id")
@@ -82,6 +119,14 @@ public class PostcodeController {
         }
     }
 
+    /**
+     * Update postcode response entity.
+     *
+     * @param id       the id
+     * @param postcode the postcode
+     * @return the response entity
+     * @throws UpdateFailedException the update failed exception
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Postcode> updatePostcode(
             @PathVariable("id")

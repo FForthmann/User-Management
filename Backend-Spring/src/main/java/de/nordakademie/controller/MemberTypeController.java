@@ -19,21 +19,44 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Member type controller.
+ */
 @RestController
 @RequestMapping(path = "/rest/memberType")
 public class MemberTypeController {
+    /**
+     * The Service.
+     */
     private MemberTypeService service;
 
+    /**
+     * Sets service.
+     *
+     * @param service the service
+     */
     @Inject
     public void setService(MemberTypeService service) {
         this.service = service;
     }
 
+    /**
+     * Find all member type list.
+     *
+     * @return the list
+     */
     @GetMapping
     public List<MemberType> findAllMemberType() {
         return service.findAllMemberTypes();
     }
 
+    /**
+     * Delete member type response entity.
+     *
+     * @param memberTypeId the member type id
+     * @return the response entity
+     * @throws DeleteFailedException the delete failed exception
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<MemberType> deleteMemberType(@PathVariable("id") String memberTypeId) throws DeleteFailedException {
         try {
@@ -53,6 +76,13 @@ public class MemberTypeController {
         }
     }
 
+    /**
+     * Find member type by id optional.
+     *
+     * @param id the id
+     * @return the optional
+     * @throws ReadFailedException the read failed exception
+     */
     @GetMapping("/{id}")
     public Optional<MemberType> findMemberTypeById(
             @PathVariable("id")
@@ -65,6 +95,13 @@ public class MemberTypeController {
         }
     }
 
+    /**
+     * Create member type response entity.
+     *
+     * @param memberType the member type
+     * @return the response entity
+     * @throws CreateFailedException the create failed exception
+     */
     @PostMapping
     public ResponseEntity<MemberType> createMemberType(
             @Valid @RequestBody
@@ -78,6 +115,14 @@ public class MemberTypeController {
         }
     }
 
+    /**
+     * Update member type response entity.
+     *
+     * @param id         the id
+     * @param memberType the member type
+     * @return the response entity
+     * @throws UpdateFailedException the update failed exception
+     */
     @PutMapping("/{id}")
     public ResponseEntity<MemberType> updateMemberType(
             @PathVariable("id")

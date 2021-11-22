@@ -18,21 +18,44 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Payments controller.
+ */
 @RestController
 @RequestMapping(path = "/rest/payments")
 public class PaymentsController {
+    /**
+     * The Service.
+     */
     private PaymentsService service;
 
+    /**
+     * Sets service.
+     *
+     * @param service the service
+     */
     @Inject
     public void setService(PaymentsService service) {
         this.service = service;
     }
 
+    /**
+     * Find all payments list.
+     *
+     * @return the list
+     */
     @GetMapping
     public List<Payments> findAllPayments() {
         return service.findAllPayments();
     }
 
+    /**
+     * Delete payment response entity.
+     *
+     * @param accountId the account id
+     * @return the response entity
+     * @throws DeleteFailedException the delete failed exception
+     */
     @DeleteMapping("{id}")
     public ResponseEntity<Payments> deletePayment(
             @PathVariable("id")
@@ -52,6 +75,13 @@ public class PaymentsController {
         }
     }
 
+    /**
+     * Find payment by id optional.
+     *
+     * @param id the id
+     * @return the optional
+     * @throws ReadFailedException the read failed exception
+     */
     @GetMapping("/{id}")
     public Optional<Payments> findPaymentById(
             @PathVariable("id")
@@ -64,6 +94,13 @@ public class PaymentsController {
         }
     }
 
+    /**
+     * Create payments response entity.
+     *
+     * @param payments the payments
+     * @return the response entity
+     * @throws CreateFailedException the create failed exception
+     */
     @PostMapping
     public ResponseEntity<Payments> createPayments(
             @Valid @RequestBody
@@ -78,6 +115,14 @@ public class PaymentsController {
         }
     }
 
+    /**
+     * Update payments response entity.
+     *
+     * @param id       the id
+     * @param payments the payments
+     * @return the response entity
+     * @throws UpdateFailedException the update failed exception
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Payments> updatePayments(
             @PathVariable("id")

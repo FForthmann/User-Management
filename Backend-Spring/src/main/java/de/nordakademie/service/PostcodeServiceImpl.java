@@ -12,18 +12,37 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Postcode service.
+ */
 @Service
 @Transactional
 public class PostcodeServiceImpl implements PostcodeService {
+    /**
+     * The Repository.
+     */
     private PostcodeRepository repository;
 
+    /**
+     * The User service.
+     */
     private UserService userService;
 
+    /**
+     * Sets user service.
+     *
+     * @param userService the user service
+     */
     @Inject
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Sets repository.
+     *
+     * @param repository the repository
+     */
     @Inject
     public void setRepository(PostcodeRepository repository) {
         this.repository = repository;
@@ -71,6 +90,11 @@ public class PostcodeServiceImpl implements PostcodeService {
         return repository.findById(postcodeId);
     }
 
+    /**
+     * Validate input postcode for update and insert.
+     *
+     * @param postcode the postcode
+     */
     private void validateInputPostcodeForUpdateAndInsert(final Postcode postcode) {
         if (!hasPostalCodeFiveDigits(postcode)) {
             throw new IllegalArgumentException(ExceptionMessages.USER_POSTCODE_NOT_FIVE_DIGITS);
@@ -81,12 +105,24 @@ public class PostcodeServiceImpl implements PostcodeService {
         }
     }
 
+    /**
+     * Is location only text boolean.
+     *
+     * @param postcode the postcode
+     * @return the boolean
+     */
     private boolean isLocationOnlyText(Postcode postcode) {
         return postcode
                 .getLocation()
                 .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
     }
 
+    /**
+     * Has postal code five digits boolean.
+     *
+     * @param postcode the postcode
+     * @return the boolean
+     */
     private boolean hasPostalCodeFiveDigits(Postcode postcode) {
         Long postcodeNumber = postcode.getPostcode();
         return postcodeNumber

@@ -11,11 +11,22 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type Member type service.
+ */
 @Service
 @Transactional
 public class MemberTypeServiceImpl implements MemberTypeService {
+    /**
+     * The Repository.
+     */
     private MemberTypeRepository repository;
 
+    /**
+     * Sets repository.
+     *
+     * @param repository the repository
+     */
     @Inject
     public void setRepository(MemberTypeRepository repository) {
         this.repository = repository;

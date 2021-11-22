@@ -17,21 +17,44 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type User controller.
+ */
 @RestController
 @RequestMapping(path = "/rest/user")
 public class UserController {
+    /**
+     * The Service.
+     */
     private UserService service;
 
+    /**
+     * Sets service.
+     *
+     * @param service the service
+     */
     @Inject
     public void setService(UserService service) {
         this.service = service;
     }
 
+    /**
+     * Find all user list.
+     *
+     * @return the list
+     */
     @GetMapping
     public List<User> findAllUser() {
         return service.findAllUser();
     }
 
+    /**
+     * Find user by id optional.
+     *
+     * @param userId the user id
+     * @return the optional
+     * @throws ReadFailedException the read failed exception
+     */
     @GetMapping("/{id}")
     public Optional<User> findUserById(
             @PathVariable("id")
@@ -44,6 +67,13 @@ public class UserController {
         }
     }
 
+    /**
+     * Delete user response entity.
+     *
+     * @param userId the user id
+     * @return the response entity
+     * @throws DeleteFailedException the delete failed exception
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(
             @PathVariable("id")
@@ -61,6 +91,13 @@ public class UserController {
         }
     }
 
+    /**
+     * Create user response entity.
+     *
+     * @param user the user
+     * @return the response entity
+     * @throws CreateFailedException the create failed exception
+     */
     @PostMapping
     public ResponseEntity<User> createUser(
             @Valid
@@ -76,6 +113,14 @@ public class UserController {
         }
     }
 
+    /**
+     * Update user response entity.
+     *
+     * @param id   the id
+     * @param user the user
+     * @return the response entity
+     * @throws UpdateFailedException the update failed exception
+     */
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(
             @PathVariable("id")

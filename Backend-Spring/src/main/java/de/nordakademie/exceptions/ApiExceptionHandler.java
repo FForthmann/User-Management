@@ -12,8 +12,17 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Api exception handler.
+ */
 @ControllerAdvice
 public class ApiExceptionHandler {
+    /**
+     * Handle create failed exception response entity.
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
     @ExceptionHandler(value = {CreateFailedException.class})
     public ResponseEntity<Object> handleCreateFailedException(CreateFailedException exception) {
         final ApiException apiException = new ApiException(exception.getMessage(),
@@ -22,6 +31,12 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, exception.getHttpStatus());
     }
 
+    /**
+     * Handle read failed exception response entity.
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
     @ExceptionHandler(value = {DeleteFailedException.class})
     public ResponseEntity<Object> handleReadFailedException(DeleteFailedException exception) {
         final ApiException apiException = new ApiException(exception.getMessage(),
@@ -30,6 +45,12 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, exception.getHttpStatus());
     }
 
+    /**
+     * Handle read failed exception response entity.
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
     @ExceptionHandler(value = {UpdateFailedException.class})
     public ResponseEntity<Object> handleReadFailedException(UpdateFailedException exception) {
         final ApiException apiException = new ApiException(exception.getMessage(),
@@ -38,6 +59,12 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, exception.getHttpStatus());
     }
 
+    /**
+     * Handle read failed exception response entity.
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
     @ExceptionHandler(value = {ReadFailedException.class})
     public ResponseEntity<Object> handleReadFailedException(ReadFailedException exception) {
         final ApiException apiException = new ApiException(exception.getMessage(),
@@ -46,6 +73,12 @@ public class ApiExceptionHandler {
         return new ResponseEntity<>(apiException, exception.getHttpStatus());
     }
 
+    /**
+     * Handle validation exceptions response entity.
+     *
+     * @param exception the exception
+     * @return the response entity
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException exception) {
         List<String> list = new ArrayList<>();

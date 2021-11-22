@@ -18,8 +18,14 @@ import java.util.Optional;
 @Service
 @Transactional
 public class PaymentsServiceImpl implements PaymentsService {
+    /**
+     * The Repository.
+     */
     private PaymentsRepository repository;
 
+    /**
+     * The User service.
+     */
     private UserService userService;
 
     /**
@@ -145,6 +151,12 @@ public class PaymentsServiceImpl implements PaymentsService {
         return repository.findPaymentsByUserId(userId, year);
     }
 
+    /**
+     * Are bank account details valid boolean.
+     *
+     * @param payments the payments
+     * @return the boolean
+     */
     private boolean areBankAccountDetailsValid(Payments payments) {
 
         String bankAccountDetails = payments.getBankAccountDetails();
@@ -173,7 +185,7 @@ public class PaymentsServiceImpl implements PaymentsService {
      * Check if User exists in DB
      *
      * @param payments Payments Object
-     * @return Boolean-Value if User exists in DB
+     * @return Boolean -Value if User exists in DB
      */
     private boolean existsUserInDB(Payments payments) {
         return this.userService

@@ -19,38 +19,82 @@ import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type User service.
+ */
 @Service
 @Transactional(rollbackOn = Exception.class)
 public class UserServiceImpl implements UserService {
+    /**
+     * The Member type repository.
+     */
     private MemberTypeRepository memberTypeRepository;
 
+    /**
+     * The Postcode repository.
+     */
     private PostcodeRepository postcodeRepository;
 
+    /**
+     * The Payments repository.
+     */
     private PaymentsRepository paymentsRepository;
 
+    /**
+     * The Repository.
+     */
     private UserRepository repository;
 
+    /**
+     * The Payments service.
+     */
     private PaymentsService paymentsService;
 
+    /**
+     * The Member type service.
+     */
     private MemberTypeService memberTypeService;
 
+    /**
+     * The Postcode service.
+     */
     private PostcodeService postcodeService;
 
+    /**
+     * Sets payments repository.
+     *
+     * @param paymentsRepository the payments repository
+     */
     @Inject
     public void setPaymentsRepository(PaymentsRepository paymentsRepository) {
         this.paymentsRepository = paymentsRepository;
     }
 
+    /**
+     * Sets repository.
+     *
+     * @param repository the repository
+     */
     @Inject
     public void setRepository(UserRepository repository) {
         this.repository = repository;
     }
 
+    /**
+     * Sets postcode repository.
+     *
+     * @param postcodeRepository the postcode repository
+     */
     @Inject
     public void setPostcodeRepository(PostcodeRepository postcodeRepository) {
         this.postcodeRepository = postcodeRepository;
     }
 
+    /**
+     * Sets member type repository.
+     *
+     * @param memberTypeRepository the member type repository
+     */
     @Inject
     public void setMemberTypeRepository(MemberTypeRepository memberTypeRepository) {
         this.memberTypeRepository = memberTypeRepository;
@@ -240,27 +284,54 @@ public class UserServiceImpl implements UserService {
         return repository.findById(userId);
     }
 
+    /**
+     * Sets payments service.
+     *
+     * @param paymentsService the payments service
+     */
     @Inject
     public void setPaymentsService(PaymentsService paymentsService) {
         this.paymentsService = paymentsService;
     }
 
+    /**
+     * Sets member type service.
+     *
+     * @param memberTypeService the member type service
+     */
     @Inject
     public void setMemberTypeService(MemberTypeService memberTypeService) {
         this.memberTypeService = memberTypeService;
     }
 
+    /**
+     * Sets postcode service.
+     *
+     * @param postcodeService the postcode service
+     */
     @Inject
     public void setPostcodeService(PostcodeService postcodeService) {
         this.postcodeService = postcodeService;
     }
 
+    /**
+     * Check user is family user.
+     *
+     * @param id        the id
+     * @param savedUser the saved user
+     */
     private void checkUserIsFamilyUser(long id, User savedUser) {
         if (savedUser.getFamilyId() != null && id == savedUser.getFamilyId().getUserId()) {
             throw new IllegalArgumentException("Der Benutzer kann nicht auf sich selber als Familienmitglied referenzieren.");
         }
     }
 
+    /**
+     * Update payments by user.
+     *
+     * @param id         the id
+     * @param updateUser the update user
+     */
     private void updatePaymentsByUser(long id, User updateUser) {
         Long invoiceNumber = paymentsService.findPaymentsByUserId(id, LocalDate.now().getYear());
         if (invoiceNumber != null) {
@@ -272,6 +343,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Create payment by user.
+     *
+     * @param savedUser the saved user
+     */
     private void createPaymentByUser(User savedUser) {
         Payments payments = new Payments();
         payments.setBankAccountDetails(savedUser.getBankAccountDetails());
@@ -284,6 +360,12 @@ public class UserServiceImpl implements UserService {
         paymentsService.createPayments(payments);
     }
 
+    /**
+     * Evaluate amount for user double.
+     *
+     * @param createUser the create user
+     * @return the double
+     */
     private Double evaluateAmountForUser(User createUser) {
         Double amountResult = 0.0;
         Optional<MemberType> a = memberTypeService.findMemberTypeById(createUser
@@ -301,22 +383,46 @@ public class UserServiceImpl implements UserService {
         return amountResult;
     }
 
+    /**
+     * Check user under eighteen boolean.
+     *
+     * @param createUser the create user
+     * @return the boolean
+     */
     private boolean checkUserUnderEighteen(User createUser) {
         Period period = Period.between(createUser.getBirthday(), LocalDate.now());
         return period.getYears() < 18;
     }
 
+    /**
+     * Check boolean.
+     *
+     * @param createUser the create user
+     * @return the boolean
+     */
     private boolean check(User createUser) {
         Period period = Period.between(createUser.getBirthday(), LocalDate.now());
         return period.getYears() >= 18;
     }
 
+    /**
+     * Exists member type in db boolean.
+     *
+     * @param createUser the create user
+     * @return the boolean
+     */
     private boolean existsMemberTypeInDB(User createUser) {
         return this.memberTypeRepository.existsById(createUser
                 .getMemberType()
                 .getDescription());
     }
 
+    /**
+     * Exists postal code in db boolean.
+     *
+     * @param createUser the create user
+     * @return the boolean
+     */
     private boolean existsPostalCodeInDB(User createUser) {
         return this.postcodeRepository.existsById(createUser
                 .getAddress()
@@ -324,6 +430,12 @@ public class UserServiceImpl implements UserService {
                 .getPostcode());
     }
 
+    /**
+     * Compute and insert leaving date.
+     *
+     * @param updateUser     the update user
+     * @param persistentUser the persistent user
+     */
     private void computeAndInsertLeavingDate(final User updateUser, final Optional<User> persistentUser) {
         if (updateUser.getCancellationDate() != null) {
             LocalDate regularLeavingDate = LocalDate.of(updateUser
@@ -344,6 +456,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Sets leaving date.
+     *
+     * @param createUser the create user
+     * @return the leaving date
+     */
     private User setLeavingDate(final User createUser) {
         if (createUser.getCancellationDate() != null) {
             LocalDate regularLeavingDate = LocalDate.of(createUser
@@ -364,6 +482,11 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Validate input user for update and insert.
+     *
+     * @param user the user
+     */
     private void validateInputUserForUpdateAndInsert(User user) {
         if (!isStreetOnlyText(user)) {
             throw new IllegalArgumentException(ExceptionMessages.USER_STREET_NOT_TEXT);
@@ -411,6 +534,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Is street only text boolean.
+     *
+     * @param user the user
+     * @return the boolean
+     */
     private boolean isStreetOnlyText(User user) {
         return user
                 .getAddress()
@@ -418,6 +547,12 @@ public class UserServiceImpl implements UserService {
                 .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
     }
 
+    /**
+     * Is first name only text boolean.
+     *
+     * @param user the user
+     * @return the boolean
+     */
     private boolean isFirstNameOnlyText(User user) {
         return user
                 .getName()
@@ -425,6 +560,12 @@ public class UserServiceImpl implements UserService {
                 .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
     }
 
+    /**
+     * Is last name only text boolean.
+     *
+     * @param user the user
+     * @return the boolean
+     */
     private boolean isLastNameOnlyText(User user) {
         return user
                 .getName()
@@ -432,6 +573,12 @@ public class UserServiceImpl implements UserService {
                 .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
     }
 
+    /**
+     * Is birthday before entry date and now boolean.
+     *
+     * @param user the user
+     * @return the boolean
+     */
     private boolean isBirthdayBeforeEntryDateAndNow(User user) {
         return user
                 .getBirthday()
@@ -440,6 +587,12 @@ public class UserServiceImpl implements UserService {
                 .isBefore(LocalDate.now());
     }
 
+    /**
+     * Is entry date before cancellation date boolean.
+     *
+     * @param user the user
+     * @return the boolean
+     */
     private boolean isEntryDateBeforeCancellationDate(User user) {
         if (user.getCancellationDate() == null) {
             return true;
