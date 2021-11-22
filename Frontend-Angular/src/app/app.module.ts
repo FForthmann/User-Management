@@ -31,6 +31,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ListViewComponent } from './components/list-view/list-view.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { PrintViewComponent } from './components/print-view/print-view.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { MatSortModule } from '@angular/material/sort';
     ConfirmationDialogComponent,
     PaymentsComponent,
     ListViewComponent,
+    PrintViewComponent,
   ],
   imports: [
     BrowserModule,

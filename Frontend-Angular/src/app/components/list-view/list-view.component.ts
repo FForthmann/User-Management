@@ -13,16 +13,17 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./list-view.component.scss'],
 })
 export class ListViewComponent {
-  /** @type {string} */
-  type?: string;
   /** @type{Column[]} */
   columns: Column[] = [];
   /** @type {string[]} */
   displayedColumns: string[] = [];
+  years: string[] = [];
   /** @type {MatTableDataSource<User|Payment>} */
   dataSource: MatTableDataSource<User | Payment> = new MatTableDataSource<User | Payment>();
   /** @type{string} */
   search: string = '';
+  selectedYear: string = '';
+  type?: string;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -33,6 +34,7 @@ export class ListViewComponent {
   }
   @Input() set setInput(input: User[] | Payment[]) {
     if (input != null) {
+      this.searchYears(input);
       this.dataSource = new MatTableDataSource<User | Payment>(input);
       this.dataSource.paginator = this.paginator;
 
@@ -106,6 +108,33 @@ export class ListViewComponent {
   clearFilter(): void {
     this.search = '';
     this.dataSource.filter = '';
+  }
+
+  /**
+   * Function to search for present years of Data. It pushes the years into the this.years array so the print-view
+   * can be used to only display a certain year.
+   *
+   * @author Luca Ulrich
+   * @param {User[] | Payment[]} data - Data will be passed from parent component
+   * @private
+   * @returns {void}
+   */
+  private searchYears(data: User[] | Payment[]): void {
+    this.years = []; // Reset Years to refill with data
+    if (this.type === 'User') {
+      (data as User[]).forEach((user: User) => {
+        const entryYear: string = user.entryDate.split('-')[0];
+        if (!this.years.includes(entryYear)) {
+          this.years.push(entryYear);
+        }
+      });
+    } else if (this.type == 'Payment') {
+      (data as Payment[]).forEach((payment: Payment) => {
+        if (!this.years.includes(String(payment.year))) {
+          this.years.push(String(payment.year));
+        }
+      });
+    }
   }
 
   /**
