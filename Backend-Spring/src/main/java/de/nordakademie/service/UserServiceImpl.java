@@ -268,11 +268,11 @@ public class UserServiceImpl implements UserService {
         if (a.isPresent()) {
             if (createUser.getFamilyId() != null) {
                 amountResult -= 3;
-            } else {
+            }
                 amountResult += a
                         .get()
                         .getAmount();
-            }
+
         }
         return amountResult;
     }
