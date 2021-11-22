@@ -143,6 +143,11 @@ public class PaymentsServiceImpl implements PaymentsService {
         return repository.existsUserInPaymentsForThisYear(userId, year);
     }
 
+    @Override
+    public long findPaymentsByUserId(long userId, long year) {
+        return repository.findPaymentsByUserId(userId,year);
+    }
+
     private boolean areBankAccountDetailsValid(Payments payments) {
 
         String bankAccountDetails = payments.getBankAccountDetails();

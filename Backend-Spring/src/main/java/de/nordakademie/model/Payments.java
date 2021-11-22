@@ -16,7 +16,8 @@ import javax.validation.constraints.NotNull;
 import de.nordakademie.util.ExceptionMessages;
 @NamedNativeQueries(value = {
         @NamedNativeQuery(name = "Payments.existsUserInPayments", query = "SELECT EXISTS (SELECT * FROM PAYMENTS WHERE USER_ID_USER_ID = :userId)"),
-        @NamedNativeQuery(name = "Payments.existsUserInPaymentsForThisYear", query = "SELECT EXISTS (SELECT * FROM PAYMENTS WHERE USER_ID_USER_ID = :userId AND YEAR = :year)")
+        @NamedNativeQuery(name = "Payments.existsUserInPaymentsForThisYear", query = "SELECT EXISTS (SELECT * FROM PAYMENTS WHERE USER_ID_USER_ID = :userId AND YEAR = :year)"),
+        @NamedNativeQuery(name = "Payments.findPaymentsByUserId", query = "SELECT INVOICE_NUMBER FROM PAYMENTS WHERE USER_ID_USER_ID = :userId AND YEAR = :year"),
 })
 @Table(name = "payments")
 @Entity(name = "Payments")

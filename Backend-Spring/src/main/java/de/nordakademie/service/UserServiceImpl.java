@@ -152,6 +152,18 @@ public class UserServiceImpl implements UserService {
         persistentUser
                 .get()
                 .setBankAccountDetails(updateUser.getBankAccountDetails());
+
+        updatePaymentsByUser(id,updateUser);
+    }
+
+    private void updatePaymentsByUser(long id, User updateUser) {
+        long invoiceNumber = paymentsService.findPaymentsByUserId(id, LocalDate.now().getYear());
+        Optional<Payments> payments = paymentsService.findPaymentsById(invoiceNumber);
+        if(payments.isPresent()){
+          payments.get().setBankAccountDetails(updateUser.getBankAccountDetails());
+            paymentsService.updatePayments(invoiceNumber, payments.get());
+        }
+
     }
 
     @Override
@@ -177,17 +189,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllUser() {
 
-        LocalDate lokalesDatum = LocalDate.now();
-        if (lokalesDatum
+        LocalDate localDate = LocalDate.now();
+        if (localDate
                 .getMonth()
-                .getValue() == 01 && lokalesDatum.getDayOfMonth() == 01) {
+                .getValue() == 01 && localDate.getDayOfMonth() == 01) {
             List<User> list = (List<User>) repository.findAll();
-            // Alle User gelöscht, die keine Mitglieder mehr sind
+            // All users deleted who are no longer members
             list
                     .stream()
                     .filter(user -> user.getLeavingDate() != null && user
                             .getLeavingDate()
-                            .isEqual(lokalesDatum))
+                            .isEqual(localDate))
                     .forEach(user -> deleteUserById(user.getUserId()));
 
             List<User> listMitMitgliedern = (List<User>) repository.findAll();
@@ -199,7 +211,7 @@ public class UserServiceImpl implements UserService {
                     updateUser(user.getUserId(), user);
                 }
                 // check if there is a payment for this year for this user
-                if (!paymentsService.existsUserInPaymentsForThisYear(user.getUserId(), lokalesDatum.getYear())) {
+                if (!paymentsService.existsUserInPaymentsForThisYear(user.getUserId(), localDate.getYear())) {
                     if (user
                             .getMemberType()
                             .getDescription()

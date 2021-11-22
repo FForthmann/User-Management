@@ -8,6 +8,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import de.nordakademie.model.Payments;
+
+import java.util.Optional;
+
 @Repository
 public interface PaymentsRepository extends CrudRepository<Payments, Long> {
     boolean existsUserInPayments(
@@ -18,4 +21,8 @@ public interface PaymentsRepository extends CrudRepository<Payments, Long> {
     void updateUserIdToNull(long userId);
 
     boolean existsUserInPaymentsForThisYear(@Param("userId") long userId, @Param("year") long year);
+
+
+
+    long findPaymentsByUserId(@Param("userId") long userId, @Param("year") long year);
 }
