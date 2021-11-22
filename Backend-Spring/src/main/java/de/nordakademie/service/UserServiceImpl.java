@@ -194,16 +194,17 @@ public class UserServiceImpl implements UserService {
         LocalDate localDate = LocalDate.now();
         if (localDate
                 .getMonth()
-                .getValue() == 01 && localDate.getDayOfMonth() == 01) {
+                .getValue() == 12 && localDate.getDayOfMonth() == 31){
             List<User> list = (List<User>) repository.findAll();
             // All users deleted who are no longer members
-            list
-                    .stream()
-                    .filter(user -> user.getLeavingDate() != null && user
+            list.stream().filter(user -> user.getLeavingDate() != null && user
                             .getLeavingDate()
                             .isEqual(localDate))
                     .forEach(user -> deleteUserById(user.getUserId()));
-
+        }
+        if (localDate
+                .getMonth()
+                .getValue() == 01 && localDate.getDayOfMonth() == 01) {
             List<User> listMitMitgliedern = (List<User>) repository.findAll();
             for ( User user :
                     listMitMitgliedern ) {
@@ -307,8 +308,7 @@ public class UserServiceImpl implements UserService {
         if (updateUser.getCancellationDate() != null) {
             LocalDate regularLeavingDate = LocalDate.of(updateUser
                                                                 .getCancellationDate()
-                                                                .plusYears(1)
-                                                                .getYear(), 1, 1);
+                                                                .getYear(), 12, 31);
             if (updateUser
                     .getCancellationDate()
                     .plusMonths(3)
@@ -328,8 +328,7 @@ public class UserServiceImpl implements UserService {
         if (createUser.getCancellationDate() != null) {
             LocalDate regularLeavingDate = LocalDate.of(createUser
                                                                 .getCancellationDate()
-                                                                .plusYears(1)
-                                                                .getYear(), 1, 1);
+                                                                .getYear(), 12, 31);
             if (createUser
                     .getCancellationDate()
                     .plusMonths(3)
