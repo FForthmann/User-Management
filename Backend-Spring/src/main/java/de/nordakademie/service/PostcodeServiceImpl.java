@@ -1,29 +1,48 @@
 package de.nordakademie.service;
 
+import java.util.List;
+import java.util.Optional;
+import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+import org.springframework.stereotype.Service;
 import de.nordakademie.model.Postcode;
 import de.nordakademie.repository.PostcodeRepository;
 import de.nordakademie.util.ApiMessages;
 import de.nordakademie.util.ExceptionMessages;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
-
+/**
+ * The postcode service. Implements logic for processing postcodes.
+ *
+ * @author Ridvan Cetin, Fabian Forthmann
+ */
 @Service
 @Transactional
 public class PostcodeServiceImpl implements PostcodeService {
+    /**
+     * The repository to process postcode database interactions.
+     */
     private PostcodeRepository repository;
 
+    /**
+     * The User service.
+     */
     private UserService userService;
 
+    /**
+     * Sets user service.
+     *
+     * @param userService the user service
+     */
     @Inject
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Sets repository.
+     *
+     * @param repository the repository
+     */
     @Inject
     public void setRepository(PostcodeRepository repository) {
         this.repository = repository;
@@ -71,6 +90,16 @@ public class PostcodeServiceImpl implements PostcodeService {
         return repository.findById(postcodeId);
     }
 
+    @Override
+    public boolean existsById(Long postcode) {
+        return repository.existsById(postcode);
+    }
+
+    /**
+     * Validate input postcode for update and insert.
+     *
+     * @param postcode the postcode to validate
+     */
     private void validateInputPostcodeForUpdateAndInsert(final Postcode postcode) {
         if (!hasPostalCodeFiveDigits(postcode)) {
             throw new IllegalArgumentException(ExceptionMessages.USER_POSTCODE_NOT_FIVE_DIGITS);
@@ -81,17 +110,28 @@ public class PostcodeServiceImpl implements PostcodeService {
         }
     }
 
+    /**
+     * Checks if the location only contains text.
+     *
+     * @param postcode the postcode on which the location has to be checked
+     * @return if the location only contains text
+     */
     private boolean isLocationOnlyText(Postcode postcode) {
         return postcode
                 .getLocation()
                 .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
     }
 
+    /**
+     * Checks if the postcode consists of five digits.
+     *
+     * @param postcode the postcode to be checked
+     * @return if the postcode consists of five digits
+     */
     private boolean hasPostalCodeFiveDigits(Postcode postcode) {
         Long postcodeNumber = postcode.getPostcode();
         return postcodeNumber
                 .toString()
                 .length() == 5;
     }
-
 }

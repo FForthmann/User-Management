@@ -2,16 +2,38 @@ package de.nordakademie.exceptions;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * Exception class for failed reading attempts.
+ *
+ * @author Ridvan Cetin, Fabian Forthmann
+ */
 public class ReadFailedException extends Exception {
+    /**
+     * The error message.
+     */
     private final String message;
 
+    /**
+     * The HTTP status of the error.
+     */
     private final HttpStatus httpStatus;
 
+    /**
+     * Instantiates a new ReadFailed exception.
+     *
+     * @param message    the error message
+     * @param httpStatus the HTTP status of the error
+     */
     public ReadFailedException(final String message, final HttpStatus httpStatus) {
         this.message = message;
         this.httpStatus = httpStatus;
     }
 
+    /**
+     * Gets the HTTP status.
+     *
+     * @return the HTTP status of the error
+     */
     public HttpStatus getHttpStatus() {
         return httpStatus;
     }
