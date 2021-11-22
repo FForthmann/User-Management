@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
- * The datamodel for type Member type.
+ * The datamodel for type Membertype.
  *
  * @author Ridvan Cetin & Fabian Forthmann
  */
@@ -33,7 +33,7 @@ public class MemberType {
     private Double amount;
 
     /**
-     * Instantiates a new Member type.
+     * Constructor instantiates a new Member type with parameters for hibernate.
      *
      * @param description the description
      * @param amount      the amount
@@ -44,7 +44,7 @@ public class MemberType {
     }
 
     /**
-     * Instantiates a new Member type.
+     * Regular constructor instantiates a new Member type.
      */
     public MemberType() {
 

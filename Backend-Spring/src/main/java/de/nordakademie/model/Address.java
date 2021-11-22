@@ -1,15 +1,12 @@
 package de.nordakademie.model;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import de.nordakademie.util.ExceptionMessages;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-
-
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import de.nordakademie.util.ExceptionMessages;
 /**
  * The datamodel for type Address.
  *
@@ -17,7 +14,6 @@ import javax.validation.constraints.NotNull;
  */
 @Embeddable
 public class Address {
-
     /**
      * The Street.
      */
@@ -41,7 +37,7 @@ public class Address {
     private Postcode postalCode;
 
     /**
-     * Instantiates a new Address.
+     * Constructor instantiates a new Address with parameters for hibernate.
      *
      * @param street      the street
      * @param houseNumber the house number
@@ -54,7 +50,7 @@ public class Address {
     }
 
     /**
-     * Instantiates a new Address.
+     * Regular constructor instantiates a new Address.
      */
     public Address() {
 

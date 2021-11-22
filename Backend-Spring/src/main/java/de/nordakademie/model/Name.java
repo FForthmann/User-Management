@@ -30,7 +30,7 @@ public class Name {
     private String lastName;
 
     /**
-     * Instantiates a new Name.
+     * Constructor instantiates a new Name with parameters for hibernate.
      *
      * @param firstName  the first name
      * @param secondName the second name
@@ -41,7 +41,7 @@ public class Name {
     }
 
     /**
-     * Instantiates a new Name.
+     * Regular constructor instantiates a new Name.
      */
     public Name() {
     }

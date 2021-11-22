@@ -1,15 +1,13 @@
 package de.nordakademie.model;
 
-import de.nordakademie.util.ExceptionMessages;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
+import de.nordakademie.util.ExceptionMessages;
 /**
- * The datamodel type Postcode.
+ * The datamodel for type Postcode.
  *
  * @author Ridvan Cetin & Fabian Forthmann
  */
@@ -31,8 +29,7 @@ public class Postcode {
     private String location;
 
     /**
-     * Instantiates a new Postcode.
-     *
+     * Constructor instantiates a new Postcode with parameters for hibernate.
      * @param postcode the postcode
      * @param location the location
      */
@@ -42,7 +39,7 @@ public class Postcode {
     }
 
     /**
-     * Instantiates a new Postcode.
+     * Regular constructor instantiates a new Postcode.
      */
     public Postcode() {
     }

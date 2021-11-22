@@ -1,14 +1,23 @@
 package de.nordakademie.model;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import de.nordakademie.util.ExceptionMessages;
-
-import javax.persistence.*;
+import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import de.nordakademie.util.ExceptionMessages;
 /**
  * The datamodel for type User.
  *
@@ -114,7 +123,7 @@ public class User {
     private Double actualAmount;
 
     /**
-     * Instantiates a new User.
+     * Constructor instantiates a new User with parameters for hibernate.
      *
      * @param userId             the user id
      * @param name               the name
@@ -153,7 +162,7 @@ public class User {
     }
 
     /**
-     * Instantiates a new User.
+     * Regular constructor instantiates a new User.
      */
     public User() {
     }
