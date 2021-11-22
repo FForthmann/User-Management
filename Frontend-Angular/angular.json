@@ -20,6 +20,16 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "rxjs-compat",
+              "jspdf",
+              "jspdf-autotable",
+              "lodash",
+              "raf",
+              "core-js",
+              "raf",
+              "xlsx"
+            ],
             "outputPath": "dist/Frontend-Angular",
             "index": "src/index.html",
             "main": "src/main.ts",

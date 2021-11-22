@@ -9,5 +9,6 @@ import { User } from './user';
 export interface Column {
   columnDef: string;
   header: string;
+
   cell(arg0: User | Payment): string;
 }

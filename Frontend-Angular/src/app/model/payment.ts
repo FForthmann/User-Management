@@ -6,8 +6,8 @@
  */
 export interface Payment {
   invoiceNumber: number;
-  amount: number,
-  countStatus: boolean,
+  amount: number;
+  countStatus: boolean;
   year: number;
   bankAccountDetails: number;
   userId: {

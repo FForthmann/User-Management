@@ -51,7 +51,9 @@ export class UserService {
    *
    */
   saveUser(saveUser: User): Observable<User> {
-    return this.http.post<User>('/rest/user', saveUser).pipe(retry(1), catchError(this.errorHandler.handleError));
+    return this.http
+      .post<User>('/rest/user', saveUser)
+      .pipe(retry(1), catchError(this.errorHandler.handleError));
   }
 
   /**
@@ -79,6 +81,8 @@ export class UserService {
    *
    */
   deleteUser(userId: number): Observable<void> {
-    return this.http.delete<void>(`/rest/user/${userId}`).pipe(retry(1), catchError(this.errorHandler.handleError));
+    return this.http
+      .delete<void>(`/rest/user/${userId}`)
+      .pipe(retry(1), catchError(this.errorHandler.handleError));
   }
 }

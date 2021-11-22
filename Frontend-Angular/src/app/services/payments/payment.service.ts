@@ -25,7 +25,9 @@ export class PaymentService {
    * @returns {Observable<Payment[]>} - Observable with an Array of Payments
    */
   getPayments(): Observable<Payment[]> {
-    return this.http.get<Payment[]>('/rest/payments').pipe(retry(1), catchError(this.errorHandler.handleError));
+    return this.http
+      .get<Payment[]>('/rest/payments')
+      .pipe(retry(1), catchError(this.errorHandler.handleError));
   }
 
   /**
@@ -37,7 +39,9 @@ export class PaymentService {
    * @returns {Observable<Payment[]>} - Observable with a single Object of Payments
    */
   getPayment(id: number): Observable<Payment> {
-    return this.http.get<Payment>(`/rest/payments/${id}`).pipe(retry(1), catchError(this.errorHandler.handleError));
+    return this.http
+      .get<Payment>(`/rest/payments/${id}`)
+      .pipe(retry(1), catchError(this.errorHandler.handleError));
   }
 
   /**

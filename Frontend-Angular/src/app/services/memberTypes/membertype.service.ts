@@ -25,7 +25,9 @@ export class MembertypeService {
    * @returns {Observable<MemberType[]>} - Observable<Array> with all MemberType Objects
    */
   getMemberTypes(): Observable<MemberType[]> {
-    return this.http.get<MemberType[]>(`/rest/memberType`).pipe(retry(1), catchError(this.errorHandler.handleError));
+    return this.http
+      .get<MemberType[]>(`/rest/memberType`)
+      .pipe(retry(1), catchError(this.errorHandler.handleError));
   }
 
   /**

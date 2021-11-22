@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Payment } from '../../model/payment';
 import { User } from '../../model/user';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -70,7 +70,9 @@ export class PrintViewComponent {
       buildUserData.push(tempData);
     });
     this.doc.autoTable({
-      head: [['MitgliedsID', 'Name', 'Nachname', 'Bankverbindung', 'Eintrittsdatum', 'Mitgliedsart', 'Beitrag']],
+      head: [
+        ['MitgliedsID', 'Name', 'Nachname', 'Bankverbindung', 'Eintrittsdatum', 'Mitgliedsart', 'Beitrag'],
+      ],
       body: buildUserData,
     });
     this.doc.save(`jahresabschluss_mitglieder_${this.year}.pdf`);
@@ -104,7 +106,8 @@ export class PrintViewComponent {
   }
 
   /**
-   * Function to get the Data from the Services. It checks whether the active route is /users/print or /payments/print.
+   * Function to get the Data from the Services.
+   * It checks whether the active route is /users/print or /payments/print.
    * If a year is passed as a parameter in the URL, only the data matching the URL will be processed.
    *
    * @author Luca Ulrich
