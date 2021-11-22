@@ -1,50 +1,49 @@
 package de.nordakademie.service;
 
-import de.nordakademie.model.User;
-
 import java.util.List;
 import java.util.Optional;
-
+import de.nordakademie.model.User;
 /**
- * The interface User service.
+ * The interface for user service.
+ *
+ * @author Ridvan Cetin, Fabian Forthmann
  */
 public interface UserService {
     /**
-     * Create user.
+     * Creates user.
      *
-     * @param user the user
-     * @return the user
+     * @param user the user to be create
+     * @return the created user
      */
     User createUser(User user);
 
     /**
-     * Update user.
+     * Updates user.
      *
-     * @param id   the id
-     * @param user the user
+     * @param id the id of the user to be updated
+     * @param user the user object which will be updating the current user
      */
     void updateUser(Long id, User user);
 
     /**
-     * Delete user by id.
+     * Deletes user by id.
      *
-     * @param userId the user id
+     * @param userId the id of the user who will be deleted
      */
     void deleteUserById(long userId);
 
     /**
-     * Find all user list.
+     * Find all users.
      *
-     * @return the list
+     * @return all users as a list
      */
     List<User> findAllUser();
 
     /**
-     * Find user by id optional.
+     * Finds user by id.
      *
      * @param userId the user id
-     * @return the optional
+     * @return the user object which was searched for
      */
     Optional<User> findUserById(Long userId);
-
 }

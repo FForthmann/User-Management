@@ -68,7 +68,7 @@ public class PaymentsController {
             @PathVariable("id")
                     Long id) throws ReadFailedException {
         try {
-            return service.findPaymentsById(id);
+            return service.findPaymentById(id);
         } catch ( EntityNotFoundException ex ) {
             ex.printStackTrace();
             throw new ReadFailedException(ExceptionMessages.PAYMENT_READ_FAILED, HttpStatus.NOT_FOUND);
@@ -90,7 +90,7 @@ public class PaymentsController {
         try {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(service.createPayments(payment));
+                    .body(service.createPayment(payment));
         } catch ( IllegalArgumentException ex ) {
             ex.printStackTrace();
             throw new CreateFailedException(ExceptionMessages.PAYMENT_CREATION_FAILED, HttpStatus.BAD_REQUEST);
@@ -109,7 +109,7 @@ public class PaymentsController {
             @PathVariable("id")
                     Long accountId) throws DeleteFailedException {
         try {
-            service.deletePaymentsById(accountId);
+            service.deletePaymentById(accountId);
             return ResponseEntity
                     .ok()
                     .build();
@@ -137,7 +137,7 @@ public class PaymentsController {
             @RequestBody
                     Payments payment) throws UpdateFailedException {
         try {
-            service.updatePayments(id, payment);
+            service.updatePayment(id, payment);
             return ResponseEntity
                     .ok()
                     .build();

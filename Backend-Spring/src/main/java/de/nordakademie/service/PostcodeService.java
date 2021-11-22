@@ -1,53 +1,51 @@
 package de.nordakademie.service;
 
-import de.nordakademie.model.Postcode;
-
 import java.util.List;
 import java.util.Optional;
-
+import de.nordakademie.model.Postcode;
 /**
- * The interface Postcode service.
+ * The interface for postcode service.
+ *
+ * @author Ridvan Cetin, Fabian Forthmann
  */
 public interface PostcodeService {
     /**
-     * Create postcode.
+     * Creates postcode.
      *
      * @param postcode the postcode
-     * @return the postcode
+     * @return the created postcode
      */
     Postcode createPostcode(Postcode postcode);
 
     /**
-     * Delete postcode by id.
+     * Deletes postcode by its five-digit identifier.
      *
-     * @param postcodeId the postcode id
+     * @param postcodeId the postcode fixe-digit identifier
      */
     void deletePostcodeById(Long postcodeId);
 
     /**
      * Update postcode.
      *
-     * @param id       the id
+     * @param id       the postcode fixe-digit identifier
      * @param postcode the postcode
      */
     void updatePostcode(Long id, Postcode postcode);
 
     /**
-     * Find all postcodes list.
+     * Finds all postcodes.
      *
-     * @return the list
+     * @return all postcodes as a list
      */
     List<Postcode> findAllPostcodes();
 
     /**
-     * Find postcode by id optional.
+     * Finds postcode by id.
      *
-     * @param userId the user id
-     * @return the optional
+     * @param postcode the five-digit identifier of postcode
+     * @return the postcode
      */
     Optional<Postcode> findPostcodeById(Long postcode);
 
-
     boolean existsById(Long postcode);
-
 }

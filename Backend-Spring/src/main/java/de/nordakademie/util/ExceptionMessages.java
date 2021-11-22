@@ -283,6 +283,32 @@ public final class ExceptionMessages {
     public static final String IBAN_NOT_VALID = "Das Feld 'IBAN' darf nur aus 22 Zeichen bestehen: zwei Buchstaben am Anfang und 20 Zahlen.";
 
     /**
+     * The constant CYCLIC_FAMILY_ID_REFERENCE.
+     */
+    public static final String CYCLIC_FAMILY_ID_REFERENCE = "Der Benutzer kann nicht auf sich selber als Familienmitglied verweisen.";
+
+    /**
+     * The constant YOUTH_ACCOUNT_MEMBER_IS_ADULT.
+     */
+    public static final String YOUTH_ACCOUNT_MEMBER_IS_ADULT = "Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.";
+
+    /**
+     * The constant YOUTH_VALID_MEMBER_TYPES.
+     */
+    public static final String YOUTH_VALID_MEMBER_TYPES =
+            "Der Benutzer ist jünger als 18. Deshalb kann nur ein Fördermitglied und Jugendkonto erstellt werden.";
+
+    /**
+     * The constant CHANGE_SAME_MEMBERTYPE.
+     */
+    public static final String CHANGE_SAME_MEMBERTYPE = "Die Mitgliedsart kann nicht auf die gleiche Mitgliedsart gewechselt werden.";
+
+    /**
+     * The constant FAMILY_MEMBER_DOES_NOT_EXIST.
+     */
+    public static final String FAMILY_MEMBER_DOES_NOT_EXIST = "Der Familienangehörige existiert nicht.";
+
+    /**
      * Constructor to hide the public one.
      */
     private ExceptionMessages() {

@@ -1,25 +1,25 @@
 package de.nordakademie.service;
 
+import java.util.List;
+import java.util.Optional;
+import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+import org.springframework.stereotype.Service;
 import de.nordakademie.model.Postcode;
 import de.nordakademie.repository.PostcodeRepository;
 import de.nordakademie.util.ApiMessages;
 import de.nordakademie.util.ExceptionMessages;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
-
 /**
- * The type Postcode service.
+ * The postcode service. Implements logic for processing postcodes.
+ *
+ * @author Ridvan Cetin, Fabian Forthmann
  */
 @Service
 @Transactional
 public class PostcodeServiceImpl implements PostcodeService {
     /**
-     * The Repository.
+     * The repository to process postcode database interactions.
      */
     private PostcodeRepository repository;
 
@@ -98,7 +98,7 @@ public class PostcodeServiceImpl implements PostcodeService {
     /**
      * Validate input postcode for update and insert.
      *
-     * @param postcode the postcode
+     * @param postcode the postcode to validate
      */
     private void validateInputPostcodeForUpdateAndInsert(final Postcode postcode) {
         if (!hasPostalCodeFiveDigits(postcode)) {
@@ -111,10 +111,10 @@ public class PostcodeServiceImpl implements PostcodeService {
     }
 
     /**
-     * Is location only text.
+     * Checks if the location only contains text.
      *
-     * @param postcode the postcode
-     * @return the boolean
+     * @param postcode the postcode on which the location has to be checked
+     * @return if the location only contains text
      */
     private boolean isLocationOnlyText(Postcode postcode) {
         return postcode
@@ -123,10 +123,10 @@ public class PostcodeServiceImpl implements PostcodeService {
     }
 
     /**
-     * Has postal code five digits.
+     * Checks if the postcode consists of five digits.
      *
-     * @param postcode the postcode
-     * @return the boolean
+     * @param postcode the postcode to be checked
+     * @return if the postcode consists of five digits
      */
     private boolean hasPostalCodeFiveDigits(Postcode postcode) {
         Long postcodeNumber = postcode.getPostcode();
@@ -134,5 +134,4 @@ public class PostcodeServiceImpl implements PostcodeService {
                 .toString()
                 .length() == 5;
     }
-
 }

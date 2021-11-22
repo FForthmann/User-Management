@@ -1,35 +1,35 @@
 package de.nordakademie.service;
 
+import java.util.List;
+import java.util.Optional;
+import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+import org.springframework.stereotype.Service;
 import de.nordakademie.model.Payments;
 import de.nordakademie.repository.PaymentsRepository;
 import de.nordakademie.util.ApiMessages;
 import de.nordakademie.util.ExceptionMessages;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
-
 /**
- * Payments Service Implementation
+ * The payments service. Implements logic for processing payments.
+ *
+ * @author Ridvan Cetin, Fabian Forthmann
  */
 @Service
 @Transactional
 public class PaymentsServiceImpl implements PaymentsService {
     /**
-     * The Repository.
+     * The repository to process payments interactions.
      */
     private PaymentsRepository repository;
 
     /**
-     * The User service.
+     * The user service for processing user connected requests.
      */
     private UserService userService;
 
     /**
-     * Set the User Service
+     * Set the user Service
      *
      * @param userService new {@Link UserService}
      */
@@ -48,72 +48,57 @@ public class PaymentsServiceImpl implements PaymentsService {
         this.repository = repository;
     }
 
-    /**
-     * @param payments Payments object to be added
-     * @return Payments Object
-     */
     @Override
-    public Payments createPayments(Payments payments) {
+    public Payments createPayment(Payments payment) {
 
-        if (!areBankAccountDetailsValid(payments)) {
+        if (!areBankAccountDetailsValid(payment)) {
             throw new IllegalArgumentException(ExceptionMessages.IBAN_NOT_VALID);
         }
 
-        // Check if User exists in DB
-        if (payments.getUserId() == null || !existsUserInDB(payments)) {
+        // Check if User exists in database
+        if (payment.getUserId() == null || !existsUserInDB(payment)) {
             throw new IllegalArgumentException(ApiMessages.USER_NOT_IN_DB);
         }
 
-        return repository.save(payments);
+        return repository.save(payment);
     }
 
-    /**
-     * Delete Payments in DB
-     *
-     * @param paymentsId Id from Payments
-     */
     @Override
-    public void deletePaymentsById(Long paymentsId) {
+    public void deletePaymentById(Long paymentsId) {
 
         repository.deleteById(paymentsId);
     }
 
-    /**
-     * Update Payments
-     *
-     * @param id       ID from Payments
-     * @param payments Payments Object to be updated
-     */
     @Override
-    public void updatePayments(Long id, Payments payments) {
+    public void updatePayment(Long id, Payments payment) {
 
-        if (!areBankAccountDetailsValid(payments)) {
+        if (!areBankAccountDetailsValid(payment)) {
             throw new IllegalArgumentException(ExceptionMessages.IBAN_NOT_VALID);
         }
 
+        // Database entity
         Optional<Payments> accountPersistent = repository.findById(id);
         if (!accountPersistent.isPresent()) {
             throw new EntityNotFoundException(ApiMessages.ENTITY_NOT_EXISTS);
         }
 
-        // Update Payments in DB
+        // Update payments in database
         accountPersistent
                 .get()
-                .setAmount(payments.getAmount());
+                .setAmount(payment.getAmount());
         accountPersistent
                 .get()
-                .setCountStatus(payments.getCountStatus());
+                .setCountStatus(payment.getCountStatus());
         accountPersistent
                 .get()
-                .setYear(payments.getYear());
+                .setYear(payment.getYear());
         accountPersistent
                 .get()
-                .setUserId(payments.getUserId());
+                .setUserId(payment.getUserId());
         accountPersistent
                 .get()
-                .setBankAccountDetails(payments.getBankAccountDetails());
+                .setBankAccountDetails(payment.getBankAccountDetails());
     }
-
 
     @Override
     public List<Payments> findAllPayments() {
@@ -121,7 +106,7 @@ public class PaymentsServiceImpl implements PaymentsService {
     }
 
     @Override
-    public Optional<Payments> findPaymentsById(Long paymentsId) {
+    public Optional<Payments> findPaymentById(Long paymentsId) {
         return repository.findById(paymentsId);
     }
 
@@ -137,7 +122,7 @@ public class PaymentsServiceImpl implements PaymentsService {
     }
 
     @Override
-    public Long findPaymentsByUserId(long userId, long year) {
+    public Long findPaymentByUserId(long userId, long year) {
         return repository.findPaymentsByUserId(userId, year);
     }
 
@@ -147,14 +132,14 @@ public class PaymentsServiceImpl implements PaymentsService {
     }
 
     /**
-     * Are bank account details valid.
+     * Checks if bank account details are valid.
      *
-     * @param payments the payments
-     * @return the boolean
+     * @param payment payment which has to be validated
+     * @return if the bank account details are valid
      */
-    private boolean areBankAccountDetailsValid(Payments payments) {
+    private boolean areBankAccountDetailsValid(Payments payment) {
 
-        String bankAccountDetails = payments.getBankAccountDetails();
+        String bankAccountDetails = payment.getBankAccountDetails();
 
         String[] array = bankAccountDetails.split("");
         if (array.length != 22) {
@@ -167,7 +152,7 @@ public class PaymentsServiceImpl implements PaymentsService {
                 .allMatch(Character::isLetter)) {
             return false;
         } else {
-            for (int i = 2; i < array.length; i++) {
+            for ( int i = 2; i < array.length; i++ ) {
                 if (!array[i].matches("[0-9]")) {
                     return false;
                 }
@@ -177,17 +162,16 @@ public class PaymentsServiceImpl implements PaymentsService {
     }
 
     /**
-     * Check if User exists in DB
+     * Checks if user exists in database
      *
-     * @param payments Payments Object
-     * @return Boolean -Value if User exists in DB
+     * @param payment payment which has to be validated
+     * @return if the user exists in the payments database
      */
-    private boolean existsUserInDB(Payments payments) {
+    private boolean existsUserInDB(Payments payment) {
         return this.userService
-                .findUserById(payments
-                        .getUserId()
-                        .getUserId())
+                .findUserById(payment
+                                      .getUserId()
+                                      .getUserId())
                 .isPresent();
     }
-
 }

@@ -1,62 +1,57 @@
 package de.nordakademie.service;
 
-import de.nordakademie.model.MemberType;
-import de.nordakademie.model.Payments;
-import de.nordakademie.model.User;
-import de.nordakademie.repository.MemberTypeRepository;
-import de.nordakademie.repository.PaymentsRepository;
-import de.nordakademie.repository.PostcodeRepository;
-import de.nordakademie.repository.UserRepository;
-import de.nordakademie.util.ApiMessages;
-import de.nordakademie.util.ExceptionMessages;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.Optional;
-
+import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+import org.springframework.stereotype.Service;
+import de.nordakademie.model.MemberType;
+import de.nordakademie.model.Payments;
+import de.nordakademie.model.User;
+import de.nordakademie.repository.UserRepository;
+import de.nordakademie.util.ApiMessages;
+import de.nordakademie.util.ExceptionMessages;
+import de.nordakademie.util.MemberTypes;
 /**
- * The type User service.
+ * The user service. Implements logic for processing user types.
+ *
+ * @author Ridvan Cetin, Fabian Forthmann
  */
 @Service
 @Transactional(rollbackOn = Exception.class)
 public class UserServiceImpl implements UserService {
     /**
-     * The Repository.
+     * The repository to process user database interactions.
      */
     private UserRepository repository;
 
     /**
-     * The Payments service.
+     * The payments service for processing payment connected requests.
      */
     private PaymentsService paymentsService;
 
     /**
-     * The Member type service.
+     * The member type service for processing member type connected requests.
      */
     private MemberTypeService memberTypeService;
 
     /**
-     * The Postcode service.
+     * The postcode service for processing postcode connected requests.
      */
     private PostcodeService postcodeService;
 
-
-
     /**
-     * Sets repository.
+     * Sets user repository.
      *
-     * @param repository the repository
+     * @param repository the user repository
      */
     @Inject
     public void setRepository(UserRepository repository) {
         this.repository = repository;
     }
-
 
     @Override
     public User createUser(User createUser) {
@@ -75,8 +70,8 @@ public class UserServiceImpl implements UserService {
         // If Postal Code doesn't exist in DB, here it will be created
         if (!existsPostalCodeInDB(createUser)) {
             this.postcodeService.createPostcode(createUser
-                    .getAddress()
-                    .getPostalCode());
+                                                        .getAddress()
+                                                        .getPostalCode());
         }
 
         // Evaluate ActualAmount
@@ -121,14 +116,14 @@ public class UserServiceImpl implements UserService {
                 .get()
                 .getName()
                 .setFirstName(updateUser
-                        .getName()
-                        .getFirstName());
+                                      .getName()
+                                      .getFirstName());
         persistentUser
                 .get()
                 .getAddress()
                 .setHouseNumber(updateUser
-                        .getAddress()
-                        .getHouseNumber());
+                                        .getAddress()
+                                        .getHouseNumber());
         persistentUser
                 .get()
                 .setMemberType(updateUser.getMemberType());
@@ -136,29 +131,36 @@ public class UserServiceImpl implements UserService {
                 .get()
                 .getAddress()
                 .setPostalCode(updateUser
-                        .getAddress()
-                        .getPostalCode());
+                                       .getAddress()
+                                       .getPostalCode());
         persistentUser
                 .get()
                 .getName()
                 .setLastName(updateUser
-                        .getName()
-                        .getLastName());
+                                     .getName()
+                                     .getLastName());
         persistentUser
                 .get()
                 .getAddress()
                 .setStreet(updateUser
-                        .getAddress()
-                        .getStreet());
+                                   .getAddress()
+                                   .getStreet());
         persistentUser
                 .get()
                 .setMemberTypeChange(updateUser.getMemberTypeChange());
         persistentUser
                 .get()
                 .setBankAccountDetails(updateUser.getBankAccountDetails());
-        persistentUser.get().setActualAmount(evaluateAmountForUser(updateUser));
+        persistentUser
+                .get()
+                .setActualAmount(evaluateAmountForUser(updateUser));
 
-        this.postcodeService.updatePostcode(updateUser.getAddress().getPostalCode().getPostcode(), updateUser.getAddress().getPostalCode());
+        this.postcodeService.updatePostcode(updateUser
+                                                    .getAddress()
+                                                    .getPostalCode()
+                                                    .getPostcode(), updateUser
+                                                    .getAddress()
+                                                    .getPostalCode());
 
         updatePaymentsByUser(id, updateUser);
     }
@@ -192,7 +194,9 @@ public class UserServiceImpl implements UserService {
                 .getValue() == 12 && localDate.getDayOfMonth() == 31) {
             List<User> list = (List<User>) repository.findAll();
             // All users deleted who are no longer members
-            list.stream().filter(user -> user.getLeavingDate() != null && user
+            list
+                    .stream()
+                    .filter(user -> user.getLeavingDate() != null && user
                             .getLeavingDate()
                             .isEqual(localDate))
                     .forEach(user -> deleteUserById(user.getUserId()));
@@ -201,8 +205,8 @@ public class UserServiceImpl implements UserService {
                 .getMonth()
                 .getValue() == 1 && localDate.getDayOfMonth() == 1) {
             List<User> listMitMitgliedern = (List<User>) repository.findAll();
-            for (User user :
-                    listMitMitgliedern) {
+            for ( User user :
+                    listMitMitgliedern ) {
                 if (user.getMemberTypeChange() != null) {
                     user.setMemberType(user.getMemberTypeChange());
                     user.setMemberTypeChange(null);
@@ -223,9 +227,12 @@ public class UserServiceImpl implements UserService {
         }
 
         List<User> list = (List<User>) repository.findAll();
-        for (User user :
-                list) {
-            if (user.getMemberType().getDescription().equals("Jugendlich") && !checkUserUnderEighteen(user)) {
+        for ( User user :
+                list ) {
+            if (user
+                    .getMemberType()
+                    .getDescription()
+                    .equals("Jugendlich") && !checkUserUnderEighteen(user)) {
                 Optional<MemberType> memberType = memberTypeService.findMemberTypeById("Vollmitglied");
                 if (memberType.isPresent()) {
                     user.setMemberType(memberType.get());
@@ -273,62 +280,68 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Check user is family user.
+     * Checks if the user references himself as a familymember
      *
-     * @param id        the id
-     * @param savedUser the saved user
+     * @param id the user id
+     * @param savedUser the saved user whos family id will be checked
      */
     private void checkUserIsFamilyUser(long id, User savedUser) {
-        if (savedUser.getFamilyId() != null && id == savedUser.getFamilyId().getUserId()) {
-            throw new IllegalArgumentException("Der Benutzer kann nicht auf sich selber als Familienmitglied referenzieren.");
+        if (savedUser.getFamilyId() != null && id == savedUser
+                .getFamilyId()
+                .getUserId()) {
+            throw new IllegalArgumentException(ExceptionMessages.CYCLIC_FAMILY_ID_REFERENCE);
         }
     }
 
     /**
-     * Update payments by user.
+     * Updates bank account details in payments when they are edited in the user.
      *
-     * @param id         the id
-     * @param updateUser the update user
+     * @param id the user id for which payments are searched
+     * @param updateUser the updated user from whom the bank account details will be copied
      */
     private void updatePaymentsByUser(long id, User updateUser) {
-        Long invoiceNumber = paymentsService.findPaymentsByUserId(id, LocalDate.now().getYear());
+        Long invoiceNumber = paymentsService.findPaymentByUserId(id, LocalDate
+                .now()
+                .getYear());
         if (invoiceNumber != null) {
-            Optional<Payments> payments = paymentsService.findPaymentsById(invoiceNumber);
+            Optional<Payments> payments = paymentsService.findPaymentById(invoiceNumber);
             if (payments.isPresent()) {
-                payments.get().setBankAccountDetails(updateUser.getBankAccountDetails());
-                paymentsService.updatePayments(invoiceNumber, payments.get());
+                payments
+                        .get()
+                        .setBankAccountDetails(updateUser.getBankAccountDetails());
+                paymentsService.updatePayment(invoiceNumber, payments.get());
             }
         }
     }
 
     /**
-     * Create payment by user.
+     * Creates payment by user.
      *
-     * @param savedUser the saved user
+     * @param savedUser the user on whom the payment will be created
      */
     private void createPaymentByUser(User savedUser) {
         Payments payments = new Payments();
         payments.setBankAccountDetails(savedUser.getBankAccountDetails());
         payments.setUserId(savedUser);
         payments.setYear(LocalDate
-                .now()
-                .getYear());
+                                 .now()
+                                 .getYear());
         payments.setCountStatus(Boolean.FALSE);
         payments.setAmount(evaluateAmountForUser(savedUser));
-        paymentsService.createPayments(payments);
+        paymentsService.createPayment(payments);
     }
 
     /**
-     * Evaluate amount for user double.
+     * Calculates the individual amount for a user in respect of their member type and family id.
      *
-     * @param createUser the create user
-     * @return the double
+     * @param createUser the user
+     * @return the calculated amount
      */
     private Double evaluateAmountForUser(User createUser) {
         Double amountResult = 0.0;
         Optional<MemberType> a = memberTypeService.findMemberTypeById(createUser
-                .getMemberType()
-                .getDescription());
+                                                                              .getMemberType()
+                                                                              .getDescription());
         if (a.isPresent()) {
             if (createUser.getFamilyId() != null) {
                 amountResult -= 3;
@@ -342,10 +355,10 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Check user under eighteen.
+     * Checks if user is under eighteen.
      *
-     * @param createUser the create user
-     * @return the boolean
+     * @param createUser the user
+     * @return is the user is unter eighteen
      */
     private boolean checkUserUnderEighteen(User createUser) {
         Period period = Period.between(createUser.getBirthday(), LocalDate.now());
@@ -353,41 +366,41 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Exists member type in db.
+     * Checks if the membertype exists in the database.
      *
-     * @param createUser the create user
-     * @return the boolean
+     * @param createUser the user
+     * @return if the membertype of the user exists in the database
      */
     private boolean existsMemberTypeInDB(User createUser) {
         return this.memberTypeService.existsById(createUser
-                .getMemberType()
-                .getDescription());
+                                                         .getMemberType()
+                                                         .getDescription());
     }
 
     /**
-     * Exists postal code in db.
+     * Checks if the postal code exists in the database.
      *
-     * @param createUser the create user
-     * @return the boolean
+     * @param createUser the user
+     * @return if the postal code of the user exists in the database
      */
     private boolean existsPostalCodeInDB(User createUser) {
         return this.postcodeService.existsById(createUser
-                .getAddress()
-                .getPostalCode()
-                .getPostcode());
+                                                       .getAddress()
+                                                       .getPostalCode()
+                                                       .getPostcode());
     }
 
     /**
-     * Compute and insert leaving date.
+     * Computes and inserts leaving date.
      *
-     * @param updateUser     the update user
-     * @param persistentUser the persistent user
+     * @param updateUser     the input user
+     * @param persistentUser the already safed user in the database
      */
     private void computeAndInsertLeavingDate(final User updateUser, final Optional<User> persistentUser) {
         if (updateUser.getCancellationDate() != null) {
             LocalDate regularLeavingDate = LocalDate.of(updateUser
-                    .getCancellationDate()
-                    .getYear(), 12, 31);
+                                                                .getCancellationDate()
+                                                                .getYear(), 12, 31);
             if (updateUser
                     .getCancellationDate()
                     .plusMonths(3)
@@ -406,14 +419,14 @@ public class UserServiceImpl implements UserService {
     /**
      * Sets leaving date.
      *
-     * @param createUser the create user
-     * @return the leaving date
+     * @param createUser the user
+     * @return the user with the field 'leavingDate' calculated and inserted
      */
     private User setLeavingDate(final User createUser) {
         if (createUser.getCancellationDate() != null) {
             LocalDate regularLeavingDate = LocalDate.of(createUser
-                    .getCancellationDate()
-                    .getYear(), 12, 31);
+                                                                .getCancellationDate()
+                                                                .getYear(), 12, 31);
             if (createUser
                     .getCancellationDate()
                     .plusMonths(3)
@@ -430,7 +443,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Validate input user for update and insert.
+     * Validates input fileld from user for update and insert.
      *
      * @param user the user
      */
@@ -458,34 +471,41 @@ public class UserServiceImpl implements UserService {
         if (user
                 .getMemberType()
                 .getDescription()
-                .equals("Jugendlich") && !checkUserUnderEighteen(user)) {
-            throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
+                .equals(MemberTypes.JUGENDLICH) && !checkUserUnderEighteen(user)) {
+            throw new IllegalArgumentException(ExceptionMessages.YOUTH_ACCOUNT_MEMBER_IS_ADULT);
         }
 
         if ((user
                 .getMemberType()
                 .getDescription()
-                .equals("Vollmitglied") || user
+                .equals(MemberTypes.VOLLMITGLIED) || user
                 .getMemberType()
                 .getDescription()
-                .equals("Ermäßigt")) && checkUserUnderEighteen(user)) {
-            throw new IllegalArgumentException("Der Benutzer ist jünger als 18 und daher kann ein Fördermitglied und Jugendkonto erstellt werden.");
+                .equals(MemberTypes.ERÄßIGT)) && checkUserUnderEighteen(user)) {
+            throw new IllegalArgumentException(ExceptionMessages.YOUTH_VALID_MEMBER_TYPES);
         }
 
-        if (user.getMemberTypeChange() != null && user.getMemberTypeChange().getDescription().equals(user.getMemberType().getDescription())) {
-            throw new IllegalArgumentException("Die Mitgliedsart kann nicht auf die gleiche Mitgliedsart gewechselt werden.");
+        if (user.getMemberTypeChange() != null && user
+                .getMemberTypeChange()
+                .getDescription()
+                .equals(user
+                                .getMemberType()
+                                .getDescription())) {
+            throw new IllegalArgumentException(ExceptionMessages.CHANGE_SAME_MEMBERTYPE);
         }
 
-        if (user.getFamilyId() != null && !repository.existsById(user.getFamilyId().getUserId())) {
-            throw new IllegalArgumentException("Der Familienangehörige existiert nicht.");
+        if (user.getFamilyId() != null && !repository.existsById(user
+                                                                         .getFamilyId()
+                                                                         .getUserId())) {
+            throw new IllegalArgumentException(ExceptionMessages.FAMILY_MEMBER_DOES_NOT_EXIST);
         }
     }
 
     /**
-     * Is street only text.
+     * Validates if the street only contains of text.
      *
      * @param user the user
-     * @return the boolean
+     * @return the street only contains of text
      */
     private boolean isStreetOnlyText(User user) {
         return user
@@ -495,10 +515,10 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Is first name only text.
+     * Validates if the first name only contains of text.
      *
      * @param user the user
-     * @return the boolean
+     * @return the first name only contains of text
      */
     private boolean isFirstNameOnlyText(User user) {
         return user
@@ -508,10 +528,10 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Is last name only text.
+     * Validates if the last name only contains of text.
      *
      * @param user the user
-     * @return the boolean
+     * @return the last name only contains of text
      */
     private boolean isLastNameOnlyText(User user) {
         return user
@@ -521,10 +541,10 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Is birthday before entry date and now.
+     * Validates if the birthday is before entry date and today.
      *
      * @param user the user
-     * @return the boolean
+     * @return if the birthday is before entry date and today
      */
     private boolean isBirthdayBeforeEntryDateAndNow(User user) {
         return user
@@ -535,10 +555,10 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Is entry date before cancellation date.
+     * Validates if the entry date is before cancellation date.
      *
      * @param user the user
-     * @return the boolean
+     * @return if the entry date is before cancellation date
      */
     private boolean isEntryDateBeforeCancellationDate(User user) {
         if (user.getCancellationDate() == null) {

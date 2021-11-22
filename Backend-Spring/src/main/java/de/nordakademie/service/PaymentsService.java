@@ -1,57 +1,57 @@
 package de.nordakademie.service;
 
-import de.nordakademie.model.Payments;
-
 import java.util.List;
 import java.util.Optional;
-
+import de.nordakademie.model.Payments;
 /**
- * The interface Payments service.
+ * The interface for payments service.
+ *
+ * @autor Ridvan Cetin, Fabian Forthmann
  */
 public interface PaymentsService {
     /**
-     * Create payments.
+     * Creates a payment.
      *
-     * @param payments the payments
-     * @return the payments
+     * @param payment the payment
+     * @return the payment
      */
-    Payments createPayments(Payments payments);
+    Payments createPayment(Payments payment);
 
     /**
-     * Delete payments by id.
+     * Delete payment by id.
      *
-     * @param accountId the account id
+     * @param accountId the payment id which is the invoice number
      */
-    void deletePaymentsById(Long accountId);
+    void deletePaymentById(Long accountId);
 
     /**
-     * Update payments by id.
+     * Update payment by id.
      *
-     * @param id       the id
-     * @param payments the payments
+     * @param id the payment id which is the invoice number
+     * @param payment the payment
      */
-    void updatePayments(Long id, Payments payments);
+    void updatePayment(Long id, Payments payment);
 
     /**
      * Find all payments.
      *
-     * @return the list
+     * @return list of all payments
      */
     List<Payments> findAllPayments();
 
     /**
-     * Find payments by id.
+     * Find payment by id.
      *
-     * @param accountId the account id
-     * @return the optional
+     * @param accountId the payment id which is the invoice number
+     * @return the payment
      */
-    Optional<Payments> findPaymentsById(Long accountId);
+    Optional<Payments> findPaymentById(Long accountId);
 
     /**
      * Exists user in payments.
      *
      * @param userId the user id
-     * @return the boolean
+     * @return is the user exists in the payments table
      */
     boolean existsUserInPayments(long userId);
 
@@ -60,19 +60,18 @@ public interface PaymentsService {
      *
      * @param userId the user id
      * @param year   the year
-     * @return the boolean
+     * @return is the user exists in the payments table for the given year
      */
     boolean existsUserInPaymentsForThisYear(long userId, long year);
 
     /**
-     * Find payments by user id.
+     * Find payment by user id.
      *
      * @param userId the user id
      * @param year   the year
-     * @return the long
+     * @return the identifier for the searched payment with the given user id and the given year
      */
-    Long findPaymentsByUserId(long userId, long year);
-
+    Long findPaymentByUserId(long userId, long year);
 
     void updateUserIdToNull(long userId);
 
