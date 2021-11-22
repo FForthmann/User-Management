@@ -49,7 +49,6 @@ public class ApiException {
     /**
      * Gets HTTP status.
      *
-     *
      * @return the http status
      */
     public HttpStatus getHttpStatus() {
