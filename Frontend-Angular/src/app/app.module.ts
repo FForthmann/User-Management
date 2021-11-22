@@ -32,6 +32,7 @@ import { ListViewComponent } from './components/list-view/list-view.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
+import { PrintViewComponent } from './components/print-view/print-view.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { MatMenuModule } from '@angular/material/menu';
     ConfirmationDialogComponent,
     PaymentsComponent,
     ListViewComponent,
+    PrintViewComponent,
   ],
   imports: [
     BrowserModule,

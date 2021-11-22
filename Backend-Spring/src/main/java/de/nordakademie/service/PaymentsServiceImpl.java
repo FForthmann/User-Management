@@ -1,15 +1,17 @@
 package de.nordakademie.service;
 
-import java.util.List;
-import java.util.Optional;
-import javax.inject.Inject;
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
-import org.springframework.stereotype.Service;
 import de.nordakademie.model.Payments;
 import de.nordakademie.repository.PaymentsRepository;
 import de.nordakademie.util.ApiMessages;
 import de.nordakademie.util.ExceptionMessages;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Payments Service Implementation
  */
@@ -73,7 +75,7 @@ public class PaymentsServiceImpl implements PaymentsService {
     /**
      * Update Payments
      *
-     * @param id ID from Payments
+     * @param id       ID from Payments
      * @param payments Payments Object to be updated
      */
     @Override
@@ -140,7 +142,7 @@ public class PaymentsServiceImpl implements PaymentsService {
 
     @Override
     public Long findPaymentsByUserId(long userId, long year) {
-        return repository.findPaymentsByUserId(userId,year);
+        return repository.findPaymentsByUserId(userId, year);
     }
 
     private boolean areBankAccountDetailsValid(Payments payments) {
@@ -158,7 +160,7 @@ public class PaymentsServiceImpl implements PaymentsService {
                 .allMatch(Character::isLetter)) {
             return false;
         } else {
-            for ( int i = 2; i < array.length; i++ ) {
+            for (int i = 2; i < array.length; i++) {
                 if (!array[i].matches("[0-9]")) {
                     return false;
                 }
@@ -176,8 +178,8 @@ public class PaymentsServiceImpl implements PaymentsService {
     private boolean existsUserInDB(Payments payments) {
         return this.userService
                 .findUserById(payments
-                                      .getUserId()
-                                      .getUserId())
+                        .getUserId()
+                        .getUserId())
                 .isPresent();
     }
 

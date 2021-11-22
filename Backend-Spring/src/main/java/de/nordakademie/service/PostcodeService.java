@@ -1,8 +1,10 @@
 package de.nordakademie.service;
 
+import de.nordakademie.model.Postcode;
+
 import java.util.List;
 import java.util.Optional;
-import de.nordakademie.model.Postcode;
+
 public interface PostcodeService {
     Postcode createPostcode(Postcode postcode);
 

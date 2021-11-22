@@ -15,6 +15,21 @@ import { DatePipe } from '@angular/common';
  * @contributor Jan Ramm
  */
 export class FormService {
+  //initial values vor datepickers
+  minDate = new Date(1900, 0, 1);
+  maxDate = new Date(3000, 0, 1);
+  startDate = new Date(2021, 11, 21);
+
+  getErrorMessage(controlName: string) {
+    if (this.form.get(controlName)?.hasError('required')) {
+      return 'Dieses Feld muss gesetzt sein!';
+    } else if (this.form.get(controlName)?.hasError('maxlength')) {
+      return 'Die Eingabe ist zu lang!';
+    } else if (this.form.get(controlName)?.hasError('minlength')) {
+      return 'Die Eingabe ist zu kurz!';
+    }
+    return this.form.get(controlName)?.hasError('pattern') ? 'Bitte verwende übliche Zeichen!' : '';
+  }
   /** @type {boolean} **/
   readonly: boolean = false;
 
@@ -41,18 +56,23 @@ export class FormService {
 
   /** @type {FormGroup} **/
   form: FormGroup = new FormGroup({
-    firstName: new FormControl('', Validators.required),
-    lastName: new FormControl('', Validators.required),
+    firstName: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"), Validators.required]),
+    lastName: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"), Validators.required]),
     bankAccountDetails: new FormControl('', [Validators.required, Validators.minLength(8)]),
     houseNumber: new FormControl('', [Validators.pattern('^[0-9]*$'), Validators.required]),
-    postcode: new FormControl('', [Validators.pattern('^[0-9]*$'), Validators.required]),
-    street: new FormControl('', Validators.required),
-    location: new FormControl('', Validators.required),
+    postcode: new FormControl('', [
+      Validators.pattern('^[0-9]*$'),
+      Validators.required,
+      Validators.maxLength(5),
+      Validators.minLength(5),
+    ]),
+    street: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"), Validators.required]),
+    location: new FormControl('', [Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$"), Validators.required]),
     birthday: new FormControl('', Validators.required),
     entryDate: new FormControl('', Validators.required),
     cancellationDate: new FormControl(''),
     leavingDate: new FormControl({ value: '', disabled: true }),
-    description: new FormControl('', Validators.required),
+    description: new FormControl('', [Validators.required, Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$")]),
     descriptionChange: new FormControl({ value: '', disabled: true }),
     actualAmount: new FormControl({ value: '', disabled: true }, [Validators.pattern('^[0-9]')]),
     familyId: new FormControl('', [Validators.pattern('^[0-9]*$')]),
