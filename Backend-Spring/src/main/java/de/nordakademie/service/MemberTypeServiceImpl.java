@@ -36,7 +36,7 @@ public class MemberTypeServiceImpl implements MemberTypeService {
 
         Optional<MemberType> memberTypePersistent = repository.findById(membertypeId);
         if (!memberTypePersistent.isPresent()) {
-            throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
+            throw new EntityNotFoundException(ApiMessages.ENTITY_NOT_EXISTS);
         }
         memberTypePersistent
                 .get()

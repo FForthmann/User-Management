@@ -57,19 +57,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public User createUser(User createUser) {
 
+        createUser = setLeavingDate(createUser);
+
         validateInputUserForUpdateAndInsert(createUser);
 
-        // check if Jugendlich auch wirklich Jugendlich
+        // Check if Membertype Teenage is valid with the inserted age
         if (createUser
                 .getMemberType()
                 .getDescription()
-                .equals("Jugendlich") && check(createUser)) {
+                .equals("Jugendlich") && checkUserUnderEighteen(createUser)) {
             throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
         }
 
         // Validation if MemberType exists in DB
         if (!existsMemberTypeInDB(createUser)) {
-            throw new IllegalArgumentException(ApiMessages.MSG_MEMBERTYPE_NOT_IN_DB + createUser
+            throw new IllegalArgumentException(ApiMessages.MEMBERTYPE_NOT_IN_DB + createUser
                     .getMemberType()
                     .getDescription());
         }
@@ -81,48 +83,13 @@ public class UserServiceImpl implements UserService {
                                                         .getPostalCode());
         }
 
-        // create Payment for User
+        // Evaluate ActualAmount
+        createUser.setActualAmount(evaluateAmountForUser(createUser));
+
+        // Create Payment for User
         User savedUser = repository.save(createUser);
         createPaymentByUser(savedUser);
         return savedUser;
-    }
-
-    private void createPaymentByUser(User savedUser) {
-        Payments payments = new Payments();
-        payments.setBankAccountDetails(savedUser.getBankAccountDetails());
-        payments.setUserId(savedUser);
-        payments.setYear(LocalDate
-                                 .now()
-                                 .getYear());
-        payments.setCountStatus(Boolean.FALSE);
-        payments.setAmount(evaluateAmountForUser(savedUser));
-        paymentsService.createPayments(payments);
-    }
-
-    private Double evaluateAmountForUser(User createUser) {
-        Double amountResult = 0.0;
-        Optional<MemberType> a = memberTypeService.findMemberTypeById(createUser
-                                                                              .getMemberType()
-                                                                              .getDescription());
-        if (a.isPresent()) {
-            if (createUser.getFamilyId() != null) {
-                amountResult -= 3;
-            } else {
-                amountResult += a
-                        .get()
-                        .getAmount();
-            }
-        }
-        return amountResult;
-    }
-
-    private boolean check(User createUser) {
-        Period period = Period.between(createUser.getBirthday(), LocalDate.now());
-        if (period.getYears() >= 18) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     @Override
@@ -132,8 +99,10 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> persistentUser = repository.findById(id);
         if (!persistentUser.isPresent()) {
-            throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
+            throw new EntityNotFoundException(ApiMessages.ENTITY_NOT_EXISTS);
         }
+
+        computeAndInsertLeavingDate(updateUser, persistentUser);
 
         persistentUser
                 .get()
@@ -186,6 +155,21 @@ public class UserServiceImpl implements UserService {
         persistentUser
                 .get()
                 .setBankAccountDetails(updateUser.getBankAccountDetails());
+        persistentUser.get().setActualAmount(evaluateAmountForUser(updateUser));
+
+        this.postcodeService.updatePostcode(updateUser.getAddress().getPostalCode().getPostcode(), updateUser.getAddress().getPostalCode());
+
+        updatePaymentsByUser(id,updateUser);
+    }
+
+    private void updatePaymentsByUser(long id, User updateUser) {
+        long invoiceNumber = paymentsService.findPaymentsByUserId(id, LocalDate.now().getYear());
+        Optional<Payments> payments = paymentsService.findPaymentsById(invoiceNumber);
+        if(payments.isPresent()){
+          payments.get().setBankAccountDetails(updateUser.getBankAccountDetails());
+            paymentsService.updatePayments(invoiceNumber, payments.get());
+        }
+
     }
 
     @Override
@@ -193,10 +177,9 @@ public class UserServiceImpl implements UserService {
 
         Optional<User> user = repository.findById(userId);
         if (!user.isPresent()) {
-            throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
+            throw new EntityNotFoundException(ApiMessages.ENTITY_NOT_EXISTS);
         }
 
-        // ToDo fafor: Change UserId in Payments to null
         if (paymentsRepository.existsUserInPayments(userId)) {
             paymentsRepository.updateUserIdToNull(userId);
         }
@@ -212,12 +195,105 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllUser() {
 
+        LocalDate localDate = LocalDate.now();
+        if (localDate
+                .getMonth()
+                .getValue() == 12 && localDate.getDayOfMonth() == 31){
+            List<User> list = (List<User>) repository.findAll();
+            // All users deleted who are no longer members
+            list.stream().filter(user -> user.getLeavingDate() != null && user
+                            .getLeavingDate()
+                            .isEqual(localDate))
+                    .forEach(user -> deleteUserById(user.getUserId()));
+        }
+        if (localDate
+                .getMonth()
+                .getValue() == 01 && localDate.getDayOfMonth() == 01) {
+            List<User> listMitMitgliedern = (List<User>) repository.findAll();
+            for ( User user :
+                    listMitMitgliedern ) {
+                if (user.getMemberTypeChange() != null) {
+                    user.setMemberType(user.getMemberTypeChange());
+                    user.setMemberTypeChange(null);
+                    updateUser(user.getUserId(), user);
+                }
+                // check if there is a payment for this year for this user
+                if (!paymentsService.existsUserInPaymentsForThisYear(user.getUserId(), localDate.getYear())) {
+                    if (user
+                            .getMemberType()
+                            .getDescription()
+                            .equals("Jugendlich") && checkUserUnderEighteen(user)) {
+                        throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
+                    }
+                    user.setActualAmount(evaluateAmountForUser(user));
+                    createPaymentByUser(user);
+                }
+            }
+        }
         return (List<User>) repository.findAll();
     }
 
     @Override
     public Optional<User> findUserById(Long userId) {
         return repository.findById(userId);
+    }
+
+    @Inject
+    public void setPaymentsService(PaymentsService paymentsService) {
+        this.paymentsService = paymentsService;
+    }
+
+    @Inject
+    public void setMemberTypeService(MemberTypeService memberTypeService) {
+        this.memberTypeService = memberTypeService;
+    }
+
+    @Inject
+    public void setPostcodeService(PostcodeService postcodeService) {
+        this.postcodeService = postcodeService;
+    }
+
+    private void createPaymentByUser(User savedUser) {
+        Payments payments = new Payments();
+        payments.setBankAccountDetails(savedUser.getBankAccountDetails());
+        payments.setUserId(savedUser);
+        payments.setYear(LocalDate
+                                 .now()
+                                 .getYear());
+        payments.setCountStatus(Boolean.FALSE);
+        payments.setAmount(evaluateAmountForUser(savedUser));
+        paymentsService.createPayments(payments);
+    }
+
+    private Double evaluateAmountForUser(User createUser) {
+        Double amountResult = 0.0;
+        Optional<MemberType> a = memberTypeService.findMemberTypeById(createUser
+                                                                              .getMemberType()
+                                                                              .getDescription());
+        if (a.isPresent()) {
+            if (createUser.getFamilyId() != null) {
+                amountResult -= 3;
+            }
+                amountResult += a
+                        .get()
+                        .getAmount();
+
+        }
+        return amountResult;
+    }
+
+    private boolean checkUserUnderEighteen(User createUser) {
+        Period period = Period.between(createUser.getBirthday(), LocalDate.now());
+        if (period.getYears() >= 18) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean check(User createUser) {
+        Period period = Period.between(createUser.getBirthday(), LocalDate.now());
+        return period.getYears() >= 18;
     }
 
     private boolean existsMemberTypeInDB(User createUser) {
@@ -231,6 +307,46 @@ public class UserServiceImpl implements UserService {
                                                           .getAddress()
                                                           .getPostalCode()
                                                           .getPostcode());
+    }
+
+    private void computeAndInsertLeavingDate(final User updateUser, final Optional<User> persistentUser) {
+        if (updateUser.getCancellationDate() != null) {
+            LocalDate regularLeavingDate = LocalDate.of(updateUser
+                                                                .getCancellationDate()
+                                                                .getYear(), 12, 31);
+            if (updateUser
+                    .getCancellationDate()
+                    .plusMonths(3)
+                    .isBefore(regularLeavingDate)) {
+                persistentUser
+                        .get()
+                        .setLeavingDate(regularLeavingDate);
+            } else {
+                persistentUser
+                        .get()
+                        .setLeavingDate(regularLeavingDate.plusYears(1));
+            }
+        }
+    }
+
+    private User setLeavingDate(final User createUser) {
+        if (createUser.getCancellationDate() != null) {
+            LocalDate regularLeavingDate = LocalDate.of(createUser
+                                                                .getCancellationDate()
+                                                                .getYear(), 12, 31);
+            if (createUser
+                    .getCancellationDate()
+                    .plusMonths(3)
+                    .isBefore(regularLeavingDate)) {
+                createUser.setLeavingDate(regularLeavingDate);
+                return createUser;
+            } else {
+                createUser.setLeavingDate(regularLeavingDate.plusYears(1));
+                return createUser;
+            }
+        } else {
+            return createUser;
+        }
     }
 
     private void validateInputUserForUpdateAndInsert(User user) {
@@ -259,21 +375,21 @@ public class UserServiceImpl implements UserService {
         return user
                 .getAddress()
                 .getStreet()
-                .matches("[a-zA-Z\\s'\"]+");
+                .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
     }
 
     private boolean isFirstNameOnlyText(User user) {
         return user
                 .getName()
                 .getFirstName()
-                .matches("[a-zA-Z\\s'\"]+");
+                .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
     }
 
     private boolean isLastNameOnlyText(User user) {
         return user
                 .getName()
                 .getLastName()
-                .matches("[a-zA-Z\\s'\"]+");
+                .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
     }
 
     private boolean isBirthdayBeforeEntryDateAndNow(User user) {
@@ -291,20 +407,5 @@ public class UserServiceImpl implements UserService {
         return user
                 .getEntryDate()
                 .isBefore(user.getCancellationDate());
-    }
-
-    @Inject
-    public void setPaymentsService(PaymentsService paymentsService) {
-        this.paymentsService = paymentsService;
-    }
-
-    @Inject
-    public void setMemberTypeService(MemberTypeService memberTypeService) {
-        this.memberTypeService = memberTypeService;
-    }
-
-    @Inject
-    public void setPostcodeService(PostcodeService postcodeService) {
-        this.postcodeService = postcodeService;
     }
 }

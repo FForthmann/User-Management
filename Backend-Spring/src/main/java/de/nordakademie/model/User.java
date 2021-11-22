@@ -78,6 +78,9 @@ public class User {
     @NotBlank(message = "Das Feld 'Bankdaten' darf nicht leer sein.")
     private String bankAccountDetails;
 
+    @Column()
+    private Double actualAmount;
+
     public User(Long userId,
                 Name name,
                 Address address,
@@ -86,7 +89,7 @@ public class User {
                 LocalDate cancellationDate,
                 LocalDate leavingDate,
                 MemberType memberType,
-                MemberType memberTypeChange, User familyId, String bankAccountDetails) {
+                MemberType memberTypeChange, User familyId, String bankAccountDetails, Double actualAmount) {
         this.userId = userId;
         this.name = name;
         this.address = address;
@@ -98,6 +101,7 @@ public class User {
         this.memberTypeChange = memberTypeChange;
         this.familyId = familyId;
         this.bankAccountDetails = bankAccountDetails;
+        this.actualAmount = actualAmount;
     }
 
     public User() {
@@ -189,6 +193,7 @@ public class User {
                 ", memberTypeChange=" + memberTypeChange +
                 ", familyId=" + familyId +
                 ", bankAccountDetails='" + bankAccountDetails + '\'' +
+                ", actualAmount=" + actualAmount +
                 '}';
     }
 
@@ -206,5 +211,13 @@ public class User {
 
     public void setBankAccountDetails(String bankAccountDetails) {
         this.bankAccountDetails = bankAccountDetails;
+    }
+
+    public Double getActualAmount() {
+        return actualAmount;
+    }
+
+    public void setActualAmount(Double actualAmount) {
+        this.actualAmount = actualAmount;
     }
 }

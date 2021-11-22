@@ -16,4 +16,8 @@ public interface PaymentsService {
 
     boolean existsUserInPayments(long userId);
 
+    boolean existsUserInPaymentsForThisYear(long userId, long year);
+
+    long findPaymentsByUserId(long userId, long year);
+
 }

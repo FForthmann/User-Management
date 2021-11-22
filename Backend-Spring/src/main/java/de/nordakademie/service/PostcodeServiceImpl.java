@@ -47,7 +47,7 @@ public class PostcodeServiceImpl implements PostcodeService {
 
         Optional<Postcode> postcodePersistent = repository.findById(id);
         if (!postcodePersistent.isPresent()) {
-            throw new EntityNotFoundException(ApiMessages.MSG_ENTITY_NOT_EXISTS);
+            throw new EntityNotFoundException(ApiMessages.ENTITY_NOT_EXISTS);
         }
 
         // Update DB
@@ -82,7 +82,7 @@ public class PostcodeServiceImpl implements PostcodeService {
     private boolean isLocationOnlyText(Postcode postcode) {
         return postcode
                 .getLocation()
-                .matches("[a-zA-Z\\s'\"]+");
+                .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
     }
 
     private boolean hasPostalCodeFiveDigits(Postcode postcode) {
