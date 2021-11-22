@@ -1,18 +1,26 @@
 package de.nordakademie.service;
 
+import java.util.List;
+import java.util.Optional;
+import javax.inject.Inject;
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+import org.springframework.stereotype.Service;
 import de.nordakademie.model.Postcode;
 import de.nordakademie.repository.PostcodeRepository;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import javax.transaction.Transactional;
-import java.util.*;
-
+import de.nordakademie.util.ApiMessages;
+import de.nordakademie.util.ExceptionMessages;
 @Service
 @Transactional
-public class PostcodeServiceImpl implements PostcodeService{
-
+public class PostcodeServiceImpl implements PostcodeService {
     private PostcodeRepository repository;
+
+    private UserService userService;
+
+    @Inject
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Inject
     public void setRepository(PostcodeRepository repository) {
@@ -21,6 +29,9 @@ public class PostcodeServiceImpl implements PostcodeService{
 
     @Override
     public Postcode createPostcode(Postcode postcode) {
+
+        validateInputPostcodeForUpdateAndInsert(postcode);
+
         return repository.save(postcode);
     }
 
@@ -31,14 +42,25 @@ public class PostcodeServiceImpl implements PostcodeService{
 
     @Override
     public void updatePostcode(Long id, Postcode postcodeUpdate) {
-      Optional<Postcode> postcodePersistent = repository.findById(id);
-      postcodePersistent.get().setPostcode(postcodeUpdate.getPostcode());
-      postcodePersistent.get().setLocation(postcodeUpdate.getLocation());
+
+        validateInputPostcodeForUpdateAndInsert(postcodeUpdate);
+
+        Optional<Postcode> postcodePersistent = repository.findById(id);
+        if (!postcodePersistent.isPresent()) {
+            throw new EntityNotFoundException(ApiMessages.ENTITY_NOT_EXISTS);
+        }
+
+        // Update DB
+        postcodePersistent
+                .get()
+                .setPostcode(postcodeUpdate.getPostcode());
+        postcodePersistent
+                .get()
+                .setLocation(postcodeUpdate.getLocation());
     }
 
     @Override
     public List<Postcode> findAllPostcodes() {
-
         return (List<Postcode>) repository.findAll();
     }
 
@@ -47,5 +69,27 @@ public class PostcodeServiceImpl implements PostcodeService{
         return repository.findById(postcodeId);
     }
 
+    private void validateInputPostcodeForUpdateAndInsert(final Postcode postcode) {
+        if (!hasPostalCodeFiveDigits(postcode)) {
+            throw new IllegalArgumentException(ExceptionMessages.USER_POSTCODE_NOT_FIVE_DIGITS);
+        }
+
+        if (!isLocationOnlyText(postcode)) {
+            throw new IllegalArgumentException(ExceptionMessages.USER_LOCATION_ONLY_TEXT);
+        }
+    }
+
+    private boolean isLocationOnlyText(Postcode postcode) {
+        return postcode
+                .getLocation()
+                .matches("^([ \\u00c0-\\u01ffa-zA-Z'\\\\-])+$");
+    }
+
+    private boolean hasPostalCodeFiveDigits(Postcode postcode) {
+        Long postcodeNumber = postcode.getPostcode();
+        return postcodeNumber
+                .toString()
+                .length() == 5;
+    }
 
 }

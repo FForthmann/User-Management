@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 /**
  * Class to handle Notification Events
@@ -10,15 +10,13 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
  * @author: Jan Ramm & Luca Ulrich
  */
 export class NotificationService {
-
-  constructor(public snackBar: MatSnackBar) {
-  }
+  constructor(public snackBar: MatSnackBar) {}
 
   /** @type {MatSnackBarConfig} **/
   config: MatSnackBarConfig = {
-    duration: 8000,
+    duration: 15000,
     horizontalPosition: 'right',
-    verticalPosition: 'top'
+    verticalPosition: 'top',
   };
 
   /**
@@ -56,5 +54,4 @@ export class NotificationService {
     this.config['panelClass'] = ['notification', 'error'];
     this.snackBar.open(msg, 'Schließen', this.config);
   }
-
 }

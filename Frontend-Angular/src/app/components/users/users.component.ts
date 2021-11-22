@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FormService } from '../../services/form/form.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { Column } from '../../model/column';
 
 @Component({
   selector: 'app-users',
@@ -18,6 +19,8 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 export class UsersComponent implements OnInit, OnDestroy {
   /** @type {User[]} */
   users: User[] = [];
+  /** @type {Column[]} */
+  columns: Column[] = [];
   /** @type {Subject<void>} */
   ngUnsubscribe: Subject<void> = new Subject<void>();
 
@@ -48,6 +51,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.reloadList();
+    this.buildColumns();
   }
 
   ngOnDestroy() {
@@ -71,6 +75,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       },
       (message: string) => {
         this.notificationService.error(message);
+        this.onAddUser(user);
       }
     );
   }
@@ -91,6 +96,7 @@ export class UsersComponent implements OnInit, OnDestroy {
       },
       (message: string) => {
         this.notificationService.error(message);
+        this.onEditUser(user.userId);
       }
     );
   }
@@ -123,12 +129,14 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @author Luca Ulrich
    * @returns {void}
    */
-  onAddUser(): void {
-    this.formService.initializeFormGroup();
+  onAddUser(user?: User): void {
+    user ? this.formService.initializeFormGroup(user) : this.formService.initializeFormGroup();
+
     const dialogRef = this.openFormModal();
     dialogRef.afterClosed().subscribe((result) => {
       this.router.navigate(['../'], { relativeTo: this.route });
       if (result.event === 'submit') {
+        delete result.data['memberTypeChange']; //delete Key on creation
         this.saveUser(result.data);
       }
     });
@@ -143,22 +151,27 @@ export class UsersComponent implements OnInit, OnDestroy {
    * @param {number} id - ID to get the specific User data
    * @returns {void}
    */
-  onEditUser(id: number): void {
-    this.userService.getUser(id).subscribe((user: User) => {
-      if (user) {
-        this.formService.initializeFormGroup(user);
-        const dialogRef = this.openFormModal();
-        dialogRef.afterClosed().subscribe((result) => {
-          this.router.navigate(['../'], { relativeTo: this.route });
-          if (result.event === 'submit') {
-            result.data['userId'] = user.userId;
-            this.editUser(result.data);
-          }
-        });
-      } else {
-        this.notificationService.error(`Keinen Nutzer mit der Mitgliedsnummer: ${id} gefunden!`);
-      }
-    });
+  onEditUser(id: number | undefined): void {
+    if (id) {
+      this.userService.getUser(id).subscribe((user: User) => {
+        if (user) {
+          this.formService.initializeFormGroup(user);
+          const dialogRef = this.openFormModal();
+          dialogRef.afterClosed().subscribe((result) => {
+            this.router.navigate(['../'], { relativeTo: this.route });
+            if (result.event === 'submit') {
+              result.data['userId'] = user.userId;
+              result.data['description'] = user.description; //reassign description, to save old description
+              this.editUser(result.data);
+            }
+          });
+        } else {
+          this.notificationService.error(`Keinen Nutzer mit der Mitgliedsnummer: ${id} gefunden!`);
+        }
+      });
+    } else {
+      this.notificationService.error('Es ist ein unbekannter Fehler aufgetreten!');
+    }
   }
 
   /**
@@ -225,5 +238,49 @@ export class UsersComponent implements OnInit, OnDestroy {
         this.notificationService.error(message);
       }
     );
+  }
+
+  /**
+   * Helper-Function to build Columns for the List-View Component
+   *
+   * @author Luca Ulrich
+   * @private
+   * @returns {void}
+   */
+  private buildColumns(): void {
+    if (this.users) {
+      this.columns = [
+        {
+          columnDef: 'userId',
+          header: 'Mitgliedsnummer',
+          cell: (user: User) => `${user.userId}`,
+        },
+        {
+          columnDef: 'name.firstName',
+          header: 'Vorname',
+          cell: (user: User) => `${user.name.firstName}`,
+        },
+        {
+          columnDef: 'name.lastName',
+          header: 'Nachname',
+          cell: (user: User) => `${user.name.lastName}`,
+        },
+        {
+          columnDef: 'entryDate',
+          header: 'Eintrittsdatum',
+          cell: (user: User) => `${user.entryDate}`,
+        },
+        {
+          columnDef: 'description',
+          header: 'Mitgliedsart',
+          cell: (user: User) => `${user.description}`,
+        },
+        {
+          columnDef: 'amount',
+          header: 'Beitrag',
+          cell: (user: User) => `${user.amount}`,
+        },
+      ];
+    }
   }
 }

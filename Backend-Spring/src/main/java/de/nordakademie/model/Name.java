@@ -2,12 +2,18 @@ package de.nordakademie.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import de.nordakademie.util.ExceptionMessages;
 @Embeddable
 public class Name {
     @Column(nullable = false)
+    @NotEmpty(message = ExceptionMessages.USER_FIRST_NAME_EMPTY)
     private String firstName;
+
     @Column(nullable = false)
+    @NotEmpty(message = ExceptionMessages.USER_LAST_NAME_EMPTY)
+    @NotBlank(message = ExceptionMessages.USER_LAST_NAME_EMPTY)
     private String lastName;
 
     public Name(String firstName, String secondName) {
@@ -16,7 +22,6 @@ public class Name {
     }
 
     public Name() {
-
     }
 
     public String getFirstName() {

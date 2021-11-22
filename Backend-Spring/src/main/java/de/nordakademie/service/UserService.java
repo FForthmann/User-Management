@@ -1,12 +1,9 @@
 package de.nordakademie.service;
 
-import de.nordakademie.model.User;
-
 import java.util.List;
 import java.util.Optional;
-
+import de.nordakademie.model.User;
 public interface UserService {
-
     User createUser(User user);
 
     void updateUser(Long id, User user);
@@ -15,6 +12,6 @@ public interface UserService {
 
     List<User> findAllUser();
 
-    Optional<User> findeUserById(Long userId);
+    Optional<User> findUserById(Long userId);
 
 }

@@ -1,14 +1,29 @@
 package de.nordakademie.model;
 
 import java.time.LocalDate;
-import java.util.Date;
-import javax.persistence.*;
-
-
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import de.nordakademie.util.ExceptionMessages;
+@NamedNativeQueries(value = {
+        @NamedNativeQuery(name = "User.existsFamilyIdByUserId", query = "SELECT EXISTS (SELECT * FROM USER WHERE FAMILY_ID_USER_ID = :userId)")
+})
 @Entity(name = "User")
 @Table(name = "user")
 public class User {
-
     @Id
     @SequenceGenerator(
             name = "user_sequence",
@@ -20,34 +35,85 @@ public class User {
             generator = "user_sequence"
     )
 
-    @Column(
+    @Column(name = "user_Id",
             updatable = false,
             nullable = false)
     private Long userId;
 
+    @Valid
     @Embedded
     private Name name;
 
+    @Valid
     @Embedded
     private Address address;
 
     @Column(nullable = false)
+    @NotNull(message = ExceptionMessages.USER_BIRTHDAY_EMPTY)
     private LocalDate birthday;
 
     @Column(nullable = false)
+    @NotNull(message = ExceptionMessages.USER_ENTRY_DATE_EMPTY)
     private LocalDate entryDate;
 
-    @Column(nullable = false)
+    @Column()
     private LocalDate cancellationDate;
 
-    @Column(nullable = false)
-    private String memberType;
+    @Column()
+    private LocalDate leavingDate;
+
+    @ManyToOne(optional = false)
+    @NotNull(message = ExceptionMessages.USER_MEMBER_TYPE_EMPTY)
+    @JsonUnwrapped
+    private MemberType memberType;
+
+    @ManyToOne()
+    @JoinColumn(nullable = true)
+    private MemberType memberTypeChange;
+
+    @ManyToOne
+    private User familyId;
 
     @Column(nullable = false)
-    private Integer accountDetails;
+    @NotBlank(message = "Das Feld 'Bankdaten' darf nicht leer sein.")
+    private String bankAccountDetails;
 
-    @Column(nullable = false)
-    private Long familyId;
+    @Column()
+    private Double actualAmount;
+
+    public User(Long userId,
+                Name name,
+                Address address,
+                LocalDate birthday,
+                LocalDate entryDate,
+                LocalDate cancellationDate,
+                LocalDate leavingDate,
+                MemberType memberType,
+                MemberType memberTypeChange, User familyId, String bankAccountDetails, Double actualAmount) {
+        this.userId = userId;
+        this.name = name;
+        this.address = address;
+        this.birthday = birthday;
+        this.entryDate = entryDate;
+        this.cancellationDate = cancellationDate;
+        this.leavingDate = leavingDate;
+        this.memberType = memberType;
+        this.memberTypeChange = memberTypeChange;
+        this.familyId = familyId;
+        this.bankAccountDetails = bankAccountDetails;
+        this.actualAmount = actualAmount;
+    }
+
+    public User() {
+    }
+
+    public LocalDate getLeavingDate() {
+        return leavingDate;
+    }
+
+    public void setLeavingDate(final LocalDate leavingDate) {
+        this.leavingDate = leavingDate;
+    }
 
     public Name getName() {
         return name;
@@ -63,27 +129,6 @@ public class User {
 
     public void setAddress(Address address) {
         this.address = address;
-    }
-
-    public User(Long userId,
-                Name name, Address address, LocalDate birthday,
-                LocalDate entryDate,
-                LocalDate cancellationDate,
-                String memberType,
-                Integer accountDetails,
-                Long familyId) {
-        this.userId = userId;
-        this.name = name;
-        this.address = address;
-        this.birthday = birthday;
-        this.entryDate = entryDate;
-        this.cancellationDate = cancellationDate;
-        this.memberType = memberType;
-        this.accountDetails = accountDetails;
-        this.familyId = familyId;
-    }
-
-    public User() {
     }
 
     public Long getUserId() {
@@ -118,27 +163,19 @@ public class User {
         this.cancellationDate = cancellationDate;
     }
 
-    public String getMemberType() {
+    public MemberType getMemberType() {
         return memberType;
     }
 
-    public void setMemberType(String memberType) {
+    public void setMemberType(MemberType memberType) {
         this.memberType = memberType;
     }
 
-    public Integer getAccountDetails() {
-        return accountDetails;
-    }
-
-    public void setAccountDetails(Integer accountDetails) {
-        this.accountDetails = accountDetails;
-    }
-
-    public Long getFamilyId() {
+    public User getFamilyId() {
         return familyId;
     }
 
-    public void setFamilyId(Long familyId) {
+    public void setFamilyId(User familyId) {
         this.familyId = familyId;
     }
 
@@ -151,9 +188,36 @@ public class User {
                 ", birthday=" + birthday +
                 ", entryDate=" + entryDate +
                 ", cancellationDate=" + cancellationDate +
-                ", memberType='" + memberType + '\'' +
-                ", accountDetails=" + accountDetails +
+                ", leavingDate=" + leavingDate +
+                ", memberType=" + memberType +
+                ", memberTypeChange=" + memberTypeChange +
                 ", familyId=" + familyId +
+                ", bankAccountDetails='" + bankAccountDetails + '\'' +
+                ", actualAmount=" + actualAmount +
                 '}';
+    }
+
+    public MemberType getMemberTypeChange() {
+        return memberTypeChange;
+    }
+
+    public void setMemberTypeChange(MemberType memberTypeChange) {
+        this.memberTypeChange = memberTypeChange;
+    }
+
+    public String getBankAccountDetails() {
+        return bankAccountDetails;
+    }
+
+    public void setBankAccountDetails(String bankAccountDetails) {
+        this.bankAccountDetails = bankAccountDetails;
+    }
+
+    public Double getActualAmount() {
+        return actualAmount;
+    }
+
+    public void setActualAmount(Double actualAmount) {
+        this.actualAmount = actualAmount;
     }
 }

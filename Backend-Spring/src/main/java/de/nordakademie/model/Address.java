@@ -2,24 +2,30 @@ package de.nordakademie.model;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import de.nordakademie.util.ExceptionMessages;
 @Embeddable
 public class Address {
-
     @Column(nullable = false)
+    @NotEmpty(message = ExceptionMessages.USER_STREET_EMPTY)
     private String street;
-    @Column(nullable = false)
-    private Integer houseNumber;
-    @Column(nullable = false)
-    private Integer postalCode;
-    @Column(nullable = false)
-    private String city;
 
-    public Address(String street, Integer houseNumber, Integer postalCode, String city) {
+    @Column(nullable = false)
+    @NotNull(message = ExceptionMessages.USER_HOUSENUMBER_EMPTY)
+    private Integer houseNumber;
+
+    @ManyToOne
+    @JsonUnwrapped
+    @NotNull(message = ExceptionMessages.USER_POSTCODE_EMPTY)
+    private Postcode postalCode;
+
+    public Address(String street, Integer houseNumber, Postcode postalCode) {
         this.street = street;
         this.houseNumber = houseNumber;
         this.postalCode = postalCode;
-        this.city = city;
     }
 
     public Address() {
@@ -42,19 +48,11 @@ public class Address {
         this.houseNumber = houseNumber;
     }
 
-    public Integer getPostalCode() {
+    public Postcode getPostalCode() {
         return postalCode;
     }
 
-    public void setPostalCode(Integer postalCode) {
+    public void setPostalCode(Postcode postalCode) {
         this.postalCode = postalCode;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 }

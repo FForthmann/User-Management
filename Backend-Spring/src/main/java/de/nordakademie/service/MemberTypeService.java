@@ -1,12 +1,9 @@
 package de.nordakademie.service;
 
-import de.nordakademie.model.MemberType;
-
 import java.util.List;
 import java.util.Optional;
-
+import de.nordakademie.model.MemberType;
 public interface MemberTypeService {
-
     MemberType createMemberType(MemberType memberType);
 
     void deleteMemberTypeById(String memberTypeId);

@@ -10,11 +10,9 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.scss']
+  styleUrls: ['./user-form.component.scss'],
 })
-
 export class UserFormComponent implements OnInit {
-
   /** @type {number} */
   breakpoint: number = 1;
   /** @type {MemberType[]} */
@@ -22,21 +20,20 @@ export class UserFormComponent implements OnInit {
   /** @type {string} */
   leavingDate: string = '';
 
-  constructor(private datePipe: DatePipe,
-              private memberTypeService: MembertypeService,
-              public formService: FormService,
-              public dialogRef: MatDialogRef<UserFormComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: User) {
-  }
-
+  constructor(
+    private datePipe: DatePipe,
+    private memberTypeService: MembertypeService,
+    public formService: FormService,
+    public dialogRef: MatDialogRef<UserFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: User
+  ) {}
 
   ngOnInit() {
     this.memberTypeService.getMemberTypes().subscribe((memberTypes: MemberType[]) => {
       this.memberTypes = memberTypes;
     });
-    this.breakpoint = (window.innerWidth <= 480) ? 1 : 6;
+    this.breakpoint = window.innerWidth <= 480 ? 1 : 6;
   }
-
 
   /**
    * Function to trigger Flex-Box on Window-size
@@ -48,7 +45,7 @@ export class UserFormComponent implements OnInit {
    */
   onResize(event: UIEvent): void {
     const target = event.target as Window;
-    this.breakpoint = (target.innerWidth <= 480) ? 1 : 6;
+    this.breakpoint = target.innerWidth <= 480 ? 1 : 6;
   }
 
   /**
@@ -65,6 +62,24 @@ export class UserFormComponent implements OnInit {
   }
 
   /**
+   * Function to check if the Form contains the given field  and is not the empty string.
+   * True if form contains field with valid value. False if no data is present.
+   * The function is used to display or hide form fields.
+   *
+   * @author Luca Ulrich
+   * @param {string} field
+   * @returns {boolean}
+   */
+  checkIfFieldExists(field: string): boolean {
+    const change = this.formService.form.get(field)?.value;
+    if (change) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * Helper-Function to build a User Object to pass to other functions
    *
    * @author Luca Ulrich
@@ -76,20 +91,22 @@ export class UserFormComponent implements OnInit {
     let userObject: User = {
       name: {
         firstName: userData.firstName,
-        lastName: userData.lastName
+        lastName: userData.lastName,
       },
-      // accountDetails: userData.accountDetails,
+      bankAccountDetails: userData.bankAccountDetails,
       address: {
         street: userData.street,
         houseNumber: parseInt(userData.houseNumber),
         postcode: parseInt(userData.postcode),
-        location: userData.location
+        location: userData.location,
       },
-      birthday: (this.datePipe.transform(userData.birthday, 'yyyy-MM-dd') as string),
-      entryDate: (this.datePipe.transform(userData.entryDate, 'yyyy-MM-dd') as string),
-      description: userData.description
+      birthday: this.datePipe.transform(userData.birthday, 'yyyy-MM-dd') as string,
+      entryDate: this.datePipe.transform(userData.entryDate, 'yyyy-MM-dd') as string,
+      description: userData.description, // will be reassigned in users.component
+      memberTypeChange: {
+        description: userData.description,
+      },
     };
-
 
     if (userData.cancellationDate) {
       userObject['cancellationDate'] = this.datePipe.transform(userData.cancellationDate, 'yyyy-MM-dd') as string;
@@ -101,8 +118,8 @@ export class UserFormComponent implements OnInit {
       userObject = {
         ...userObject,
         familyId: {
-          userId: parseInt(userData.familyId)
-        }
+          userId: parseInt(userData.familyId),
+        },
       };
     }
 
