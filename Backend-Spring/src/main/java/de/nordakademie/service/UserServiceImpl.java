@@ -18,7 +18,7 @@ import de.nordakademie.repository.UserRepository;
 import de.nordakademie.util.ApiMessages;
 import de.nordakademie.util.ExceptionMessages;
 @Service
-@Transactional
+@Transactional(rollbackOn = Exception.class)
 public class UserServiceImpl implements UserService {
     private MemberTypeRepository memberTypeRepository;
 
@@ -61,14 +61,6 @@ public class UserServiceImpl implements UserService {
 
         validateInputUserForUpdateAndInsert(createUser);
 
-        // Check if Membertype Teenage is valid with the inserted age
-        if (createUser
-                .getMemberType()
-                .getDescription()
-                .equals("Jugendlich") && checkUserUnderEighteen(createUser)) {
-            throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
-        }
-
         // Validation if MemberType exists in DB
         if (!existsMemberTypeInDB(createUser)) {
             throw new IllegalArgumentException(ApiMessages.MEMBERTYPE_NOT_IN_DB + createUser
@@ -88,14 +80,25 @@ public class UserServiceImpl implements UserService {
 
         // Create Payment for User
         User savedUser = repository.save(createUser);
+
+        checkUserIsFamilyUser(savedUser.getUserId(), savedUser);
+
         createPaymentByUser(savedUser);
         return savedUser;
+    }
+
+    private void checkUserIsFamilyUser(long id, User savedUser) {
+        if (savedUser.getFamilyId() != null && id == savedUser.getFamilyId().getUserId()){
+            throw new IllegalArgumentException("Der Benutzer kann nicht auf sich selber als Familienmitglied referenzieren.");
+        }
     }
 
     @Override
     public void updateUser(Long id, User updateUser) {
 
         validateInputUserForUpdateAndInsert(updateUser);
+
+        checkUserIsFamilyUser(id, updateUser);
 
         Optional<User> persistentUser = repository.findById(id);
         if (!persistentUser.isPresent()) {
@@ -163,13 +166,14 @@ public class UserServiceImpl implements UserService {
     }
 
     private void updatePaymentsByUser(long id, User updateUser) {
-        long invoiceNumber = paymentsService.findPaymentsByUserId(id, LocalDate.now().getYear());
-        Optional<Payments> payments = paymentsService.findPaymentsById(invoiceNumber);
-        if(payments.isPresent()){
-          payments.get().setBankAccountDetails(updateUser.getBankAccountDetails());
-            paymentsService.updatePayments(invoiceNumber, payments.get());
+        Long invoiceNumber = paymentsService.findPaymentsByUserId(id, LocalDate.now().getYear());
+        if (invoiceNumber != null) {
+            Optional<Payments> payments = paymentsService.findPaymentsById(invoiceNumber);
+            if (payments.isPresent()) {
+                payments.get().setBankAccountDetails(updateUser.getBankAccountDetails());
+                paymentsService.updatePayments(invoiceNumber, payments.get());
+            }
         }
-
     }
 
     @Override
@@ -208,7 +212,7 @@ public class UserServiceImpl implements UserService {
         }
         if (localDate
                 .getMonth()
-                .getValue() == 01 && localDate.getDayOfMonth() == 01) {
+                .getValue() == 1 && localDate.getDayOfMonth() == 1) {
             List<User> listMitMitgliedern = (List<User>) repository.findAll();
             for ( User user :
                     listMitMitgliedern ) {
@@ -222,7 +226,7 @@ public class UserServiceImpl implements UserService {
                     if (user
                             .getMemberType()
                             .getDescription()
-                            .equals("Jugendlich") && checkUserUnderEighteen(user)) {
+                            .equals("Jugendlich") && !checkUserUnderEighteen(user)) {
                         throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
                     }
                     user.setActualAmount(evaluateAmountForUser(user));
@@ -230,6 +234,19 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
+
+        List<User> list = (List<User>) repository.findAll();
+        for (User user :
+                list) {
+            if (user.getMemberType().getDescription().equals("Jugendlich") && !checkUserUnderEighteen(user)) {
+                Optional<MemberType> memberType = memberTypeService.findMemberTypeById("Vollmitglied");
+                if(memberType.isPresent()) {
+                    user.setMemberType(memberType.get());
+                    updateUser(user.getUserId(), user);
+                }
+            }
+        }
+
         return (List<User>) repository.findAll();
     }
 
@@ -285,9 +302,9 @@ public class UserServiceImpl implements UserService {
     private boolean checkUserUnderEighteen(User createUser) {
         Period period = Period.between(createUser.getBirthday(), LocalDate.now());
         if (period.getYears() >= 18) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 
@@ -368,6 +385,24 @@ public class UserServiceImpl implements UserService {
 
         if (!isEntryDateBeforeCancellationDate(user)) {
             throw new IllegalArgumentException(ExceptionMessages.USER_ENTRY_DATE_BEFORE_CANCELLATION_DATE);
+        }
+
+        if (user
+                .getMemberType()
+                .getDescription()
+                .equals("Jugendlich") && !checkUserUnderEighteen(user)) {
+            throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
+        }
+
+        if (!user
+                .getMemberType()
+                .getDescription()
+                .equals("Jugendlich") && checkUserUnderEighteen(user)){
+            throw new IllegalArgumentException("Der Benutzer ist jünger als 18 und daher muss ein Jugendkonto her.");
+        }
+
+        if(user.getMemberTypeChange() != null && user.getMemberTypeChange().getDescription().equals(user.getMemberType().getDescription())){
+            throw new IllegalArgumentException("Die Mitgliedsart kann nicht auf die gleiche Mitgliedsart gewechselt werden.");
         }
     }
 

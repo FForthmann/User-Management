@@ -74,7 +74,7 @@ export class FormService {
     leavingDate: new FormControl({ value: '', disabled: true }),
     description: new FormControl('', [Validators.required, Validators.pattern("^([ \u00c0-\u01ffa-zA-Z'\\-])+$")]),
     descriptionChange: new FormControl({ value: '', disabled: true }),
-    amount: new FormControl({ value: '', disabled: true }, [Validators.pattern('^[0-9]')]),
+    actualAmount: new FormControl({ value: '', disabled: true }, [Validators.pattern('^[0-9]')]),
     familyId: new FormControl('', [Validators.pattern('^[0-9]*$')]),
   });
 
@@ -102,7 +102,7 @@ export class FormService {
         leavingDate: user.leavingDate ? (this.datePipe.transform(user.leavingDate, 'MM/dd/yyyy') as string) : '',
         description: user.description,
         descriptionChange: user.memberTypeChange ? user.memberTypeChange.description : '',
-        amount: user.amount ? user.amount : '',
+        actualAmount: user.actualAmount ? user.actualAmount : '',
         familyId: user.familyId?.userId ? user.familyId.userId : '',
       });
     } else {
@@ -120,7 +120,7 @@ export class FormService {
         leavingDate: '',
         description: '',
         descriptionChange: '',
-        amount: '',
+        actualAmount: '',
         familyId: '',
       });
     }

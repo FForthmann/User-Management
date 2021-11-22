@@ -104,7 +104,7 @@ export class UserFormComponent implements OnInit {
       entryDate: this.datePipe.transform(userData.entryDate, 'yyyy-MM-dd') as string,
       description: userData.description, // will be reassigned in users.component
       memberTypeChange: {
-        description: userData.description,
+        description: userData.description, // will be deleted in users.component if route is /create
       },
     };
 

@@ -83,11 +83,6 @@ public class PaymentsServiceImpl implements PaymentsService {
             throw new IllegalArgumentException(ExceptionMessages.IBAN_NOT_VALID);
         }
 
-        // Check if User exists in DB
-        if (!existsUserInDB(payments)) {
-            throw new IllegalArgumentException(ApiMessages.USER_NOT_IN_DB);
-        }
-
         Optional<Payments> accountPersistent = repository.findById(id);
         if (!accountPersistent.isPresent()) {
             throw new EntityNotFoundException(ApiMessages.ENTITY_NOT_EXISTS);
@@ -144,7 +139,7 @@ public class PaymentsServiceImpl implements PaymentsService {
     }
 
     @Override
-    public long findPaymentsByUserId(long userId, long year) {
+    public Long findPaymentsByUserId(long userId, long year) {
         return repository.findPaymentsByUserId(userId,year);
     }
 
