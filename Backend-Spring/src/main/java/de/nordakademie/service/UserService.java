@@ -1,8 +1,10 @@
 package de.nordakademie.service;
 
+import de.nordakademie.model.User;
+
 import java.util.List;
 import java.util.Optional;
-import de.nordakademie.model.User;
+
 public interface UserService {
     User createUser(User user);
 

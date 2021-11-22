@@ -1,12 +1,14 @@
 package de.nordakademie.model;
 
+import de.nordakademie.util.ExceptionMessages;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import de.nordakademie.util.ExceptionMessages;
+
 @Entity
 @Table(name = "Member_Type")
 public class MemberType {
