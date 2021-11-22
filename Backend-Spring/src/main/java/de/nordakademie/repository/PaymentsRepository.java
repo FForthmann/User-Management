@@ -24,5 +24,5 @@ public interface PaymentsRepository extends CrudRepository<Payments, Long> {
 
 
 
-    long findPaymentsByUserId(@Param("userId") long userId, @Param("year") long year);
+    Long findPaymentsByUserId(@Param("userId") long userId, @Param("year") long year);
 }
