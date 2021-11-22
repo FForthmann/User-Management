@@ -7,6 +7,7 @@ import { PaymentService } from '../../services/payments/payment.service';
 import { jsPDF } from 'jspdf';
 import { UserOptions } from 'jspdf-autotable';
 import 'jspdf-autotable';
+import { NotificationService } from '../../services/notifications/notification.service';
 
 interface jsPDFCustom extends jsPDF {
   autoTable: (options: UserOptions) => void;
@@ -26,6 +27,7 @@ export class PrintViewComponent {
     private router: Router,
     private activeRoute: ActivatedRoute,
     private userService: UserService,
+    private notificationService: NotificationService,
     private paymentService: PaymentService
   ) {
     if (activeRoute.snapshot.params.year) {
@@ -41,7 +43,8 @@ export class PrintViewComponent {
         this.getData('payments');
         break;
       default:
-        console.log('DEFAULTED');
+        this.notificationService.error('Etwas ist schief gelaufen, bitte versuche es erneut!');
+        break;
     }
   }
 
@@ -70,6 +73,7 @@ export class PrintViewComponent {
       body: buildUserData,
     });
     this.doc.save(`jahresabschluss_mitglieder_${this.year}.pdf`);
+    this.notificationService.success(`Der Mitglieds Jahresabschluss-Bericht ${this.year} wurde erzeugt!`);
   }
 
   /**
@@ -95,6 +99,7 @@ export class PrintViewComponent {
       body: buildPaymentData,
     });
     this.doc.save(`jahresabschluss_rechnungen_${this.year}.pdf`);
+    this.notificationService.success(`Der Rechnungs Jahresabschluss-Bericht ${this.year} wurde erzeugt!`);
   }
 
   /**
@@ -108,10 +113,8 @@ export class PrintViewComponent {
    */
   private getData(type: string): void {
     if (type === 'users') {
-      this.userService
-        .getUsers()
-        .pipe()
-        .subscribe((users: User[]) => {
+      this.userService.getUsers().subscribe(
+        (users: User[]) => {
           if (this.year) {
             let foundUsers: User[] = [];
             users.forEach((user: User) => {
@@ -123,21 +126,30 @@ export class PrintViewComponent {
           } else {
             this.buildUserPDF(users);
           }
-        });
-    } else if (type === 'payments') {
-      this.paymentService.getPayments().subscribe((payments: Payment[]) => {
-        if (this.year) {
-          let foundPayments: Payment[] = [];
-          payments.forEach((payment: Payment) => {
-            if (payment.year === parseInt(this.year)) {
-              foundPayments.push(payment);
-            }
-          });
-          this.buildPaymentPDF(foundPayments);
-        } else {
-          this.buildPaymentPDF(payments);
+        },
+        (message: string) => {
+          this.notificationService.error(message);
         }
-      });
+      );
+    } else if (type === 'payments') {
+      this.paymentService.getPayments().subscribe(
+        (payments: Payment[]) => {
+          if (this.year) {
+            let foundPayments: Payment[] = [];
+            payments.forEach((payment: Payment) => {
+              if (payment.year === parseInt(this.year)) {
+                foundPayments.push(payment);
+              }
+            });
+            this.buildPaymentPDF(foundPayments);
+          } else {
+            this.buildPaymentPDF(payments);
+          }
+        },
+        (message: string) => {
+          this.notificationService.error(message);
+        }
+      );
     }
   }
 }
