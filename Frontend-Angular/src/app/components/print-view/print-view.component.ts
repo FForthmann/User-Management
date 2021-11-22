@@ -54,7 +54,6 @@ export class PrintViewComponent {
    * @private
    */
   private buildUserPDF(user: User[]): void {
-    console.log(user);
     let buildUserData: Array<Array<string | number>> = [];
     user.forEach((res: User) => {
       let tempData: Array<string | number> = [];
@@ -81,7 +80,6 @@ export class PrintViewComponent {
    * @private
    */
   private buildPaymentPDF(payments: Payment[]): void {
-    console.log(payments);
     let buildPaymentData: Array<Array<string | number>> = [];
     payments.forEach((res: Payment) => {
       let tempData: Array<string | number> = [];

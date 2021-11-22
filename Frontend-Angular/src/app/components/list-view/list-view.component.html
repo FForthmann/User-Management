@@ -11,14 +11,14 @@
     </button>
   </mat-form-field>
 
-  <mat-form-field fxFlex='30%'>
+  <mat-form-field fxFlex='30%' *ngIf="years.length >= 1">
     <mat-label>Jahr</mat-label>
     <mat-select fxFlex='30%' [(ngModel)]='selectedYear'>
       <mat-option *ngFor=' let year of years'
                   [value]='year'>{{year}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <button mat-raised-button [routerLink]="'print/'+selectedYear">
+  <button mat-raised-button [routerLink]="'print/'+selectedYear" *ngIf="years.length >= 1">
     <mat-icon>print</mat-icon>
     Download PDF
   </button>
