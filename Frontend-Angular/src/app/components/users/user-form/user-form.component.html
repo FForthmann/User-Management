@@ -83,7 +83,7 @@
       <mat-divider></mat-divider>
       <div class='container' fxLayout='row' fxLayout.xs='column' fxLayout.sm='column' fxLayoutGap='1.5%'
            fxLayoutAlign='center'>
-        <mat-form-field fxFlex='30%'>
+        <mat-form-field fxFlex='20%'>
           <mat-label>Mitgliedsart</mat-label>
           <mat-select formControlName='description'>
             <mat-option *ngFor=' let memberType of memberTypes'
@@ -93,28 +93,27 @@
 
         <mat-form-field fxFlex='20%' *ngIf="checkIfFieldExists('descriptionChange')">
           <input matInput formControlName='descriptionChange' placeholder='Mitgliedsart-Wechsel'>
-          <mat-icon style='-webkit-text-fill-color: darkred'
+          <mat-icon matSuffix style='-webkit-text-fill-color: darkred'
             matTooltip="Der Wechsel der Mitgliedsart erfolgt zum Jahreswechsel.">warning</mat-icon>
         </mat-form-field>
 
-        <mat-form-field fxFlex='30%' *ngIf="checkIfFieldExists('amount')">
+        <mat-form-field fxFlex='20%' *ngIf="checkIfFieldExists('amount')">
           <input formControlName='amount' matInput placeholder='Jahresbeitrag'>
         </mat-form-field>
 
-        <mat-form-field fxFlex='30%'>
+        <mat-form-field fxFlex='20%'>
           <input formControlName="bankAccountDetails" matInput placeholder="Kontoverbindung"
           [readonly]="formService.readonly">
           <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
         </mat-form-field>
 
-
-        <button mat-raised-button color='primary' type='submit'
+        <button fxFlex='10%' mat-raised-button color='primary' type='submit'
                 *ngIf='!formService.readonly'
                 [disabled]='formService.form.invalid'
                 [mat-dialog-close]='data'>Save
         </button>
 
-        <button mat-raised-button color='primary' *ngIf='formService.readonly'
+        <button fxFlex='10%' mat-raised-button color='primary' *ngIf='formService.readonly'
                 (click)='formService.triggerAccessibility()'>Edit
         </button>
       </div>
