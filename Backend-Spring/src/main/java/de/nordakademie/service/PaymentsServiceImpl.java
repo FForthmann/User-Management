@@ -114,22 +114,12 @@ public class PaymentsServiceImpl implements PaymentsService {
                 .setBankAccountDetails(payments.getBankAccountDetails());
     }
 
-    /**
-     * Returns a list of all payments
-     *
-     * @return Gives a list with all payments
-     */
+
     @Override
     public List<Payments> findAllPayments() {
         return (List<Payments>) repository.findAll();
     }
 
-    /**
-     * Returns Payment Object if present
-     *
-     * @param paymentsId Id of payment
-     * @return Payments Object if present
-     */
     @Override
     public Optional<Payments> findPaymentsById(Long paymentsId) {
         return repository.findById(paymentsId);
@@ -151,8 +141,13 @@ public class PaymentsServiceImpl implements PaymentsService {
         return repository.findPaymentsByUserId(userId, year);
     }
 
+    @Override
+    public void updateUserIdToNull(long userId) {
+        repository.updateUserIdToNull(userId);
+    }
+
     /**
-     * Are bank account details valid boolean.
+     * Are bank account details valid.
      *
      * @param payments the payments
      * @return the boolean

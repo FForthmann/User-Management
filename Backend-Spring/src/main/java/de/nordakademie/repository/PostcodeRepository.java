@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PostcodeRepository extends CrudRepository<Postcode, Long> {
+
+    @Override
+    boolean existsById(Long aLong);
 }

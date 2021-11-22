@@ -11,7 +11,9 @@ import javax.validation.constraints.NotNull;
 
 
 /**
- * The type Address.
+ * The datamodel for type Address.
+ *
+ * @author Ridvan Cetin & Fabian Forthmann
  */
 @Embeddable
 public class Address {
@@ -110,5 +112,14 @@ public class Address {
      */
     public void setPostalCode(Postcode postalCode) {
         this.postalCode = postalCode;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                ", postalCode=" + postalCode +
+                '}';
     }
 }

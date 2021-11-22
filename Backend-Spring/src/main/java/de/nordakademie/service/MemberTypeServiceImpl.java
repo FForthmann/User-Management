@@ -68,5 +68,10 @@ public class MemberTypeServiceImpl implements MemberTypeService {
         return repository.findById(memberTypeId);
     }
 
+    @Override
+    public boolean existsById(String description) {
+        return repository.existsById(description);
+    }
+
 
 }

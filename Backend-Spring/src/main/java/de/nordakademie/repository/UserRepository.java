@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends CrudRepository<User, Long> {
 
     /**
-     * Exists family id by user id boolean.
+     * Exists family id by user id.
      *
      * @param userId the user id
      * @return the boolean

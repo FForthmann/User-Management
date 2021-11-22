@@ -10,7 +10,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
- * The type Member type.
+ * The datamodel for type Member type.
+ *
+ * @author Ridvan Cetin & Fabian Forthmann
  */
 @Entity
 @Table(name = "Member_Type")

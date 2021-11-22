@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 public interface MemberTypeService {
     /**
-     * Create member type member type.
+     * Create member type.
      *
      * @param memberType the member type
      * @return the member type
@@ -25,7 +25,7 @@ public interface MemberTypeService {
     void deleteMemberTypeById(String memberTypeId);
 
     /**
-     * Update member type.
+     * Update member type by id.
      *
      * @param memberTypeId the member type id
      * @param memberType   the member type
@@ -33,18 +33,20 @@ public interface MemberTypeService {
     void updateMemberType(String memberTypeId, MemberType memberType);
 
     /**
-     * Find all member types list.
+     * Find all member types.
      *
      * @return the list
      */
     List<MemberType> findAllMemberTypes();
 
     /**
-     * Find member type by id optional.
+     * Find member type by id.
      *
      * @param memberTypeId the member type id
      * @return the optional
      */
     Optional<MemberType> findMemberTypeById(String memberTypeId);
+
+    boolean existsById(String description);
 
 }

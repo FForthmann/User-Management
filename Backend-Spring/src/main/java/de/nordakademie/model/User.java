@@ -10,7 +10,9 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**
- * The type User.
+ * The datamodel for type User.
+ *
+ * @author Ridvan Cetin & Fabian Forthmann
  */
 @NamedNativeQueries(value = {
         @NamedNativeQuery(name = "User.existsFamilyIdByUserId", query = "SELECT EXISTS (SELECT * FROM USER WHERE FAMILY_ID_USER_ID = :userId)")

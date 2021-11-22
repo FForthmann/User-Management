@@ -26,21 +26,6 @@ import java.util.Optional;
 @Transactional(rollbackOn = Exception.class)
 public class UserServiceImpl implements UserService {
     /**
-     * The Member type repository.
-     */
-    private MemberTypeRepository memberTypeRepository;
-
-    /**
-     * The Postcode repository.
-     */
-    private PostcodeRepository postcodeRepository;
-
-    /**
-     * The Payments repository.
-     */
-    private PaymentsRepository paymentsRepository;
-
-    /**
      * The Repository.
      */
     private UserRepository repository;
@@ -60,15 +45,7 @@ public class UserServiceImpl implements UserService {
      */
     private PostcodeService postcodeService;
 
-    /**
-     * Sets payments repository.
-     *
-     * @param paymentsRepository the payments repository
-     */
-    @Inject
-    public void setPaymentsRepository(PaymentsRepository paymentsRepository) {
-        this.paymentsRepository = paymentsRepository;
-    }
+
 
     /**
      * Sets repository.
@@ -80,25 +57,6 @@ public class UserServiceImpl implements UserService {
         this.repository = repository;
     }
 
-    /**
-     * Sets postcode repository.
-     *
-     * @param postcodeRepository the postcode repository
-     */
-    @Inject
-    public void setPostcodeRepository(PostcodeRepository postcodeRepository) {
-        this.postcodeRepository = postcodeRepository;
-    }
-
-    /**
-     * Sets member type repository.
-     *
-     * @param memberTypeRepository the member type repository
-     */
-    @Inject
-    public void setMemberTypeRepository(MemberTypeRepository memberTypeRepository) {
-        this.memberTypeRepository = memberTypeRepository;
-    }
 
     @Override
     public User createUser(User createUser) {
@@ -213,8 +171,8 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException(ApiMessages.ENTITY_NOT_EXISTS);
         }
 
-        if (paymentsRepository.existsUserInPayments(userId)) {
-            paymentsRepository.updateUserIdToNull(userId);
+        if (paymentsService.existsUserInPayments(userId)) {
+            paymentsService.updateUserIdToNull(userId);
         }
 
         // familyMember
@@ -384,7 +342,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Check user under eighteen boolean.
+     * Check user under eighteen.
      *
      * @param createUser the create user
      * @return the boolean
@@ -395,36 +353,25 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Check boolean.
-     *
-     * @param createUser the create user
-     * @return the boolean
-     */
-    private boolean check(User createUser) {
-        Period period = Period.between(createUser.getBirthday(), LocalDate.now());
-        return period.getYears() >= 18;
-    }
-
-    /**
-     * Exists member type in db boolean.
+     * Exists member type in db.
      *
      * @param createUser the create user
      * @return the boolean
      */
     private boolean existsMemberTypeInDB(User createUser) {
-        return this.memberTypeRepository.existsById(createUser
+        return this.memberTypeService.existsById(createUser
                 .getMemberType()
                 .getDescription());
     }
 
     /**
-     * Exists postal code in db boolean.
+     * Exists postal code in db.
      *
      * @param createUser the create user
      * @return the boolean
      */
     private boolean existsPostalCodeInDB(User createUser) {
-        return this.postcodeRepository.existsById(createUser
+        return this.postcodeService.existsById(createUser
                 .getAddress()
                 .getPostalCode()
                 .getPostcode());
@@ -535,7 +482,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Is street only text boolean.
+     * Is street only text.
      *
      * @param user the user
      * @return the boolean
@@ -548,7 +495,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Is first name only text boolean.
+     * Is first name only text.
      *
      * @param user the user
      * @return the boolean
@@ -561,7 +508,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Is last name only text boolean.
+     * Is last name only text.
      *
      * @param user the user
      * @return the boolean
@@ -574,7 +521,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Is birthday before entry date and now boolean.
+     * Is birthday before entry date and now.
      *
      * @param user the user
      * @return the boolean
@@ -588,7 +535,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Is entry date before cancellation date boolean.
+     * Is entry date before cancellation date.
      *
      * @param user the user
      * @return the boolean

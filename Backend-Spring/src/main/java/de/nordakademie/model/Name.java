@@ -8,7 +8,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 /**
- * The type Name.
+ * The datamodel for type Name.
+ *
+ * @author Ridvan Cetin & Fabian Forthmann
  */
 @Embeddable
 public class Name {
@@ -78,5 +80,13 @@ public class Name {
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "Name{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }

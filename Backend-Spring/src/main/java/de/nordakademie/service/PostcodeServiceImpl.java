@@ -90,6 +90,11 @@ public class PostcodeServiceImpl implements PostcodeService {
         return repository.findById(postcodeId);
     }
 
+    @Override
+    public boolean existsById(Long postcode) {
+        return repository.existsById(postcode);
+    }
+
     /**
      * Validate input postcode for update and insert.
      *
@@ -106,7 +111,7 @@ public class PostcodeServiceImpl implements PostcodeService {
     }
 
     /**
-     * Is location only text boolean.
+     * Is location only text.
      *
      * @param postcode the postcode
      * @return the boolean
@@ -118,7 +123,7 @@ public class PostcodeServiceImpl implements PostcodeService {
     }
 
     /**
-     * Has postal code five digits boolean.
+     * Has postal code five digits.
      *
      * @param postcode the postcode
      * @return the boolean

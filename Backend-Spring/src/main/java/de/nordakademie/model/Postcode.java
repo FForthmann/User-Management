@@ -9,7 +9,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * The type Postcode.
+ * The datamodel type Postcode.
+ *
+ * @author Ridvan Cetin & Fabian Forthmann
  */
 @Entity
 public class Postcode {

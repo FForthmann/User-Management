@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PaymentsRepository extends CrudRepository<Payments, Long> {
     /**
-     * Exists user in payments boolean.
+     * Exists user in payments by user id.
      *
      * @param userId the user id
      * @return the boolean
@@ -23,7 +23,7 @@ public interface PaymentsRepository extends CrudRepository<Payments, Long> {
                     long userId);
 
     /**
-     * Update user id to null.
+     * Update user id to null in payments.
      *
      * @param userId the user id
      */
@@ -32,7 +32,7 @@ public interface PaymentsRepository extends CrudRepository<Payments, Long> {
     void updateUserIdToNull(long userId);
 
     /**
-     * Exists user in payments for this year boolean.
+     * Exists user in payments for this year.
      *
      * @param userId the user id
      * @param year   the year
@@ -42,7 +42,7 @@ public interface PaymentsRepository extends CrudRepository<Payments, Long> {
 
 
     /**
-     * Find payments by user id long.
+     * Find payments by user id.
      *
      * @param userId the user id
      * @param year   the year

@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 public interface UserService {
     /**
-     * Create user user.
+     * Create user.
      *
      * @param user the user
      * @return the user

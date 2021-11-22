@@ -10,7 +10,7 @@ import java.util.Optional;
  */
 public interface PostcodeService {
     /**
-     * Create postcode postcode.
+     * Create postcode.
      *
      * @param postcode the postcode
      * @return the postcode
@@ -45,7 +45,9 @@ public interface PostcodeService {
      * @param userId the user id
      * @return the optional
      */
-    Optional<Postcode> findPostcodeById(Long userId);
+    Optional<Postcode> findPostcodeById(Long postcode);
 
+
+    boolean existsById(Long postcode);
 
 }

@@ -7,7 +7,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /**
- * The type Payments.
+ * The datamdodel for type Payments.
+ *
+ * @author Ridvan Cetin & Fabian Forthmann
  */
 @NamedNativeQueries(value = {
         @NamedNativeQuery(name = "Payments.existsUserInPayments", query = "SELECT EXISTS (SELECT * FROM PAYMENTS WHERE USER_ID_USER_ID = :userId)"),

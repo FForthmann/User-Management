@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface MemberTypeRepository extends CrudRepository<MemberType, String> {
+    @Override
+    boolean existsById(String s);
 }
