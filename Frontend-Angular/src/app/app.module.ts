@@ -31,6 +31,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ListViewComponent } from './components/list-view/list-view.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatMenuModule } from '@angular/material/menu';
 import { PrintViewComponent } from './components/print-view/print-view.component';
 
 @NgModule({
@@ -71,6 +72,7 @@ import { PrintViewComponent } from './components/print-view/print-view.component
     MatPaginatorModule,
     MatSortModule,
     FormsModule,
+    MatMenuModule,
   ],
   providers: [
     DatePipe,
