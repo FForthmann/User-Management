@@ -1,9 +1,12 @@
 <!-- Search, Filter and Create -->
 <div class='container' fxLayout='row' fxLayoutGap='1.5%'>
-  <button mat-raised-button routerLink='create' *ngIf="type === 'User'" fxFlex='10%'>
+  <div fxFlex='10%' fxLayoutAlign="center center">
+  <button mat-raised-button routerLink='create' *ngIf="type === 'User'" >
     <mat-icon>add</mat-icon>
     Create
   </button>
+  </div>
+
   <mat-form-field class='search-form-field' floatLabel='never' fxFlex='60%'>
     <input matInput placeholder='Suchen & Filtern' (keyup)='applyFilter($event)' [(ngModel)]='search'>
     <button mat-button matSuffix mat-icon-button aria-label='Clear' (click)='clearFilter()'>
@@ -18,10 +21,12 @@
                   [value]='year'>{{year}}</mat-option>
     </mat-select>
   </mat-form-field>
-  <button mat-raised-button [routerLink]="'print/'+selectedYear" *ngIf='years.length >= 1' fxFlex='15%'>
+  <div fxFlex='15%' fxLayoutAlign="center center">
+  <button mat-raised-button [routerLink]="'print/'+selectedYear" *ngIf='years.length >= 1' >
     <mat-icon>print</mat-icon>
     Download PDF
   </button>
+  </div>
 </div>
 
 <table mat-table [dataSource]='dataSource' class='mat-elevation-z8 demo-table' matSort>
