@@ -276,9 +276,9 @@ export class UsersComponent implements OnInit, OnDestroy {
           cell: (user: User) => `${user.description}`,
         },
         {
-          columnDef: 'amount',
+          columnDef: 'actualAmount',
           header: 'Beitrag',
-          cell: (user: User) => `${user.amount}`,
+          cell: (user: User) => `${user.actualAmount}`,
         },
       ];
     }

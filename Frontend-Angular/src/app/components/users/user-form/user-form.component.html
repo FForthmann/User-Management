@@ -97,8 +97,8 @@
             matTooltip="Der Wechsel der Mitgliedsart erfolgt zum Jahreswechsel.">warning</mat-icon>
         </mat-form-field>
 
-        <mat-form-field fxFlex='30%' *ngIf="checkIfFieldExists('amount')">
-          <input formControlName='amount' matInput placeholder='Jahresbeitrag'>
+        <mat-form-field fxFlex='30%' *ngIf="checkIfFieldExists('actualAmount')">
+          <input formControlName='actualAmount' matInput placeholder='Jahresbeitrag'>
         </mat-form-field>
 
         <mat-form-field fxFlex='30%'>
