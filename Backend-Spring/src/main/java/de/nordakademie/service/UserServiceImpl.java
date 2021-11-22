@@ -153,6 +153,8 @@ public class UserServiceImpl implements UserService {
                 .get()
                 .setBankAccountDetails(updateUser.getBankAccountDetails());
 
+        this.postcodeService.updatePostcode(updateUser.getAddress().getPostalCode().getPostcode(), updateUser.getAddress().getPostalCode());
+
         updatePaymentsByUser(id,updateUser);
     }
 
