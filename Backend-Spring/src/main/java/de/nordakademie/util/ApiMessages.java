@@ -1,7 +1,9 @@
 package de.nordakademie.util;
 
 /**
- * The type Api messages.
+ * General API messages.
+ *
+ * @author Ridvan Cetin & Fabian Forthmann
  */
 public final class ApiMessages {
     /**
@@ -25,10 +27,10 @@ public final class ApiMessages {
     public static final String ENTITY_NOT_EXISTS = "Die Entität existiert nicht.";
 
     /**
-     * Instantiates a new Api messages.
+     * Constructor to hide the public one.
      */
     private ApiMessages() {
-        // Constructor to hide the public one
+        // Empty constructor
     }
 
 }

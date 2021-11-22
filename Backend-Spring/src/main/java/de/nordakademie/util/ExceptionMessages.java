@@ -1,7 +1,9 @@
 package de.nordakademie.util;
 
 /**
- * The type Exception messages.
+ * Detailed API messages for Exceptions.
+ *
+ * @author Ridvan Cetin & Fabian Forthmann
  */
 public final class ExceptionMessages {
     /**
@@ -281,9 +283,9 @@ public final class ExceptionMessages {
     public static final String IBAN_NOT_VALID = "Das Feld 'IBAN' darf nur aus 22 Zeichen bestehen: zwei Buchstaben am Anfang und 20 Zahlen.";
 
     /**
-     * Instantiates a new Exception messages.
+     * Constructor to hide the public one.
      */
     private ExceptionMessages() {
-        // Constructor hiding the public one
+        // Empty constructur
     }
 }
