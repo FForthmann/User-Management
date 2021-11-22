@@ -14,16 +14,16 @@
            fxLayoutAlign='center'>
         <mat-form-field fxFlex='30%'>
           <input formControlName='firstName' matInput placeholder='Vorname*' [readonly]='formService.readonly'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('firstName')?.invalid">{{formService.getErrorMessage('firstName')}}</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex='30%'>
           <input formControlName='lastName' matInput placeholder='Nachname*' [readonly]='formService.readonly'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('lastName')?.invalid">{{formService.getErrorMessage('lastName')}}</mat-error>
         </mat-form-field>
         <mat-form-field fxFlex='30%'>
-          <input formControlName='birthday' matInput [matDatepicker]='birthday' placeholder='Geburtsdatum'>
+          <input formControlName='birthday' matInput [min]="formService.minDate" [max]="formService.maxDate"  [matDatepicker]='birthday' placeholder='Geburtsdatum'>
           <mat-datepicker-toggle matSuffix [for]='birthday'></mat-datepicker-toggle>
-          <mat-datepicker #birthday></mat-datepicker>
+          <mat-datepicker #birthday [startAt]="formService.startDate"></mat-datepicker>
         </mat-form-field>
       </div>
       <mat-divider></mat-divider>
@@ -32,23 +32,23 @@
            fxLayoutAlign='center'>
         <mat-form-field fxFlex='20%'>
           <input formControlName='street' matInput placeholder='Straße' [readonly]='formService.readonly'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('street')?.invalid">{{formService.getErrorMessage('street')}}</mat-error>
         </mat-form-field>
 
         <mat-form-field fxFlex='20%'>
           <input
             formControlName='houseNumber' matInput placeholder='Hausnummer' [readonly]='formService.readonly'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('houseNumber')?.invalid">{{formService.getErrorMessage('houseNumber')}}</mat-error>
         </mat-form-field>
 
         <mat-form-field fxFlex='20%'>
           <input formControlName='postcode' matInput placeholder='Postleitzahl' [readonly]='formService.readonly'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('postcode')?.invalid">{{formService.getErrorMessage('postcode')}}</mat-error>
         </mat-form-field>
 
         <mat-form-field fxFlex='20%'>
           <input formControlName='location' matInput placeholder='Stadt/Ort' [readonly]='formService.readonly'>
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('location')?.invalid">{{formService.getErrorMessage('location')}}</mat-error>
         </mat-form-field>
       </div>
     </div>
@@ -58,16 +58,16 @@
       <div class='container' fxLayout='row' fxLayout.xs='column' fxLayout.sm='column' fxLayoutGap='1.5%'
            fxLayoutAlign='center'>
         <mat-form-field fxFlex='20%'>
-          <input formControlName='entryDate' matInput [matDatepicker]='picker' placeholder='Eintrittsdatum'>
+          <input formControlName='entryDate' matInput [min]="formService.minDate" [max]="formService.maxDate" [matDatepicker]='picker' placeholder='Eintrittsdatum'>
           <mat-datepicker-toggle matSuffix [for]='picker'></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker #picker [startAt]="formService.startDate" ></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field fxFlex='20%'>
-          <input formControlName='cancellationDate' matInput [matDatepicker]='cancellationDate'
+          <input formControlName='cancellationDate' matInput [min]="formService.minDate" [max]="formService.maxDate" [matDatepicker]='cancellationDate'
                  (dateChange)='onDateChange($event)' placeholder='Kündigungsdatum'>
           <mat-datepicker-toggle matSuffix [for]='cancellationDate'></mat-datepicker-toggle>
-          <mat-datepicker #cancellationDate></mat-datepicker>
+          <mat-datepicker #cancellationDate [startAt]="formService.startDate"></mat-datepicker>
         </mat-form-field>
 
         <mat-form-field fxFlex='20%'>
@@ -77,6 +77,7 @@
         <mat-form-field fxFlex='20%'>
           <input formControlName='familyId' matInput placeholder='Familienmitglieds ID'
                  [readonly]='formService.readonly'>
+          <mat-error *ngIf="formService.form.get('familyId')?.invalid">{{formService.getErrorMessage('familyId')}}</mat-error>
         </mat-form-field>
       </div>
       <mat-divider [vertical]='true'></mat-divider>
@@ -104,10 +105,8 @@
         <mat-form-field fxFlex='30%'>
           <input formControlName="bankAccountDetails" matInput placeholder="Kontoverbindung"
           [readonly]="formService.readonly">
-          <mat-error>Dieses Feld muss gesetzt sein!</mat-error>
+          <mat-error *ngIf="formService.form.get('accountDetails')?.invalid">{{formService.getErrorMessage('accountDetails')}}</mat-error>
         </mat-form-field>
-
-
         <button mat-raised-button color='primary' type='submit'
                 *ngIf='!formService.readonly'
                 [disabled]='formService.form.invalid'
