@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Payment } from '../../model/payment';
 import { User } from '../../model/user';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/users/user.service';
 import { PaymentService } from '../../services/payments/payment.service';
 import { jsPDF } from 'jspdf';
@@ -19,16 +19,30 @@ interface jsPDFCustom extends jsPDF {
 })
 export class PrintViewComponent {
   doc: jsPDFCustom = new jsPDF() as jsPDFCustom;
+  year: string = '';
+  route: string = this.router.url;
 
-  constructor(private route: Router, private userService: UserService, private paymentService: PaymentService) {
+  constructor(
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private userService: UserService,
+    private paymentService: PaymentService
+  ) {
+    if (activeRoute.snapshot.params.year) {
+      this.year = activeRoute.snapshot.params.year;
+      this.route = this.router.url.substring(0, this.router.url.lastIndexOf('/'));
+    }
+
     // Checks the active url for active Route
-    switch (this.route.url) {
+    switch (this.route) {
       case '/users/print':
         this.getData('users');
         break;
       case '/payments/print':
         this.getData('payments');
         break;
+      default:
+        console.log('DEFAULTED');
     }
   }
 
@@ -57,7 +71,7 @@ export class PrintViewComponent {
       head: [['MitgliedsID', 'Name', 'Nachname', 'Eintrittsdatum', 'Mitgliedsart', 'Aktueller Beitrag']],
       body: buildUserData,
     });
-    this.doc.save('user.pdf');
+    // this.doc.save('user.pdf');
   }
 
   /**
@@ -83,7 +97,7 @@ export class PrintViewComponent {
       head: [['Rechnungsnummer', 'Jahr', 'Bankdaten', 'Rechnungsbetrag', 'Zahlstatus']],
       body: buildPaymentData,
     });
-    this.doc.save('payment.pdf');
+    // this.doc.save('payment.pdf');
   }
 
   /**
