@@ -32,7 +32,6 @@ export class PrintViewComponent {
       this.year = activeRoute.snapshot.params.year;
       this.route = this.router.url.substring(0, this.router.url.lastIndexOf('/'));
     }
-
     // Checks the active url for active Route
     switch (this.route) {
       case '/users/print':
@@ -55,6 +54,7 @@ export class PrintViewComponent {
    * @private
    */
   private buildUserPDF(user: User[]): void {
+    console.log(user);
     let buildUserData: Array<Array<string | number>> = [];
     user.forEach((res: User) => {
       let tempData: Array<string | number> = [];
@@ -66,12 +66,11 @@ export class PrintViewComponent {
       // res.actualAmount ? tempData.push(res.actualAmount) : '';
       buildUserData.push(tempData);
     });
-
     this.doc.autoTable({
       head: [['MitgliedsID', 'Name', 'Nachname', 'Eintrittsdatum', 'Mitgliedsart', 'Aktueller Beitrag']],
       body: buildUserData,
     });
-    // this.doc.save('user.pdf');
+    this.doc.save(`jahresabschluss_mitglieder_${this.year}.pdf`);
   }
 
   /**
@@ -82,6 +81,7 @@ export class PrintViewComponent {
    * @private
    */
   private buildPaymentPDF(payments: Payment[]): void {
+    console.log(payments);
     let buildPaymentData: Array<Array<string | number>> = [];
     payments.forEach((res: Payment) => {
       let tempData: Array<string | number> = [];
@@ -92,16 +92,16 @@ export class PrintViewComponent {
       res.countStatus ? tempData.push('bezahlt') : tempData.push('nicht bezahlt');
       buildPaymentData.push(tempData);
     });
-
     this.doc.autoTable({
       head: [['Rechnungsnummer', 'Jahr', 'Bankdaten', 'Rechnungsbetrag', 'Zahlstatus']],
       body: buildPaymentData,
     });
-    // this.doc.save('payment.pdf');
+    this.doc.save(`jahresabschluss_rechnungen_${this.year}.pdf`);
   }
 
   /**
-   * Function to get the Data from the Services. It checks whether the active route is /users/print or /payments/print
+   * Function to get the Data from the Services. It checks whether the active route is /users/print or /payments/print.
+   * If a year is passed as a parameter in the URL, only the data matching the URL will be processed.
    *
    * @author Luca Ulrich
    * @param {string} type - users or payments
@@ -110,12 +110,35 @@ export class PrintViewComponent {
    */
   private getData(type: string): void {
     if (type === 'users') {
-      this.userService.getUsers().subscribe((users: User[]) => {
-        this.buildUserPDF(users);
-      });
+      this.userService
+        .getUsers()
+        .pipe()
+        .subscribe((users: User[]) => {
+          if (this.year) {
+            let foundUsers: User[] = [];
+            users.forEach((user: User) => {
+              if (user.entryDate.split('-')[0] === this.year) {
+                foundUsers.push(user);
+              }
+            });
+            this.buildUserPDF(foundUsers);
+          } else {
+            this.buildUserPDF(users);
+          }
+        });
     } else if (type === 'payments') {
       this.paymentService.getPayments().subscribe((payments: Payment[]) => {
-        this.buildPaymentPDF(payments);
+        if (this.year) {
+          let foundPayments: Payment[] = [];
+          payments.forEach((payment: Payment) => {
+            if (payment.year === parseInt(this.year)) {
+              foundPayments.push(payment);
+            }
+          });
+          this.buildPaymentPDF(foundPayments);
+        } else {
+          this.buildPaymentPDF(payments);
+        }
       });
     }
   }
