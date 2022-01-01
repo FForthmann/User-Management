@@ -139,7 +139,7 @@ public class PaymentsServiceImpl implements PaymentsService {
     }
 
     @Override
-    public long findPaymentsByUserId(long userId, long year) {
+    public Long findPaymentsByUserId(long userId, long year) {
         return repository.findPaymentsByUserId(userId,year);
     }
 

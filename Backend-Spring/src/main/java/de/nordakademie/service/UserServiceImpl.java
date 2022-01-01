@@ -18,7 +18,7 @@ import de.nordakademie.repository.UserRepository;
 import de.nordakademie.util.ApiMessages;
 import de.nordakademie.util.ExceptionMessages;
 @Service
-@Transactional
+@Transactional(rollbackOn = Exception.class)
 public class UserServiceImpl implements UserService {
     private MemberTypeRepository memberTypeRepository;
 
@@ -163,13 +163,14 @@ public class UserServiceImpl implements UserService {
     }
 
     private void updatePaymentsByUser(long id, User updateUser) {
-        long invoiceNumber = paymentsService.findPaymentsByUserId(id, LocalDate.now().getYear());
-        Optional<Payments> payments = paymentsService.findPaymentsById(invoiceNumber);
-        if(payments.isPresent()){
-          payments.get().setBankAccountDetails(updateUser.getBankAccountDetails());
-            paymentsService.updatePayments(invoiceNumber, payments.get());
+        Long invoiceNumber = paymentsService.findPaymentsByUserId(id, LocalDate.now().getYear());
+        if (invoiceNumber != null) {
+            Optional<Payments> payments = paymentsService.findPaymentsById(invoiceNumber);
+            if (payments.isPresent()) {
+                payments.get().setBankAccountDetails(updateUser.getBankAccountDetails());
+                paymentsService.updatePayments(invoiceNumber, payments.get());
+            }
         }
-
     }
 
     @Override
@@ -208,7 +209,7 @@ public class UserServiceImpl implements UserService {
         }
         if (localDate
                 .getMonth()
-                .getValue() == 01 && localDate.getDayOfMonth() == 01) {
+                .getValue() == 1 && localDate.getDayOfMonth() == 1) {
             List<User> listMitMitgliedern = (List<User>) repository.findAll();
             for ( User user :
                     listMitMitgliedern ) {
@@ -222,7 +223,7 @@ public class UserServiceImpl implements UserService {
                     if (user
                             .getMemberType()
                             .getDescription()
-                            .equals("Jugendlich") && checkUserUnderEighteen(user)) {
+                            .equals("Jugendlich") && !checkUserUnderEighteen(user)) {
                         throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
                     }
                     user.setActualAmount(evaluateAmountForUser(user));
@@ -285,9 +286,9 @@ public class UserServiceImpl implements UserService {
     private boolean checkUserUnderEighteen(User createUser) {
         Period period = Period.between(createUser.getBirthday(), LocalDate.now());
         if (period.getYears() >= 18) {
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 
