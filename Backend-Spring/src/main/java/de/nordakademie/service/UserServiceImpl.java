@@ -88,14 +88,25 @@ public class UserServiceImpl implements UserService {
 
         // Create Payment for User
         User savedUser = repository.save(createUser);
+
+        checkUserIsFamilyUser(savedUser.getUserId(), savedUser);
+
         createPaymentByUser(savedUser);
         return savedUser;
+    }
+
+    private void checkUserIsFamilyUser(long id, User savedUser) {
+        if (savedUser.getFamilyId() != null && id == savedUser.getFamilyId().getUserId()){
+            throw new IllegalArgumentException("Der Benutzer kann nicht auf sich selber als Familienmitglied referenzieren.");
+        }
     }
 
     @Override
     public void updateUser(Long id, User updateUser) {
 
         validateInputUserForUpdateAndInsert(updateUser);
+
+        checkUserIsFamilyUser(id, updateUser);
 
         Optional<User> persistentUser = repository.findById(id);
         if (!persistentUser.isPresent()) {
