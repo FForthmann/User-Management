@@ -61,14 +61,6 @@ public class UserServiceImpl implements UserService {
 
         validateInputUserForUpdateAndInsert(createUser);
 
-        // Check if Membertype Teenage is valid with the inserted age
-        if (createUser
-                .getMemberType()
-                .getDescription()
-                .equals("Jugendlich") && checkUserUnderEighteen(createUser)) {
-            throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
-        }
-
         // Validation if MemberType exists in DB
         if (!existsMemberTypeInDB(createUser)) {
             throw new IllegalArgumentException(ApiMessages.MEMBERTYPE_NOT_IN_DB + createUser
@@ -380,6 +372,24 @@ public class UserServiceImpl implements UserService {
 
         if (!isEntryDateBeforeCancellationDate(user)) {
             throw new IllegalArgumentException(ExceptionMessages.USER_ENTRY_DATE_BEFORE_CANCELLATION_DATE);
+        }
+
+        if (user
+                .getMemberType()
+                .getDescription()
+                .equals("Jugendlich") && !checkUserUnderEighteen(user)) {
+            throw new IllegalArgumentException("Der Benutzer ist bereits erwachsen und kann kein Jugendkonto einrichten.");
+        }
+
+        if (!user
+                .getMemberType()
+                .getDescription()
+                .equals("Jugendlich") && checkUserUnderEighteen(user)){
+            throw new IllegalArgumentException("Der Benutzer ist jünger als 18 und daher muss ein Jugendkonto her.");
+        }
+
+        if(user.getMemberTypeChange() != null && user.getMemberTypeChange().getDescription().equals(user.getMemberType().getDescription())){
+            throw new IllegalArgumentException("Die Mitgliedsart kann nicht auf die gleiche Mitgliedsart gewechselt werden.");
         }
     }
 
