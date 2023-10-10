@@ -234,6 +234,19 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
+
+        List<User> list = (List<User>) repository.findAll();
+        for (User user :
+                list) {
+            if (user.getMemberType().getDescription().equals("Jugendlich") && !checkUserUnderEighteen(user)) {
+                Optional<MemberType> memberType = memberTypeService.findMemberTypeById("Vollmitglied");
+                if(memberType.isPresent()) {
+                    user.setMemberType(memberType.get());
+                    updateUser(user.getUserId(), user);
+                }
+            }
+        }
+
         return (List<User>) repository.findAll();
     }
 
